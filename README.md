@@ -232,8 +232,6 @@ The directory structure of this repository is as follows:
 
 ## Citation / References
 
-Please cite the following works and artefacts if you build upon this repository:
-
 1. Ben Zaken, E., Goldberg, Y., & Ravfogel, S. (2021). *BitFit: Simple parameter-efficient fine-tuning for transformer-based masked language models*. arXiv:2106.10199.
 2. Hu, E. J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., & Chen, W. (2021). *LoRA: Low-rank adaptation of large language models*. arXiv:2106.09685.
 3. Liu, H., Tam, D., Muqeeth, M., Mohta, J., Huang, T., Bansal, M., & Raffel, C. (2022). *(IA)³: Efficient adapter tuning with input-dependent inference*. arXiv:2205.05638.
@@ -250,7 +248,7 @@ Please cite the following works and artefacts if you build upon this repository:
 
 For any questions or issues, please contact:
 - Md Mobashir Rahman
-- Email: mobashir.rahman@uni-saarland.de
+- Email: mdra000001@stud.uni-saarland.de
 
 ## Additional Notes
 - WandB API keys and project details must be correctly configured for logging to work.
