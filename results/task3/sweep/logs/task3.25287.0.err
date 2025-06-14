@@ -1,0 +1,4 @@
+wandb: Starting wandb agent 🕵️
+wandb: ERROR Error while calling W&B API: Sweep mobashirrahman-saarland-university/Task3/z7avvqti is not running (<Response [400]>)
+wandb: ERROR Find detailed error logs at: /raid/condor/lib/condor/execute/dir_1373686/debug-cli.1620001094.log
+Error: Sweep mobashirrahman-saarland-university/Task3/z7avvqti is not running

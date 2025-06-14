@@ -1,0 +1,1 @@
+./run_finetune_lipophilicity.sh: line 76: wandb: command not found

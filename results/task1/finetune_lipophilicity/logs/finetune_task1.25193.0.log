@@ -1,0 +1,53 @@
+000 (25193.000.000) 2025-03-08 22:59:01 Job submitted from host: <134.96.227.101:9618?addrs=134.96.227.101-9618&alias=conduit2.hpc.uni-saarland.de&noUDP&sock=schedd_1648_f82a>
+...
+040 (25193.000.000) 2025-03-08 22:59:02 Started transferring input files
+	Transferring to host: <134.96.59.24:9618?addrs=134.96.59.24-9618&alias=tenos.hpc.uni-saarland.de&noUDP&sock=teaching3_2504_0b5f_75611>
+...
+040 (25193.000.000) 2025-03-08 22:59:02 Finished transferring input files
+...
+001 (25193.000.000) 2025-03-08 22:59:02 Job executing on host: <134.96.59.24:9618?addrs=134.96.59.24-9618&alias=tenos.hpc.uni-saarland.de&noUDP&sock=startd_2183_ef55>
+	SlotName: @tenos.hpc.uni-saarland.de
+	AvailableGPUs = { GPUs_GPU_87019d2b }
+	CondorScratchDir = "/raid/condor/lib/condor/execute/dir_454102"
+	Cpus = 7
+	Disk = 446757435
+	GPUs = 1
+	GPUs_GPU_87019d2b = [ Id = "GPU-87019d2b"; Capability = 6.0; DeviceName = "Tesla P100-SXM2-16GB"; DeviceUuid = "87019d2b-cc45-061f-7c06-2347fb3d78cd"; ECCEnabled = true; DriverVersion = 12.4; DevicePciBusId = "0000:05:00.0"; GlobalMemoryMb = 16269; MaxSupportedVersion = 12040 ]
+	Memory = 96737
+...
+006 (25193.000.000) 2025-03-08 22:59:11 Image size of job updated: 29
+	29  -  MemoryUsage of job (MB)
+	29796  -  ResidentSetSize of job (KB)
+...
+040 (25193.000.000) 2025-03-08 22:59:11 Started transferring output files
+...
+040 (25193.000.000) 2025-03-08 22:59:11 Finished transferring output files
+...
+021 (25193.000.000) 2025-03-08 22:59:11 Error from starter on teaching3@tenos.hpc.uni-saarland.de:
+	STARTER at 134.96.59.24 failed to send file(s) to <134.96.227.101:9618>: |Error: reading from file /raid/condor/lib/condor/execute/dir_454102/checkpoints: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <134.96.59.24:41743>
+	Code 13 Subcode 2
+...
+004 (25193.000.000) 2025-03-08 22:59:11 Job was evicted.
+	(0) CPU times
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	39138  -  Run Bytes Sent By Job
+	22713  -  Run Bytes Received By Job
+	Transfer output files failure at execution point teaching3@tenos.hpc.uni-saarland.de while sending files to access point conduit2. Details: reading from file /raid/condor/lib/condor/execute/dir_454102/checkpoints: (errno 2) No such file or directory
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :        0        4         7 
+	   Disk (KB)            :       83       25 446757435 
+	   GPUs                 :                 1         1 "GPU-87019d2b"
+	   Memory (MB)          :       29    16384     96737 
+	   TimeExecute (s)      :        9                    
+	   TimeSlotBusy (s)     :        9                    
+...
+012 (25193.000.000) 2025-03-08 22:59:12 Job was held.
+	Transfer output files failure at execution point teaching3@tenos.hpc.uni-saarland.de while sending files to access point conduit2. Details: reading from file /raid/condor/lib/condor/execute/dir_454102/checkpoints: (errno 2) No such file or directory
+	Code 12 Subcode 2
+...
+009 (25193.000.000) 2025-03-08 23:08:49 Job was aborted.
+	via condor_rm (by user neuronet_team159)
+
+	Job terminated by itself at 2025-03-08T21:59:11Z (using method 0: OF_ITS_OWN_ACCORD).
+...

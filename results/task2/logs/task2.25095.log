@@ -1,0 +1,45 @@
+000 (25095.000.000) 2025-03-07 09:44:00 Job submitted from host: <134.96.227.101:9618?addrs=134.96.227.101-9618&alias=conduit2.hpc.uni-saarland.de&noUDP&sock=schedd_1648_f82a>
+...
+040 (25095.000.000) 2025-03-07 13:42:34 Started transferring input files
+	Transferring to host: <134.96.59.18:9618?addrs=134.96.59.18-9618&alias=uller.hpc.uni-saarland.de&noUDP&sock=teaching1_3740_eb11_1368>
+...
+040 (25095.000.000) 2025-03-07 13:42:34 Finished transferring input files
+...
+001 (25095.000.000) 2025-03-07 13:42:34 Job executing on host: <134.96.59.18:9618?addrs=134.96.59.18-9618&alias=uller.hpc.uni-saarland.de&noUDP&sock=startd_2417_707f>
+	SlotName: @uller.hpc.uni-saarland.de
+	AvailableGPUs = { GPUs_GPU_0833fde1 }
+	CondorScratchDir = "/raid/condor/lib/condor/execute/dir_2255037"
+	Cpus = 7
+	Disk = 401397238
+	GPUs = 1
+	GPUs_GPU_0833fde1 = [ Id = "GPU-0833fde1"; Capability = 6.0; DeviceName = "Tesla P100-PCIE-16GB"; DeviceUuid = "0833fde1-0b72-637b-6d41-f86a71289935"; ECCEnabled = true; DriverVersion = 12.4; DevicePciBusId = "0000:04:00.0"; GlobalMemoryMb = 16269; MaxSupportedVersion = 12040 ]
+	Memory = 64480
+...
+006 (25095.000.000) 2025-03-07 13:42:43 Image size of job updated: 283
+	283  -  MemoryUsage of job (MB)
+	290688  -  ResidentSetSize of job (KB)
+...
+040 (25095.000.000) 2025-03-07 13:42:46 Started transferring output files
+...
+040 (25095.000.000) 2025-03-07 13:42:46 Finished transferring output files
+...
+005 (25095.000.000) 2025-03-07 13:42:46 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:07, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:07, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	41670  -  Run Bytes Sent By Job
+	39179  -  Run Bytes Received By Job
+	41670  -  Total Bytes Sent By Job
+	39179  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated Assigned
+	   Cpus                 :        0        4         7 
+	   Disk (KB)            :      120       42 401397238 
+	   GPUs                 :        0        1         1 "GPU-0833fde1"
+	   Memory (MB)          :      283    16384     64480 
+	   TimeExecute (s)      :       12                    
+	   TimeSlotBusy (s)     :       12                    
+
+	Job terminated of its own accord at 2025-03-07T12:42:46Z with exit-code 0.
+...

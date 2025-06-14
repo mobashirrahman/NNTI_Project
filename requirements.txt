@@ -1,0 +1,10 @@
+ipywidgets
+jupyter
+numpy
+pandas
+matplotlib
+torch
+datasets
+transformers
+scikit-learn
+wandb>=0.12.0

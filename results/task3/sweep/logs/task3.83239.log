@@ -1,0 +1,82 @@
+000 (83239.000.000) 2025-03-10 14:33:09 Job submitted from host: <134.96.227.100:9618?addrs=134.96.227.100-9618&alias=conduit.hpc.uni-saarland.de&noUDP&sock=schedd_1639_cbd0>
+...
+040 (83239.000.000) 2025-03-10 14:33:10 Started transferring input files
+	Transferring to host: <134.96.59.18:9618?addrs=134.96.59.18-9618&alias=uller.hpc.uni-saarland.de&noUDP&sock=teaching4_3740_eb11_1849>
+...
+001 (83239.000.000) 2025-03-10 14:33:16 Job executing on host: <134.96.59.18:9618?addrs=134.96.59.18-9618&alias=uller.hpc.uni-saarland.de&noUDP&sock=startd_2417_707f>
+	SlotName: @uller.hpc.uni-saarland.de
+	AvailableGPUs = { GPUs_GPU_7ba7fd77 }
+	CondorScratchDir = "/raid/condor/lib/condor/execute/dir_1144372"
+	Cpus = 7
+	Disk = 401397238
+	GPUs = 1
+	GPUs_GPU_7ba7fd77 = [ Id = "GPU-7ba7fd77"; Capability = 6.0; DeviceName = "Tesla P100-PCIE-16GB"; DeviceUuid = "7ba7fd77-a058-cefb-5031-b603f43e2420"; ECCEnabled = true; DriverVersion = 12.4; DevicePciBusId = "0000:08:00.0"; GlobalMemoryMb = 16269; MaxSupportedVersion = 12040 ]
+	Memory = 64480
+...
+040 (83239.000.000) 2025-03-10 14:33:16 Finished transferring input files
+...
+006 (83239.000.000) 2025-03-10 14:33:25 Image size of job updated: 29
+	29  -  MemoryUsage of job (MB)
+	30268  -  ResidentSetSize of job (KB)
+...
+006 (83239.000.000) 2025-03-10 14:38:27 Image size of job updated: 1682
+	1682  -  MemoryUsage of job (MB)
+	1722428  -  ResidentSetSize of job (KB)
+...
+006 (83239.000.000) 2025-03-10 14:48:27 Image size of job updated: 1683
+	1683  -  MemoryUsage of job (MB)
+	1723604  -  ResidentSetSize of job (KB)
+...
+006 (83239.000.000) 2025-03-10 15:08:30 Image size of job updated: 1685
+	1685  -  MemoryUsage of job (MB)
+	1726016  -  ResidentSetSize of job (KB)
+...
+006 (83239.000.000) 2025-03-10 15:18:31 Image size of job updated: 1686
+	1686  -  MemoryUsage of job (MB)
+	1727296  -  ResidentSetSize of job (KB)
+...
+006 (83239.000.000) 2025-03-10 15:23:32 Image size of job updated: 1687
+	1687  -  MemoryUsage of job (MB)
+	1728032  -  ResidentSetSize of job (KB)
+...
+006 (83239.000.000) 2025-03-10 15:28:33 Image size of job updated: 1688
+	1688  -  MemoryUsage of job (MB)
+	1729412  -  ResidentSetSize of job (KB)
+...
+006 (83239.000.000) 2025-03-10 15:43:34 Image size of job updated: 1690
+	1690  -  MemoryUsage of job (MB)
+	1731372  -  ResidentSetSize of job (KB)
+...
+006 (83239.000.000) 2025-03-10 16:28:37 Image size of job updated: 1697
+	1697  -  MemoryUsage of job (MB)
+	1737820  -  ResidentSetSize of job (KB)
+...
+006 (83239.000.000) 2025-03-10 16:51:59 Image size of job updated: 1701
+	1701  -  MemoryUsage of job (MB)
+	1741912  -  ResidentSetSize of job (KB)
+...
+040 (83239.000.000) 2025-03-10 16:51:59 Started transferring output files
+...
+040 (83239.000.000) 2025-03-10 16:52:02 Finished transferring output files
+...
+005 (83239.000.000) 2025-03-10 16:52:02 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 02:30:18, Sys 0 00:04:59  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 02:30:18, Sys 0 00:04:59  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	182907696  -  Run Bytes Sent By Job
+	177834112  -  Run Bytes Received By Job
+	182907696  -  Total Bytes Sent By Job
+	177834112  -  Total Bytes Received By Job
+	Partitionable Resources :     Usage  Request Allocated Assigned
+	   Cpus                 :      0.00        4         7 
+	   Disk (KB)            : 365104      175000 401397238 
+	   GPUs                 :      0.84        1         1 "GPU-7ba7fd77"
+	   GpusMemory (MB)      :   3053                       
+	   Memory (MB)          :   1701       16384     64480 
+	   TimeExecute (s)      :   8323                       
+	   TimeSlotBusy (s)     :   8333                       
+
+	Job terminated of its own accord at 2025-03-10T15:51:59Z with exit-code 0.
+...

@@ -1,0 +1,102 @@
+000 (25136.000.000) 2025-03-07 17:09:11 Job submitted from host: <134.96.227.101:9618?addrs=134.96.227.101-9618&alias=conduit2.hpc.uni-saarland.de&noUDP&sock=schedd_1648_f82a>
+...
+040 (25136.000.000) 2025-03-07 17:09:12 Started transferring input files
+	Transferring to host: <134.96.59.18:9618?addrs=134.96.59.18-9618&alias=uller.hpc.uni-saarland.de&noUDP&sock=teaching1_3740_eb11_1386>
+...
+040 (25136.000.000) 2025-03-07 17:09:12 Finished transferring input files
+...
+001 (25136.000.000) 2025-03-07 17:09:12 Job executing on host: <134.96.59.18:9618?addrs=134.96.59.18-9618&alias=uller.hpc.uni-saarland.de&noUDP&sock=startd_2417_707f>
+	SlotName: @uller.hpc.uni-saarland.de
+	AvailableGPUs = { GPUs_GPU_0833fde1 }
+	CondorScratchDir = "/raid/condor/lib/condor/execute/dir_2368668"
+	Cpus = 7
+	Disk = 401397238
+	GPUs = 1
+	GPUs_GPU_0833fde1 = [ Id = "GPU-0833fde1"; Capability = 6.0; DeviceName = "Tesla P100-PCIE-16GB"; DeviceUuid = "0833fde1-0b72-637b-6d41-f86a71289935"; ECCEnabled = true; DriverVersion = 12.4; DevicePciBusId = "0000:04:00.0"; GlobalMemoryMb = 16269; MaxSupportedVersion = 12040 ]
+	Memory = 64480
+...
+006 (25136.000.000) 2025-03-07 17:09:21 Image size of job updated: 33
+	33  -  MemoryUsage of job (MB)
+	34588  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 17:14:21 Image size of job updated: 2832
+	2832  -  MemoryUsage of job (MB)
+	2900076  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 17:24:23 Image size of job updated: 2872
+	2872  -  MemoryUsage of job (MB)
+	2941896  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 17:29:24 Image size of job updated: 3747
+	3747  -  MemoryUsage of job (MB)
+	3837080  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 17:39:25 Image size of job updated: 3748
+	3748  -  MemoryUsage of job (MB)
+	3838328  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 17:49:26 Image size of job updated: 3767
+	3767  -  MemoryUsage of job (MB)
+	3857644  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 17:59:28 Image size of job updated: 3769
+	3769  -  MemoryUsage of job (MB)
+	3859740  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 18:04:28 Image size of job updated: 3770
+	3770  -  MemoryUsage of job (MB)
+	3861028  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 18:14:30 Image size of job updated: 3773
+	3773  -  MemoryUsage of job (MB)
+	3864520  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 18:34:32 Image size of job updated: 3776
+	3776  -  MemoryUsage of job (MB)
+	3867188  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 18:39:32 Image size of job updated: 3776
+	3776  -  MemoryUsage of job (MB)
+	3867584  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 18:49:33 Image size of job updated: 3777
+	3777  -  MemoryUsage of job (MB)
+	3867796  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 19:19:37 Image size of job updated: 3792
+	3792  -  MemoryUsage of job (MB)
+	3883488  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 19:24:38 Image size of job updated: 3792
+	3792  -  MemoryUsage of job (MB)
+	3883532  -  ResidentSetSize of job (KB)
+...
+006 (25136.000.000) 2025-03-07 19:54:40 Image size of job updated: 3820
+	3820  -  MemoryUsage of job (MB)
+	3912040  -  ResidentSetSize of job (KB)
+...
+040 (25136.000.000) 2025-03-07 21:16:18 Started transferring output files
+...
+040 (25136.000.000) 2025-03-07 21:16:51 Finished transferring output files
+...
+005 (25136.000.000) 2025-03-07 21:16:51 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 04:03:05, Sys 0 00:06:51  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 04:03:05, Sys 0 00:06:51  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	2687430912  -  Run Bytes Sent By Job
+	22451  -  Run Bytes Received By Job
+	2687430912  -  Total Bytes Sent By Job
+	22451  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated Assigned
+	   Cpus                 :       0.00        4         7 
+	   Disk (KB)            : 2794328          25 401397238 
+	   GPUs                 :       0.88        1         1 "GPU-0833fde1"
+	   GpusMemory (MB)      :    5393                       
+	   Memory (MB)          :    3820       16384     64480 
+	   TimeExecute (s)      :   14826                       
+	   TimeSlotBusy (s)     :   14859                       
+
+	Job terminated of its own accord at 2025-03-07T20:16:18Z with exit-code 0.
+...

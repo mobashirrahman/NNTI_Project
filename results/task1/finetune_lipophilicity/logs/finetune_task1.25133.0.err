@@ -1,0 +1,3 @@
+wandb: Starting wandb agent 🕵️
+wandb: ERROR Find detailed error logs at: /raid/condor/lib/condor/execute/dir_2355147/debug-cli.1620001094.log
+Error: Sweep mobashirrahman-saarland-university/nnti-project/scswssd6 not found

@@ -1,0 +1,5 @@
+009 (81822.000.000) 2025-03-08 03:34:54 Job was aborted.
+	via condor_rm (by user neuronet_team159)
+
+	Job terminated by itself at 2025-03-07T15:55:05Z (using method 0: OF_ITS_OWN_ACCORD).
+...

@@ -1,0 +1,813 @@
+WandB environment variables set:
+  WANDB_API_KEY: dce2ca13c46a133ee8830759315cc6e8cbad8a05
+  WANDB_ENTITY: mobashirrahman-saarland-university
+  WANDB_PROJECT: nnti-project
+  WANDB_SWEEP: true
+=== Starting Task 3: Data Selection & Fine-Tuning Exploration ===
+Hostname: neuronet_team159-25063.0-uller.hpc.uni-saarland.de
+Date: Thu Mar  6 19:27:29 UTC 2025
+Process ID: 7
+Allocated GPUs (nvidia-smi):
+Thu Mar  6 19:27:29 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.127.08             Driver Version: 550.127.08     CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla P100-PCIE-16GB           Off |   00000000:06:00.0 Off |                    0 |
+| N/A   30C    P0             25W /  250W |       3MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Memory info (free -h):
+               total        used        free      shared  buff/cache   available
+Mem:           503Gi       8.8Gi       188Gi        34Mi       306Gi       491Gi
+Swap:          8.0Gi          0B       8.0Gi
+Installed Python version:
+/opt/conda/bin/python3
+Python 3.10.13
+Installing Python dependencies from requirements.txt...
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: pip in /home/neuronet_team159/.local/lib/python3.10/site-packages (25.0.1)
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: ipywidgets in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 1)) (8.1.5)
+Requirement already satisfied: jupyter in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 2)) (1.1.1)
+Requirement already satisfied: numpy in /opt/conda/lib/python3.10/site-packages (from -r requirements.txt (line 3)) (1.26.3)
+Requirement already satisfied: pandas in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 4)) (2.2.3)
+Requirement already satisfied: matplotlib in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 5)) (3.10.1)
+Requirement already satisfied: torch in /opt/conda/lib/python3.10/site-packages (from -r requirements.txt (line 6)) (2.2.1)
+Requirement already satisfied: datasets in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 7)) (3.3.2)
+Requirement already satisfied: transformers in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 8)) (4.49.0)
+Requirement already satisfied: scikit-learn in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 9)) (1.6.1)
+Requirement already satisfied: wandb>=0.12.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 10)) (0.19.7)
+Requirement already satisfied: comm>=0.1.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (0.2.2)
+Requirement already satisfied: ipython>=6.1.0 in /opt/conda/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (8.20.0)
+Requirement already satisfied: traitlets>=4.3.1 in /opt/conda/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (5.7.1)
+Requirement already satisfied: widgetsnbextension~=4.0.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (4.0.13)
+Requirement already satisfied: jupyterlab-widgets~=3.0.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (3.0.13)
+Requirement already satisfied: notebook in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (7.3.2)
+Requirement already satisfied: jupyter-console in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (6.6.3)
+Requirement already satisfied: nbconvert in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (7.16.6)
+Requirement already satisfied: ipykernel in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (6.29.5)
+Requirement already satisfied: jupyterlab in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (4.3.5)
+Requirement already satisfied: python-dateutil>=2.8.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 4)) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in /opt/conda/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 4)) (2023.3.post1)
+Requirement already satisfied: tzdata>=2022.7 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 4)) (2025.1)
+Requirement already satisfied: contourpy>=1.0.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (1.3.1)
+Requirement already satisfied: cycler>=0.10 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (4.56.0)
+Requirement already satisfied: kiwisolver>=1.3.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (1.4.8)
+Requirement already satisfied: packaging>=20.0 in /opt/conda/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (23.1)
+Requirement already satisfied: pillow>=8 in /opt/conda/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (10.2.0)
+Requirement already satisfied: pyparsing>=2.3.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (3.2.1)
+Requirement already satisfied: filelock in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (3.13.1)
+Requirement already satisfied: typing-extensions>=4.8.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (4.12.2)
+Requirement already satisfied: sympy in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (1.12)
+Requirement already satisfied: networkx in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (3.1)
+Requirement already satisfied: jinja2 in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (3.1.3)
+Requirement already satisfied: fsspec in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (2024.2.0)
+Requirement already satisfied: pyarrow>=15.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (19.0.1)
+Requirement already satisfied: dill<0.3.9,>=0.3.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (0.3.8)
+Requirement already satisfied: requests>=2.32.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (2.32.3)
+Requirement already satisfied: tqdm>=4.66.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (4.67.1)
+Requirement already satisfied: xxhash in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (3.5.0)
+Requirement already satisfied: multiprocess<0.70.17 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (0.70.16)
+Requirement already satisfied: aiohttp in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (3.11.13)
+Requirement already satisfied: huggingface-hub>=0.24.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (0.29.1)
+Requirement already satisfied: pyyaml>=5.1 in /opt/conda/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (6.0.1)
+Requirement already satisfied: regex!=2019.12.17 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from transformers->-r requirements.txt (line 8)) (2024.11.6)
+Requirement already satisfied: tokenizers<0.22,>=0.21 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from transformers->-r requirements.txt (line 8)) (0.21.0)
+Requirement already satisfied: safetensors>=0.4.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from transformers->-r requirements.txt (line 8)) (0.5.3)
+Requirement already satisfied: scipy>=1.6.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from scikit-learn->-r requirements.txt (line 9)) (1.15.2)
+Requirement already satisfied: joblib>=1.2.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from scikit-learn->-r requirements.txt (line 9)) (1.4.2)
+Requirement already satisfied: threadpoolctl>=3.1.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from scikit-learn->-r requirements.txt (line 9)) (3.5.0)
+Requirement already satisfied: click!=8.0.0,>=7.1 in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (8.1.7)
+Requirement already satisfied: docker-pycreds>=0.4.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (0.4.0)
+Requirement already satisfied: gitpython!=3.1.29,>=1.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (3.1.44)
+Requirement already satisfied: platformdirs in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (3.10.0)
+Requirement already satisfied: protobuf!=4.21.0,!=5.28.0,<6,>=3.19.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (5.29.3)
+Requirement already satisfied: psutil>=5.0.0 in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (5.9.0)
+Requirement already satisfied: pydantic<3,>=2.6 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (2.10.6)
+Requirement already satisfied: sentry-sdk>=2.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (2.22.0)
+Requirement already satisfied: setproctitle in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (1.3.5)
+Requirement already satisfied: setuptools in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (68.2.2)
+Requirement already satisfied: six>=1.4.0 in /opt/conda/lib/python3.10/site-packages (from docker-pycreds>=0.4.0->wandb>=0.12.0->-r requirements.txt (line 10)) (1.16.0)
+Requirement already satisfied: aiohappyeyeballs>=2.3.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (2.4.8)
+Requirement already satisfied: aiosignal>=1.1.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (1.3.2)
+Requirement already satisfied: async-timeout<6.0,>=4.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (5.0.1)
+Requirement already satisfied: attrs>=17.3.0 in /opt/conda/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (23.1.0)
+Requirement already satisfied: frozenlist>=1.1.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (1.5.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (6.1.0)
+Requirement already satisfied: propcache>=0.2.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (0.3.0)
+Requirement already satisfied: yarl<2.0,>=1.17.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (1.18.3)
+Requirement already satisfied: gitdb<5,>=4.0.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from gitpython!=3.1.29,>=1.0.0->wandb>=0.12.0->-r requirements.txt (line 10)) (4.0.12)
+Requirement already satisfied: decorator in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (5.1.1)
+Requirement already satisfied: jedi>=0.16 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.18.1)
+Requirement already satisfied: matplotlib-inline in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.1.6)
+Requirement already satisfied: prompt-toolkit<3.1.0,>=3.0.41 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (3.0.43)
+Requirement already satisfied: pygments>=2.4.0 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (2.15.1)
+Requirement already satisfied: stack-data in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.2.0)
+Requirement already satisfied: exceptiongroup in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (1.2.0)
+Requirement already satisfied: pexpect>4.3 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (4.8.0)
+Requirement already satisfied: annotated-types>=0.6.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pydantic<3,>=2.6->wandb>=0.12.0->-r requirements.txt (line 10)) (0.7.0)
+Requirement already satisfied: pydantic-core==2.27.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pydantic<3,>=2.6->wandb>=0.12.0->-r requirements.txt (line 10)) (2.27.2)
+Requirement already satisfied: charset-normalizer<4,>=2 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (2.0.4)
+Requirement already satisfied: idna<4,>=2.5 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (3.4)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (2.1.0)
+Requirement already satisfied: certifi>=2017.4.17 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (2024.2.2)
+Requirement already satisfied: debugpy>=1.6.5 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (1.8.12)
+Requirement already satisfied: jupyter-client>=6.1.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (8.6.3)
+Requirement already satisfied: jupyter-core!=5.0.*,>=4.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (5.7.2)
+Requirement already satisfied: nest-asyncio in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (1.6.0)
+Requirement already satisfied: pyzmq>=24 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (26.2.1)
+Requirement already satisfied: tornado>=6.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (6.4.2)
+Requirement already satisfied: MarkupSafe>=2.0 in /opt/conda/lib/python3.10/site-packages (from jinja2->torch->-r requirements.txt (line 6)) (2.1.3)
+Requirement already satisfied: async-lru>=1.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.0.4)
+Requirement already satisfied: httpx>=0.25.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (0.28.1)
+Requirement already satisfied: jupyter-lsp>=2.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.2.5)
+Requirement already satisfied: jupyter-server<3,>=2.4.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.15.0)
+Requirement already satisfied: jupyterlab-server<3,>=2.27.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.27.3)
+Requirement already satisfied: notebook-shim>=0.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (0.2.4)
+Requirement already satisfied: tomli>=1.2.2 in /opt/conda/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.0.1)
+Requirement already satisfied: beautifulsoup4 in /opt/conda/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (4.12.2)
+Requirement already satisfied: bleach!=5.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from bleach[css]!=5.0.0->nbconvert->jupyter->-r requirements.txt (line 2)) (6.2.0)
+Requirement already satisfied: defusedxml in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (0.7.1)
+Requirement already satisfied: jupyterlab-pygments in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (0.3.0)
+Requirement already satisfied: mistune<4,>=2.0.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (3.1.2)
+Requirement already satisfied: nbclient>=0.5.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (0.10.2)
+Requirement already satisfied: nbformat>=5.7 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (5.10.4)
+Requirement already satisfied: pandocfilters>=1.4.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (1.5.1)
+Requirement already satisfied: mpmath>=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy->torch->-r requirements.txt (line 6)) (1.3.0)
+Requirement already satisfied: webencodings in /home/neuronet_team159/.local/lib/python3.10/site-packages (from bleach!=5.0.0->bleach[css]!=5.0.0->nbconvert->jupyter->-r requirements.txt (line 2)) (0.5.1)
+Requirement already satisfied: tinycss2<1.5,>=1.1.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from bleach[css]!=5.0.0->nbconvert->jupyter->-r requirements.txt (line 2)) (1.4.0)
+Requirement already satisfied: smmap<6,>=3.0.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.29,>=1.0.0->wandb>=0.12.0->-r requirements.txt (line 10)) (5.0.2)
+Requirement already satisfied: anyio in /home/neuronet_team159/.local/lib/python3.10/site-packages (from httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (4.8.0)
+Requirement already satisfied: httpcore==1.* in /home/neuronet_team159/.local/lib/python3.10/site-packages (from httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.0.7)
+Requirement already satisfied: h11<0.15,>=0.13 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from httpcore==1.*->httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.14.0)
+Requirement already satisfied: parso<0.9.0,>=0.8.0 in /opt/conda/lib/python3.10/site-packages (from jedi>=0.16->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.8.3)
+Requirement already satisfied: argon2-cffi>=21.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (23.1.0)
+Requirement already satisfied: jupyter-events>=0.11.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.12.0)
+Requirement already satisfied: jupyter-server-terminals>=0.4.4 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.5.3)
+Requirement already satisfied: overrides>=5.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (7.7.0)
+Requirement already satisfied: prometheus-client>=0.9 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.21.1)
+Requirement already satisfied: send2trash>=1.8.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.8.3)
+Requirement already satisfied: terminado>=0.8.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.18.1)
+Requirement already satisfied: websocket-client>=1.7 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.8.0)
+Requirement already satisfied: babel>=2.10 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.17.0)
+Requirement already satisfied: json5>=0.9.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.10.0)
+Requirement already satisfied: jsonschema>=4.18.0 in /opt/conda/lib/python3.10/site-packages (from jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (4.19.2)
+Requirement already satisfied: fastjsonschema>=2.15 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbformat>=5.7->nbconvert->jupyter->-r requirements.txt (line 2)) (2.21.1)
+Requirement already satisfied: ptyprocess>=0.5 in /opt/conda/lib/python3.10/site-packages (from pexpect>4.3->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.7.0)
+Requirement already satisfied: wcwidth in /opt/conda/lib/python3.10/site-packages (from prompt-toolkit<3.1.0,>=3.0.41->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.2.5)
+Requirement already satisfied: soupsieve>1.2 in /opt/conda/lib/python3.10/site-packages (from beautifulsoup4->nbconvert->jupyter->-r requirements.txt (line 2)) (2.5)
+Requirement already satisfied: executing in /opt/conda/lib/python3.10/site-packages (from stack-data->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.8.3)
+Requirement already satisfied: asttokens in /opt/conda/lib/python3.10/site-packages (from stack-data->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (2.0.5)
+Requirement already satisfied: pure-eval in /opt/conda/lib/python3.10/site-packages (from stack-data->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.2.2)
+Requirement already satisfied: sniffio>=1.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from anyio->httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.3.1)
+Requirement already satisfied: argon2-cffi-bindings in /home/neuronet_team159/.local/lib/python3.10/site-packages (from argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (21.2.0)
+Requirement already satisfied: jsonschema-specifications>=2023.03.6 in /opt/conda/lib/python3.10/site-packages (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (2023.7.1)
+Requirement already satisfied: referencing>=0.28.4 in /opt/conda/lib/python3.10/site-packages (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.30.2)
+Requirement already satisfied: rpds-py>=0.7.1 in /opt/conda/lib/python3.10/site-packages (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.10.6)
+Requirement already satisfied: python-json-logger>=2.0.4 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (3.2.1)
+Requirement already satisfied: rfc3339-validator in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.1.4)
+Requirement already satisfied: rfc3986-validator>=0.1.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.1.1)
+Requirement already satisfied: fqdn in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.5.1)
+Requirement already satisfied: isoduration in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (20.11.0)
+Requirement already satisfied: jsonpointer>1.13 in /opt/conda/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.1)
+Requirement already satisfied: uri-template in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.3.0)
+Requirement already satisfied: webcolors>=1.11 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (24.11.1)
+Requirement already satisfied: cffi>=1.0.1 in /opt/conda/lib/python3.10/site-packages (from argon2-cffi-bindings->argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.16.0)
+Requirement already satisfied: pycparser in /opt/conda/lib/python3.10/site-packages (from cffi>=1.0.1->argon2-cffi-bindings->argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.21)
+Requirement already satisfied: arrow>=0.15.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from isoduration->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.3.0)
+Requirement already satisfied: types-python-dateutil>=2.8.10 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from arrow>=0.15.0->isoduration->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.9.0.20241206)
+Installed package versions:
+aiohappyeyeballs==2.4.8
+aiohttp==3.11.13
+aiosignal==1.3.2
+annotated-types==0.7.0
+anyio==4.8.0
+archspec @ file:///croot/archspec_1697725767277/work
+argon2-cffi==23.1.0
+argon2-cffi-bindings==21.2.0
+arrow==1.3.0
+asttokens @ file:///opt/conda/conda-bld/asttokens_1646925590279/work
+astunparse==1.6.3
+async-lru==2.0.4
+async-timeout==5.0.1
+attrs @ file:///croot/attrs_1695717823297/work
+babel==2.17.0
+beautifulsoup4 @ file:///croot/beautifulsoup4-split_1681493039619/work
+bleach==6.2.0
+boltons @ file:///croot/boltons_1677628692245/work
+Brotli @ file:///tmp/abs_ecyw11_7ze/croots/recipe/brotli-split_1659616059936/work
+certifi @ file:///croot/certifi_1707229174982/work/certifi
+cffi @ file:///croot/cffi_1700254295673/work
+chardet @ file:///home/builder/ci_310/chardet_1640804867535/work
+charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
+click @ file:///croot/click_1698129812380/work
+comm==0.2.2
+conda @ file:///croot/conda_1696257509808/work
+conda-build @ file:///croot/conda-build_1708025865815/work
+conda-content-trust @ file:///croot/conda-content-trust_1693490622020/work
+conda-libmamba-solver @ file:///croot/conda-libmamba-solver_1691418897561/work/src
+conda-package-handling @ file:///croot/conda-package-handling_1690999929514/work
+conda_index @ file:///croot/conda-index_1706633791028/work
+conda_package_streaming @ file:///croot/conda-package-streaming_1690987966409/work
+contourpy==1.3.1
+cryptography @ file:///croot/cryptography_1707523700518/work
+cycler==0.12.1
+datasets==3.3.2
+debugpy==1.8.12
+decorator @ file:///opt/conda/conda-bld/decorator_1643638310831/work
+defusedxml==0.7.1
+dill==0.3.8
+distro @ file:///croot/distro_1701455004953/work
+dnspython==2.6.1
+docker-pycreds==0.4.0
+exceptiongroup @ file:///croot/exceptiongroup_1706031385326/work
+executing @ file:///opt/conda/conda-bld/executing_1646925071911/work
+expecttest==0.2.1
+fastjsonschema==2.21.1
+filelock @ file:///croot/filelock_1700591183607/work
+fonttools==4.56.0
+fqdn==1.5.1
+frozenlist==1.5.0
+fsspec==2024.2.0
+gitdb==4.0.12
+GitPython==3.1.44
+gmpy2 @ file:///tmp/build/80754af9/gmpy2_1645455533097/work
+h11==0.14.0
+httpcore==1.0.7
+httpx==0.28.1
+huggingface-hub==0.29.1
+hypothesis==6.98.10
+idna @ file:///croot/idna_1666125576474/work
+ipykernel==6.29.5
+ipython @ file:///croot/ipython_1704833016303/work
+ipywidgets==8.1.5
+isoduration==20.11.0
+jedi @ file:///tmp/build/80754af9/jedi_1644315229345/work
+Jinja2 @ file:///croot/jinja2_1706733616596/work
+joblib==1.4.2
+json5==0.10.0
+jsonpatch @ file:///tmp/build/80754af9/jsonpatch_1615747632069/work
+jsonpointer==2.1
+jsonschema @ file:///croot/jsonschema_1699041609003/work
+jsonschema-specifications @ file:///croot/jsonschema-specifications_1699032386549/work
+jupyter==1.1.1
+jupyter-console==6.6.3
+jupyter-events==0.12.0
+jupyter-lsp==2.2.5
+jupyter_client==8.6.3
+jupyter_core==5.7.2
+jupyter_server==2.15.0
+jupyter_server_terminals==0.5.3
+jupyterlab==4.3.5
+jupyterlab_pygments==0.3.0
+jupyterlab_server==2.27.3
+jupyterlab_widgets==3.0.13
+kiwisolver==1.4.8
+libarchive-c @ file:///tmp/build/80754af9/python-libarchive-c_1617780486945/work
+libmambapy @ file:///croot/mamba-split_1698782620632/work/libmambapy
+MarkupSafe @ file:///croot/markupsafe_1704205993651/work
+matplotlib==3.10.1
+matplotlib-inline @ file:///opt/conda/conda-bld/matplotlib-inline_1662014470464/work
+menuinst @ file:///croot/menuinst_1706732933928/work
+mistune==3.1.2
+mkl-fft @ file:///croot/mkl_fft_1695058164594/work
+mkl-random @ file:///croot/mkl_random_1695059800811/work
+mkl-service==2.4.0
+more-itertools @ file:///croot/more-itertools_1700662129964/work
+mpmath @ file:///croot/mpmath_1690848262763/work
+multidict==6.1.0
+multiprocess==0.70.16
+nbclient==0.10.2
+nbconvert==7.16.6
+nbformat==5.10.4
+nest-asyncio==1.6.0
+networkx @ file:///croot/networkx_1690561992265/work
+notebook==7.3.2
+notebook_shim==0.2.4
+numpy @ file:///croot/numpy_and_numpy_base_1704311704800/work/dist/numpy-1.26.3-cp310-cp310-linux_x86_64.whl#sha256=a281f24b826e51f1c25bdd24960ab44b4bc294c65d81560441ba7fffd8ddd2a7
+optree==0.10.0
+overrides==7.7.0
+packaging @ file:///croot/packaging_1693575174725/work
+pandas==2.2.3
+pandocfilters==1.5.1
+parso @ file:///opt/conda/conda-bld/parso_1641458642106/work
+pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
+pillow @ file:///croot/pillow_1707233021655/work
+pkginfo @ file:///croot/pkginfo_1679431160147/work
+platformdirs @ file:///croot/platformdirs_1692205439124/work
+pluggy @ file:///tmp/build/80754af9/pluggy_1648024709248/work
+prometheus_client==0.21.1
+prompt-toolkit @ file:///croot/prompt-toolkit_1704404351921/work
+propcache==0.3.0
+protobuf==5.29.3
+psutil @ file:///opt/conda/conda-bld/psutil_1656431268089/work
+ptyprocess @ file:///tmp/build/80754af9/ptyprocess_1609355006118/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
+pure-eval @ file:///opt/conda/conda-bld/pure_eval_1646925070566/work
+pyarrow==19.0.1
+pycosat @ file:///croot/pycosat_1696536503704/work
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pydantic==2.10.6
+pydantic_core==2.27.2
+Pygments @ file:///croot/pygments_1684279966437/work
+pyOpenSSL @ file:///croot/pyopenssl_1708380408460/work
+pyparsing==3.2.1
+PySocks @ file:///home/builder/ci_310/pysocks_1640793678128/work
+python-dateutil==2.9.0.post0
+python-etcd==0.4.5
+python-json-logger==3.2.1
+pytz @ file:///croot/pytz_1695131579487/work
+PyYAML @ file:///croot/pyyaml_1698096049011/work
+pyzmq==26.2.1
+referencing @ file:///croot/referencing_1699012038513/work
+regex==2024.11.6
+requests==2.32.3
+rfc3339-validator==0.1.4
+rfc3986-validator==0.1.1
+rpds-py @ file:///croot/rpds-py_1698945930462/work
+ruamel.yaml @ file:///croot/ruamel.yaml_1666304550667/work
+ruamel.yaml.clib @ file:///croot/ruamel.yaml.clib_1666302247304/work
+safetensors==0.5.3
+scikit-learn==1.6.1
+scipy==1.15.2
+Send2Trash==1.8.3
+sentry-sdk==2.22.0
+setproctitle==1.3.5
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+smmap==5.0.2
+sniffio==1.3.1
+sortedcontainers==2.4.0
+soupsieve @ file:///croot/soupsieve_1696347547217/work
+stack-data @ file:///opt/conda/conda-bld/stack_data_1646927590127/work
+sympy @ file:///croot/sympy_1701397643339/work
+terminado==0.18.1
+threadpoolctl==3.5.0
+tinycss2==1.4.0
+tokenizers==0.21.0
+tomli @ file:///opt/conda/conda-bld/tomli_1657175507142/work
+toolz @ file:///croot/toolz_1667464077321/work
+torch==2.2.1
+torchaudio==2.2.1
+torchelastic==0.2.2
+torchvision==0.17.1
+tornado==6.4.2
+tqdm==4.67.1
+traitlets @ file:///croot/traitlets_1671143879854/work
+transformers==4.49.0
+triton==2.2.0
+truststore @ file:///croot/truststore_1695244293384/work
+types-dataclasses==0.6.6
+types-python-dateutil==2.9.0.20241206
+typing_extensions==4.12.2
+tzdata==2025.1
+uri-template==1.3.0
+urllib3 @ file:///croot/urllib3_1707770551213/work
+wandb==0.19.7
+wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work
+webcolors==24.11.1
+webencodings==0.5.1
+websocket-client==1.8.0
+widgetsnbextension==4.0.13
+xxhash==3.5.0
+yarl==1.18.3
+zstandard @ file:///croot/zstandard_1677013143055/work
+Running task3.py...
+[2025-03-06 19:27:37] INFO - Using device: cuda
+[2025-03-06 19:27:42] INFO - Full training set size: 3360
+[2025-03-06 19:27:42] INFO - Starting data selection using target distribution alignment...
+Target embeddings:   0%|          | 0/100 [00:00<?, ?it/s]Target embeddings:   1%|          | 1/100 [00:00<00:58,  1.69it/s]Target embeddings:   6%|▌         | 6/100 [00:00<00:08, 10.72it/s]Target embeddings:  11%|█         | 11/100 [00:00<00:04, 18.34it/s]Target embeddings:  16%|█▌        | 16/100 [00:00<00:03, 24.69it/s]Target embeddings:  21%|██        | 21/100 [00:01<00:02, 29.70it/s]Target embeddings:  26%|██▌       | 26/100 [00:01<00:02, 33.53it/s]Target embeddings:  31%|███       | 31/100 [00:01<00:01, 36.29it/s]Target embeddings:  36%|███▌      | 36/100 [00:01<00:01, 38.39it/s]Target embeddings:  41%|████      | 41/100 [00:01<00:01, 39.82it/s]Target embeddings:  46%|████▌     | 46/100 [00:01<00:01, 40.71it/s]Target embeddings:  51%|█████     | 51/100 [00:01<00:01, 41.49it/s]Target embeddings:  56%|█████▌    | 56/100 [00:01<00:01, 41.93it/s]Target embeddings:  61%|██████    | 61/100 [00:01<00:00, 42.27it/s]Target embeddings:  66%|██████▌   | 66/100 [00:02<00:00, 42.68it/s]Target embeddings:  71%|███████   | 71/100 [00:02<00:00, 42.87it/s]Target embeddings:  76%|███████▌  | 76/100 [00:02<00:00, 43.00it/s]Target embeddings:  81%|████████  | 81/100 [00:02<00:00, 42.96it/s]Target embeddings:  86%|████████▌ | 86/100 [00:02<00:00, 43.06it/s]Target embeddings:  91%|█████████ | 91/100 [00:02<00:00, 43.22it/s]Target embeddings:  96%|█████████▌| 96/100 [00:02<00:00, 43.15it/s]Target embeddings: 100%|██████████| 100/100 [00:02<00:00, 34.68it/s]
+Candidate embeddings:   0%|          | 0/3360 [00:00<?, ?it/s]Candidate embeddings:   0%|          | 5/3360 [00:00<01:21, 40.92it/s]Candidate embeddings:   0%|          | 10/3360 [00:00<01:20, 41.58it/s]Candidate embeddings:   0%|          | 15/3360 [00:00<01:19, 42.20it/s]Candidate embeddings:   1%|          | 20/3360 [00:00<01:18, 42.42it/s]Candidate embeddings:   1%|          | 25/3360 [00:00<01:18, 42.56it/s]Candidate embeddings:   1%|          | 30/3360 [00:00<01:17, 42.81it/s]Candidate embeddings:   1%|          | 35/3360 [00:00<01:17, 42.72it/s]Candidate embeddings:   1%|          | 40/3360 [00:00<01:17, 42.81it/s]Candidate embeddings:   1%|▏         | 45/3360 [00:01<01:17, 42.98it/s]Candidate embeddings:   1%|▏         | 50/3360 [00:01<01:16, 43.22it/s]Candidate embeddings:   2%|▏         | 55/3360 [00:01<01:16, 43.18it/s]Candidate embeddings:   2%|▏         | 60/3360 [00:01<01:16, 43.28it/s]Candidate embeddings:   2%|▏         | 65/3360 [00:01<01:16, 43.29it/s]Candidate embeddings:   2%|▏         | 70/3360 [00:01<01:15, 43.37it/s]Candidate embeddings:   2%|▏         | 75/3360 [00:01<01:16, 43.10it/s]Candidate embeddings:   2%|▏         | 80/3360 [00:01<01:16, 43.08it/s]Candidate embeddings:   3%|▎         | 85/3360 [00:01<01:15, 43.15it/s]Candidate embeddings:   3%|▎         | 90/3360 [00:02<01:15, 43.14it/s]Candidate embeddings:   3%|▎         | 95/3360 [00:02<01:15, 43.09it/s]Candidate embeddings:   3%|▎         | 100/3360 [00:02<01:15, 43.25it/s]Candidate embeddings:   3%|▎         | 105/3360 [00:02<01:15, 43.40it/s]Candidate embeddings:   3%|▎         | 110/3360 [00:02<01:14, 43.52it/s]Candidate embeddings:   3%|▎         | 115/3360 [00:02<01:14, 43.48it/s]Candidate embeddings:   4%|▎         | 120/3360 [00:02<01:15, 43.04it/s]Candidate embeddings:   4%|▎         | 125/3360 [00:02<01:15, 43.11it/s]Candidate embeddings:   4%|▍         | 130/3360 [00:03<01:14, 43.24it/s]Candidate embeddings:   4%|▍         | 135/3360 [00:03<01:14, 43.07it/s]Candidate embeddings:   4%|▍         | 140/3360 [00:03<01:14, 42.99it/s]Candidate embeddings:   4%|▍         | 145/3360 [00:03<01:14, 43.22it/s]Candidate embeddings:   4%|▍         | 150/3360 [00:03<01:14, 43.27it/s]Candidate embeddings:   5%|▍         | 155/3360 [00:03<01:13, 43.42it/s]Candidate embeddings:   5%|▍         | 160/3360 [00:03<01:13, 43.43it/s]Candidate embeddings:   5%|▍         | 165/3360 [00:03<01:13, 43.35it/s]Candidate embeddings:   5%|▌         | 170/3360 [00:03<01:13, 43.34it/s]Candidate embeddings:   5%|▌         | 175/3360 [00:04<01:13, 43.13it/s]Candidate embeddings:   5%|▌         | 180/3360 [00:04<01:13, 43.17it/s]Candidate embeddings:   6%|▌         | 185/3360 [00:04<01:13, 43.24it/s]Candidate embeddings:   6%|▌         | 190/3360 [00:04<01:13, 43.02it/s]Candidate embeddings:   6%|▌         | 195/3360 [00:04<01:13, 43.22it/s]Candidate embeddings:   6%|▌         | 200/3360 [00:04<01:12, 43.31it/s]Candidate embeddings:   6%|▌         | 205/3360 [00:04<01:12, 43.46it/s]Candidate embeddings:   6%|▋         | 210/3360 [00:04<01:12, 43.48it/s]Candidate embeddings:   6%|▋         | 215/3360 [00:04<01:12, 43.41it/s]Candidate embeddings:   7%|▋         | 220/3360 [00:05<01:12, 43.39it/s]Candidate embeddings:   7%|▋         | 225/3360 [00:05<01:11, 43.56it/s]Candidate embeddings:   7%|▋         | 230/3360 [00:05<01:11, 43.56it/s]Candidate embeddings:   7%|▋         | 235/3360 [00:05<01:11, 43.41it/s]Candidate embeddings:   7%|▋         | 240/3360 [00:05<01:11, 43.48it/s]Candidate embeddings:   7%|▋         | 245/3360 [00:05<01:11, 43.62it/s]Candidate embeddings:   7%|▋         | 250/3360 [00:05<01:11, 43.54it/s]Candidate embeddings:   8%|▊         | 255/3360 [00:05<01:11, 43.64it/s]Candidate embeddings:   8%|▊         | 260/3360 [00:06<01:11, 43.62it/s]Candidate embeddings:   8%|▊         | 265/3360 [00:06<01:10, 43.74it/s]Candidate embeddings:   8%|▊         | 270/3360 [00:06<01:10, 43.63it/s]Candidate embeddings:   8%|▊         | 275/3360 [00:06<01:10, 43.71it/s]Candidate embeddings:   8%|▊         | 280/3360 [00:06<01:10, 43.71it/s]Candidate embeddings:   8%|▊         | 285/3360 [00:06<01:10, 43.67it/s]Candidate embeddings:   9%|▊         | 290/3360 [00:06<01:10, 43.59it/s]Candidate embeddings:   9%|▉         | 295/3360 [00:06<01:10, 43.70it/s]Candidate embeddings:   9%|▉         | 300/3360 [00:06<01:09, 43.73it/s]Candidate embeddings:   9%|▉         | 305/3360 [00:07<01:10, 43.42it/s]Candidate embeddings:   9%|▉         | 310/3360 [00:07<01:10, 43.50it/s]Candidate embeddings:   9%|▉         | 315/3360 [00:07<01:09, 43.62it/s]Candidate embeddings:  10%|▉         | 320/3360 [00:07<01:09, 43.67it/s]Candidate embeddings:  10%|▉         | 325/3360 [00:07<01:09, 43.55it/s]Candidate embeddings:  10%|▉         | 330/3360 [00:07<01:09, 43.63it/s]Candidate embeddings:  10%|▉         | 335/3360 [00:07<01:09, 43.64it/s]Candidate embeddings:  10%|█         | 340/3360 [00:07<01:09, 43.73it/s]Candidate embeddings:  10%|█         | 345/3360 [00:07<01:09, 43.54it/s]Candidate embeddings:  10%|█         | 350/3360 [00:08<01:08, 43.63it/s]Candidate embeddings:  11%|█         | 355/3360 [00:08<01:08, 43.67it/s]Candidate embeddings:  11%|█         | 360/3360 [00:08<01:08, 43.68it/s]Candidate embeddings:  11%|█         | 365/3360 [00:08<01:08, 43.51it/s]Candidate embeddings:  11%|█         | 370/3360 [00:08<01:08, 43.61it/s]Candidate embeddings:  11%|█         | 375/3360 [00:08<01:08, 43.56it/s]Candidate embeddings:  11%|█▏        | 380/3360 [00:08<01:08, 43.67it/s]Candidate embeddings:  11%|█▏        | 385/3360 [00:08<01:08, 43.55it/s]Candidate embeddings:  12%|█▏        | 390/3360 [00:08<01:08, 43.65it/s]Candidate embeddings:  12%|█▏        | 395/3360 [00:09<01:07, 43.68it/s]Candidate embeddings:  12%|█▏        | 400/3360 [00:09<01:07, 43.74it/s]Candidate embeddings:  12%|█▏        | 405/3360 [00:09<01:07, 43.66it/s]Candidate embeddings:  12%|█▏        | 410/3360 [00:09<01:07, 43.73it/s]Candidate embeddings:  12%|█▏        | 415/3360 [00:09<01:07, 43.70it/s]Candidate embeddings:  12%|█▎        | 420/3360 [00:09<01:07, 43.76it/s]Candidate embeddings:  13%|█▎        | 425/3360 [00:09<01:07, 43.53it/s]Candidate embeddings:  13%|█▎        | 430/3360 [00:09<01:07, 43.65it/s]Candidate embeddings:  13%|█▎        | 435/3360 [00:10<01:08, 42.91it/s]Candidate embeddings:  13%|█▎        | 440/3360 [00:10<01:08, 42.32it/s]Candidate embeddings:  13%|█▎        | 445/3360 [00:10<01:08, 42.45it/s]Candidate embeddings:  13%|█▎        | 450/3360 [00:10<01:07, 42.80it/s]Candidate embeddings:  14%|█▎        | 455/3360 [00:10<01:07, 42.89it/s]Candidate embeddings:  14%|█▎        | 460/3360 [00:10<01:07, 42.95it/s]Candidate embeddings:  14%|█▍        | 465/3360 [00:10<01:07, 42.85it/s]Candidate embeddings:  14%|█▍        | 470/3360 [00:10<01:07, 43.12it/s]Candidate embeddings:  14%|█▍        | 475/3360 [00:10<01:06, 43.21it/s]Candidate embeddings:  14%|█▍        | 480/3360 [00:11<01:06, 43.20it/s]Candidate embeddings:  14%|█▍        | 485/3360 [00:11<01:06, 43.30it/s]Candidate embeddings:  15%|█▍        | 490/3360 [00:11<01:06, 43.48it/s]Candidate embeddings:  15%|█▍        | 495/3360 [00:11<01:05, 43.57it/s]Candidate embeddings:  15%|█▍        | 500/3360 [00:11<01:05, 43.52it/s]Candidate embeddings:  15%|█▌        | 505/3360 [00:11<01:05, 43.59it/s]Candidate embeddings:  15%|█▌        | 510/3360 [00:11<01:06, 42.90it/s]Candidate embeddings:  15%|█▌        | 515/3360 [00:11<01:05, 43.16it/s]Candidate embeddings:  15%|█▌        | 520/3360 [00:12<01:05, 43.21it/s]Candidate embeddings:  16%|█▌        | 525/3360 [00:12<01:05, 43.42it/s]Candidate embeddings:  16%|█▌        | 530/3360 [00:12<01:05, 43.50it/s]Candidate embeddings:  16%|█▌        | 535/3360 [00:12<01:04, 43.51it/s]Candidate embeddings:  16%|█▌        | 540/3360 [00:12<01:04, 43.53it/s]Candidate embeddings:  16%|█▌        | 545/3360 [00:12<01:04, 43.67it/s]Candidate embeddings:  16%|█▋        | 550/3360 [00:12<01:04, 43.39it/s]Candidate embeddings:  17%|█▋        | 555/3360 [00:12<01:05, 42.85it/s]Candidate embeddings:  17%|█▋        | 560/3360 [00:12<01:04, 43.12it/s]Candidate embeddings:  17%|█▋        | 565/3360 [00:13<01:04, 43.26it/s]Candidate embeddings:  17%|█▋        | 570/3360 [00:13<01:04, 43.29it/s]Candidate embeddings:  17%|█▋        | 575/3360 [00:13<01:04, 43.41it/s]Candidate embeddings:  17%|█▋        | 580/3360 [00:13<01:04, 43.43it/s]Candidate embeddings:  17%|█▋        | 585/3360 [00:13<01:03, 43.52it/s]Candidate embeddings:  18%|█▊        | 590/3360 [00:13<01:03, 43.59it/s]Candidate embeddings:  18%|█▊        | 595/3360 [00:13<01:03, 43.70it/s]Candidate embeddings:  18%|█▊        | 600/3360 [00:13<01:03, 43.32it/s]Candidate embeddings:  18%|█▊        | 605/3360 [00:13<01:03, 43.31it/s]Candidate embeddings:  18%|█▊        | 610/3360 [00:14<01:03, 43.26it/s]Candidate embeddings:  18%|█▊        | 615/3360 [00:14<01:03, 43.45it/s]Candidate embeddings:  18%|█▊        | 620/3360 [00:14<01:02, 43.51it/s]Candidate embeddings:  19%|█▊        | 625/3360 [00:14<01:02, 43.64it/s]Candidate embeddings:  19%|█▉        | 630/3360 [00:14<01:02, 43.60it/s]Candidate embeddings:  19%|█▉        | 635/3360 [00:14<01:02, 43.70it/s]Candidate embeddings:  19%|█▉        | 640/3360 [00:14<01:02, 43.70it/s]Candidate embeddings:  19%|█▉        | 645/3360 [00:14<01:02, 43.76it/s]Candidate embeddings:  19%|█▉        | 650/3360 [00:14<01:02, 43.53it/s]Candidate embeddings:  19%|█▉        | 655/3360 [00:15<01:01, 43.66it/s]Candidate embeddings:  20%|█▉        | 660/3360 [00:15<01:01, 43.68it/s]Candidate embeddings:  20%|█▉        | 665/3360 [00:15<01:01, 43.75it/s]Candidate embeddings:  20%|█▉        | 670/3360 [00:15<01:01, 43.68it/s]Candidate embeddings:  20%|██        | 675/3360 [00:15<01:01, 43.76it/s]Candidate embeddings:  20%|██        | 680/3360 [00:15<01:01, 43.66it/s]Candidate embeddings:  20%|██        | 685/3360 [00:15<01:01, 43.70it/s]Candidate embeddings:  21%|██        | 690/3360 [00:15<01:02, 42.99it/s]Candidate embeddings:  21%|██        | 695/3360 [00:16<01:02, 42.88it/s]Candidate embeddings:  21%|██        | 700/3360 [00:16<01:02, 42.89it/s]Candidate embeddings:  21%|██        | 705/3360 [00:16<01:01, 43.00it/s]Candidate embeddings:  21%|██        | 710/3360 [00:16<01:01, 43.09it/s]Candidate embeddings:  21%|██▏       | 715/3360 [00:16<01:01, 43.23it/s]Candidate embeddings:  21%|██▏       | 720/3360 [00:16<01:00, 43.33it/s]Candidate embeddings:  22%|██▏       | 725/3360 [00:16<01:00, 43.24it/s]Candidate embeddings:  22%|██▏       | 730/3360 [00:16<01:00, 43.39it/s]Candidate embeddings:  22%|██▏       | 735/3360 [00:16<01:00, 43.42it/s]Candidate embeddings:  22%|██▏       | 740/3360 [00:17<01:00, 43.35it/s]Candidate embeddings:  22%|██▏       | 745/3360 [00:17<01:00, 43.30it/s]Candidate embeddings:  22%|██▏       | 750/3360 [00:17<01:00, 43.34it/s]Candidate embeddings:  22%|██▏       | 755/3360 [00:17<01:00, 43.39it/s]Candidate embeddings:  23%|██▎       | 760/3360 [00:17<00:59, 43.42it/s]Candidate embeddings:  23%|██▎       | 765/3360 [00:17<00:59, 43.34it/s]Candidate embeddings:  23%|██▎       | 770/3360 [00:17<00:59, 43.33it/s]Candidate embeddings:  23%|██▎       | 775/3360 [00:17<00:59, 43.43it/s]Candidate embeddings:  23%|██▎       | 780/3360 [00:17<00:59, 43.45it/s]Candidate embeddings:  23%|██▎       | 785/3360 [00:18<00:59, 43.41it/s]Candidate embeddings:  24%|██▎       | 790/3360 [00:18<00:59, 43.55it/s]Candidate embeddings:  24%|██▎       | 795/3360 [00:18<00:58, 43.61it/s]Candidate embeddings:  24%|██▍       | 800/3360 [00:18<00:58, 43.66it/s]Candidate embeddings:  24%|██▍       | 805/3360 [00:18<00:58, 43.58it/s]Candidate embeddings:  24%|██▍       | 810/3360 [00:18<00:58, 43.68it/s]Candidate embeddings:  24%|██▍       | 815/3360 [00:18<00:58, 43.61it/s]Candidate embeddings:  24%|██▍       | 820/3360 [00:18<00:58, 43.57it/s]Candidate embeddings:  25%|██▍       | 825/3360 [00:19<00:58, 43.49it/s]Candidate embeddings:  25%|██▍       | 830/3360 [00:19<00:57, 43.63it/s]Candidate embeddings:  25%|██▍       | 835/3360 [00:19<00:57, 43.55it/s]Candidate embeddings:  25%|██▌       | 840/3360 [00:19<00:58, 43.42it/s]Candidate embeddings:  25%|██▌       | 845/3360 [00:19<00:58, 43.32it/s]Candidate embeddings:  25%|██▌       | 850/3360 [00:19<00:57, 43.34it/s]Candidate embeddings:  25%|██▌       | 855/3360 [00:19<00:57, 43.25it/s]Candidate embeddings:  26%|██▌       | 860/3360 [00:19<00:57, 43.33it/s]Candidate embeddings:  26%|██▌       | 865/3360 [00:19<00:57, 43.27it/s]Candidate embeddings:  26%|██▌       | 870/3360 [00:20<00:58, 42.67it/s]Candidate embeddings:  26%|██▌       | 875/3360 [00:20<00:58, 42.32it/s]Candidate embeddings:  26%|██▌       | 880/3360 [00:20<00:58, 42.36it/s]Candidate embeddings:  26%|██▋       | 885/3360 [00:20<00:58, 42.61it/s]Candidate embeddings:  26%|██▋       | 890/3360 [00:20<00:57, 42.75it/s]Candidate embeddings:  27%|██▋       | 895/3360 [00:20<00:57, 42.79it/s]Candidate embeddings:  27%|██▋       | 900/3360 [00:20<00:57, 42.64it/s]Candidate embeddings:  27%|██▋       | 905/3360 [00:20<00:57, 42.97it/s]Candidate embeddings:  27%|██▋       | 910/3360 [00:21<00:56, 43.04it/s]Candidate embeddings:  27%|██▋       | 915/3360 [00:21<00:56, 42.99it/s]Candidate embeddings:  27%|██▋       | 920/3360 [00:21<00:56, 43.13it/s]Candidate embeddings:  28%|██▊       | 925/3360 [00:21<00:56, 43.34it/s]Candidate embeddings:  28%|██▊       | 930/3360 [00:21<00:55, 43.41it/s]Candidate embeddings:  28%|██▊       | 935/3360 [00:21<00:55, 43.37it/s]Candidate embeddings:  28%|██▊       | 940/3360 [00:21<00:56, 43.02it/s]Candidate embeddings:  28%|██▊       | 945/3360 [00:21<00:56, 42.96it/s]Candidate embeddings:  28%|██▊       | 950/3360 [00:21<00:55, 43.09it/s]Candidate embeddings:  28%|██▊       | 955/3360 [00:22<00:55, 43.10it/s]Candidate embeddings:  29%|██▊       | 960/3360 [00:22<00:55, 43.35it/s]Candidate embeddings:  29%|██▊       | 965/3360 [00:22<00:55, 43.53it/s]Candidate embeddings:  29%|██▉       | 970/3360 [00:22<00:54, 43.55it/s]Candidate embeddings:  29%|██▉       | 975/3360 [00:22<00:54, 43.65it/s]Candidate embeddings:  29%|██▉       | 980/3360 [00:22<00:54, 43.63it/s]Candidate embeddings:  29%|██▉       | 985/3360 [00:22<00:54, 43.25it/s]Candidate embeddings:  29%|██▉       | 990/3360 [00:22<00:55, 43.07it/s]Candidate embeddings:  30%|██▉       | 995/3360 [00:22<00:54, 43.19it/s]Candidate embeddings:  30%|██▉       | 1000/3360 [00:23<00:54, 43.15it/s]Candidate embeddings:  30%|██▉       | 1005/3360 [00:23<00:54, 43.29it/s]Candidate embeddings:  30%|███       | 1010/3360 [00:23<00:54, 43.33it/s]Candidate embeddings:  30%|███       | 1015/3360 [00:23<00:53, 43.45it/s]Candidate embeddings:  30%|███       | 1020/3360 [00:23<00:53, 43.49it/s]Candidate embeddings:  31%|███       | 1025/3360 [00:23<00:53, 43.55it/s]Candidate embeddings:  31%|███       | 1030/3360 [00:23<00:53, 43.29it/s]Candidate embeddings:  31%|███       | 1035/3360 [00:23<00:53, 43.29it/s]Candidate embeddings:  31%|███       | 1040/3360 [00:24<00:53, 43.18it/s]Candidate embeddings:  31%|███       | 1045/3360 [00:24<00:53, 43.30it/s]Candidate embeddings:  31%|███▏      | 1050/3360 [00:24<00:53, 43.44it/s]Candidate embeddings:  31%|███▏      | 1055/3360 [00:24<00:52, 43.52it/s]Candidate embeddings:  32%|███▏      | 1060/3360 [00:24<00:52, 43.55it/s]Candidate embeddings:  32%|███▏      | 1065/3360 [00:24<00:52, 43.49it/s]Candidate embeddings:  32%|███▏      | 1070/3360 [00:24<00:52, 43.58it/s]Candidate embeddings:  32%|███▏      | 1075/3360 [00:24<00:52, 43.54it/s]Candidate embeddings:  32%|███▏      | 1080/3360 [00:24<00:52, 43.58it/s]Candidate embeddings:  32%|███▏      | 1085/3360 [00:25<00:52, 43.34it/s]Candidate embeddings:  32%|███▏      | 1090/3360 [00:25<00:52, 43.47it/s]Candidate embeddings:  33%|███▎      | 1095/3360 [00:25<00:51, 43.58it/s]Candidate embeddings:  33%|███▎      | 1100/3360 [00:25<00:51, 43.71it/s]Candidate embeddings:  33%|███▎      | 1105/3360 [00:25<00:51, 43.60it/s]Candidate embeddings:  33%|███▎      | 1110/3360 [00:25<00:51, 43.62it/s]Candidate embeddings:  33%|███▎      | 1115/3360 [00:25<00:51, 43.67it/s]Candidate embeddings:  33%|███▎      | 1120/3360 [00:25<00:51, 43.77it/s]Candidate embeddings:  33%|███▎      | 1125/3360 [00:25<00:51, 43.75it/s]Candidate embeddings:  34%|███▎      | 1130/3360 [00:26<00:50, 43.78it/s]Candidate embeddings:  34%|███▍      | 1135/3360 [00:26<00:50, 43.81it/s]Candidate embeddings:  34%|███▍      | 1140/3360 [00:26<00:50, 43.87it/s]Candidate embeddings:  34%|███▍      | 1145/3360 [00:26<00:50, 43.60it/s]Candidate embeddings:  34%|███▍      | 1150/3360 [00:26<00:50, 43.66it/s]Candidate embeddings:  34%|███▍      | 1155/3360 [00:26<00:50, 43.57it/s]Candidate embeddings:  35%|███▍      | 1160/3360 [00:26<00:50, 43.60it/s]Candidate embeddings:  35%|███▍      | 1165/3360 [00:26<00:50, 43.56it/s]Candidate embeddings:  35%|███▍      | 1170/3360 [00:26<00:50, 43.54it/s]Candidate embeddings:  35%|███▍      | 1175/3360 [00:27<00:50, 43.38it/s]Candidate embeddings:  35%|███▌      | 1180/3360 [00:27<00:50, 43.37it/s]Candidate embeddings:  35%|███▌      | 1185/3360 [00:27<00:50, 43.47it/s]Candidate embeddings:  35%|███▌      | 1190/3360 [00:27<00:49, 43.55it/s]Candidate embeddings:  36%|███▌      | 1195/3360 [00:27<00:49, 43.66it/s]Candidate embeddings:  36%|███▌      | 1200/3360 [00:27<00:49, 43.49it/s]Candidate embeddings:  36%|███▌      | 1205/3360 [00:27<00:49, 43.50it/s]Candidate embeddings:  36%|███▌      | 1210/3360 [00:27<00:49, 43.53it/s]Candidate embeddings:  36%|███▌      | 1215/3360 [00:28<00:49, 43.49it/s]Candidate embeddings:  36%|███▋      | 1220/3360 [00:28<00:49, 43.38it/s]Candidate embeddings:  36%|███▋      | 1225/3360 [00:28<00:49, 43.51it/s]Candidate embeddings:  37%|███▋      | 1230/3360 [00:28<00:49, 43.43it/s]Candidate embeddings:  37%|███▋      | 1235/3360 [00:28<00:48, 43.43it/s]Candidate embeddings:  37%|███▋      | 1240/3360 [00:28<00:48, 43.39it/s]Candidate embeddings:  37%|███▋      | 1245/3360 [00:28<00:48, 43.55it/s]Candidate embeddings:  37%|███▋      | 1250/3360 [00:28<00:48, 43.33it/s]Candidate embeddings:  37%|███▋      | 1255/3360 [00:28<00:48, 43.38it/s]Candidate embeddings:  38%|███▊      | 1260/3360 [00:29<00:48, 43.30it/s]Candidate embeddings:  38%|███▊      | 1265/3360 [00:29<00:48, 43.50it/s]Candidate embeddings:  38%|███▊      | 1270/3360 [00:29<00:48, 43.50it/s]Candidate embeddings:  38%|███▊      | 1275/3360 [00:29<00:47, 43.56it/s]Candidate embeddings:  38%|███▊      | 1280/3360 [00:29<00:47, 43.67it/s]Candidate embeddings:  38%|███▊      | 1285/3360 [00:29<00:47, 43.75it/s]Candidate embeddings:  38%|███▊      | 1290/3360 [00:29<00:47, 43.74it/s]Candidate embeddings:  39%|███▊      | 1295/3360 [00:29<00:47, 43.73it/s]Candidate embeddings:  39%|███▊      | 1300/3360 [00:29<00:47, 43.40it/s]Candidate embeddings:  39%|███▉      | 1305/3360 [00:30<00:48, 42.70it/s]Candidate embeddings:  39%|███▉      | 1310/3360 [00:30<00:48, 42.47it/s]Candidate embeddings:  39%|███▉      | 1315/3360 [00:30<00:48, 42.52it/s]Candidate embeddings:  39%|███▉      | 1320/3360 [00:30<00:47, 42.75it/s]Candidate embeddings:  39%|███▉      | 1325/3360 [00:30<00:47, 42.83it/s]Candidate embeddings:  40%|███▉      | 1330/3360 [00:30<00:47, 42.77it/s]Candidate embeddings:  40%|███▉      | 1335/3360 [00:30<00:47, 42.69it/s]Candidate embeddings:  40%|███▉      | 1340/3360 [00:30<00:46, 43.01it/s]Candidate embeddings:  40%|████      | 1345/3360 [00:31<00:46, 43.11it/s]Candidate embeddings:  40%|████      | 1350/3360 [00:31<00:46, 43.22it/s]Candidate embeddings:  40%|████      | 1355/3360 [00:31<00:46, 43.33it/s]Candidate embeddings:  40%|████      | 1360/3360 [00:31<00:46, 43.43it/s]Candidate embeddings:  41%|████      | 1365/3360 [00:31<00:45, 43.53it/s]Candidate embeddings:  41%|████      | 1370/3360 [00:31<00:45, 43.48it/s]Candidate embeddings:  41%|████      | 1375/3360 [00:31<00:45, 43.18it/s]Candidate embeddings:  41%|████      | 1380/3360 [00:31<00:45, 43.30it/s]Candidate embeddings:  41%|████      | 1385/3360 [00:31<00:45, 43.18it/s]Candidate embeddings:  41%|████▏     | 1390/3360 [00:32<00:45, 43.21it/s]Candidate embeddings:  42%|████▏     | 1395/3360 [00:32<00:45, 43.27it/s]Candidate embeddings:  42%|████▏     | 1400/3360 [00:32<00:45, 43.33it/s]Candidate embeddings:  42%|████▏     | 1405/3360 [00:32<00:45, 43.36it/s]Candidate embeddings:  42%|████▏     | 1410/3360 [00:32<00:44, 43.43it/s]Candidate embeddings:  42%|████▏     | 1415/3360 [00:32<00:44, 43.59it/s]Candidate embeddings:  42%|████▏     | 1420/3360 [00:32<00:44, 43.25it/s]Candidate embeddings:  42%|████▏     | 1425/3360 [00:32<00:44, 43.23it/s]Candidate embeddings:  43%|████▎     | 1430/3360 [00:32<00:44, 43.42it/s]Candidate embeddings:  43%|████▎     | 1435/3360 [00:33<00:44, 43.32it/s]Candidate embeddings:  43%|████▎     | 1440/3360 [00:33<00:44, 43.51it/s]Candidate embeddings:  43%|████▎     | 1445/3360 [00:33<00:44, 43.42it/s]Candidate embeddings:  43%|████▎     | 1450/3360 [00:33<00:43, 43.52it/s]Candidate embeddings:  43%|████▎     | 1455/3360 [00:33<00:43, 43.48it/s]Candidate embeddings:  43%|████▎     | 1460/3360 [00:33<00:44, 43.06it/s]Candidate embeddings:  44%|████▎     | 1465/3360 [00:33<00:44, 42.87it/s]Candidate embeddings:  44%|████▍     | 1470/3360 [00:33<00:44, 42.87it/s]Candidate embeddings:  44%|████▍     | 1475/3360 [00:34<00:43, 43.18it/s]Candidate embeddings:  44%|████▍     | 1480/3360 [00:34<00:43, 43.11it/s]Candidate embeddings:  44%|████▍     | 1485/3360 [00:34<00:43, 43.06it/s]Candidate embeddings:  44%|████▍     | 1490/3360 [00:34<00:43, 43.22it/s]Candidate embeddings:  44%|████▍     | 1495/3360 [00:34<00:43, 43.14it/s]Candidate embeddings:  45%|████▍     | 1500/3360 [00:34<00:42, 43.29it/s]Candidate embeddings:  45%|████▍     | 1505/3360 [00:34<00:42, 43.38it/s]Candidate embeddings:  45%|████▍     | 1510/3360 [00:34<00:42, 43.43it/s]Candidate embeddings:  45%|████▌     | 1515/3360 [00:34<00:42, 43.55it/s]Candidate embeddings:  45%|████▌     | 1520/3360 [00:35<00:42, 43.21it/s]Candidate embeddings:  45%|████▌     | 1525/3360 [00:35<00:42, 43.24it/s]Candidate embeddings:  46%|████▌     | 1530/3360 [00:35<00:42, 43.36it/s]Candidate embeddings:  46%|████▌     | 1535/3360 [00:35<00:41, 43.48it/s]Candidate embeddings:  46%|████▌     | 1540/3360 [00:35<00:41, 43.38it/s]Candidate embeddings:  46%|████▌     | 1545/3360 [00:35<00:41, 43.54it/s]Candidate embeddings:  46%|████▌     | 1550/3360 [00:35<00:41, 43.53it/s]Candidate embeddings:  46%|████▋     | 1555/3360 [00:35<00:41, 43.65it/s]Candidate embeddings:  46%|████▋     | 1560/3360 [00:35<00:41, 43.57it/s]Candidate embeddings:  47%|████▋     | 1565/3360 [00:36<00:41, 43.43it/s]Candidate embeddings:  47%|████▋     | 1570/3360 [00:36<00:41, 43.28it/s]Candidate embeddings:  47%|████▋     | 1575/3360 [00:36<00:41, 43.41it/s]Candidate embeddings:  47%|████▋     | 1580/3360 [00:36<00:41, 43.37it/s]Candidate embeddings:  47%|████▋     | 1585/3360 [00:36<00:40, 43.46it/s]Candidate embeddings:  47%|████▋     | 1590/3360 [00:36<00:40, 43.55it/s]Candidate embeddings:  47%|████▋     | 1595/3360 [00:36<00:40, 43.67it/s]Candidate embeddings:  48%|████▊     | 1600/3360 [00:36<00:40, 43.61it/s]Candidate embeddings:  48%|████▊     | 1605/3360 [00:37<00:40, 43.75it/s]Candidate embeddings:  48%|████▊     | 1610/3360 [00:37<00:40, 43.60it/s]Candidate embeddings:  48%|████▊     | 1615/3360 [00:37<00:39, 43.68it/s]Candidate embeddings:  48%|████▊     | 1620/3360 [00:37<00:39, 43.67it/s]Candidate embeddings:  48%|████▊     | 1625/3360 [00:37<00:39, 43.79it/s]Candidate embeddings:  49%|████▊     | 1630/3360 [00:37<00:39, 43.80it/s]Candidate embeddings:  49%|████▊     | 1635/3360 [00:37<00:39, 43.77it/s]Candidate embeddings:  49%|████▉     | 1640/3360 [00:37<00:39, 43.79it/s]Candidate embeddings:  49%|████▉     | 1645/3360 [00:37<00:39, 43.87it/s]Candidate embeddings:  49%|████▉     | 1650/3360 [00:38<00:38, 43.90it/s]Candidate embeddings:  49%|████▉     | 1655/3360 [00:38<00:38, 43.80it/s]Candidate embeddings:  49%|████▉     | 1660/3360 [00:38<00:39, 43.52it/s]Candidate embeddings:  50%|████▉     | 1665/3360 [00:38<00:38, 43.63it/s]Candidate embeddings:  50%|████▉     | 1670/3360 [00:38<00:38, 43.66it/s]Candidate embeddings:  50%|████▉     | 1675/3360 [00:38<00:38, 43.66it/s]Candidate embeddings:  50%|█████     | 1680/3360 [00:38<00:38, 43.65it/s]Candidate embeddings:  50%|█████     | 1685/3360 [00:38<00:38, 43.73it/s]Candidate embeddings:  50%|█████     | 1690/3360 [00:38<00:38, 43.71it/s]Candidate embeddings:  50%|█████     | 1695/3360 [00:39<00:38, 43.56it/s]Candidate embeddings:  51%|█████     | 1700/3360 [00:39<00:38, 43.46it/s]Candidate embeddings:  51%|█████     | 1705/3360 [00:39<00:37, 43.58it/s]Candidate embeddings:  51%|█████     | 1710/3360 [00:39<00:37, 43.49it/s]Candidate embeddings:  51%|█████     | 1715/3360 [00:39<00:37, 43.46it/s]Candidate embeddings:  51%|█████     | 1720/3360 [00:39<00:37, 43.55it/s]Candidate embeddings:  51%|█████▏    | 1725/3360 [00:39<00:37, 43.58it/s]Candidate embeddings:  51%|█████▏    | 1730/3360 [00:39<00:37, 43.56it/s]Candidate embeddings:  52%|█████▏    | 1735/3360 [00:40<00:37, 43.19it/s]Candidate embeddings:  52%|█████▏    | 1740/3360 [00:40<00:38, 42.60it/s]Candidate embeddings:  52%|█████▏    | 1745/3360 [00:40<00:37, 42.55it/s]Candidate embeddings:  52%|█████▏    | 1750/3360 [00:40<00:37, 42.73it/s]Candidate embeddings:  52%|█████▏    | 1755/3360 [00:40<00:37, 42.84it/s]Candidate embeddings:  52%|█████▏    | 1760/3360 [00:40<00:37, 43.04it/s]Candidate embeddings:  53%|█████▎    | 1765/3360 [00:40<00:37, 42.87it/s]Candidate embeddings:  53%|█████▎    | 1770/3360 [00:40<00:36, 43.06it/s]Candidate embeddings:  53%|█████▎    | 1775/3360 [00:40<00:36, 43.25it/s]Candidate embeddings:  53%|█████▎    | 1780/3360 [00:41<00:36, 43.47it/s]Candidate embeddings:  53%|█████▎    | 1785/3360 [00:41<00:36, 43.29it/s]Candidate embeddings:  53%|█████▎    | 1790/3360 [00:41<00:36, 43.32it/s]Candidate embeddings:  53%|█████▎    | 1795/3360 [00:41<00:36, 43.44it/s]Candidate embeddings:  54%|█████▎    | 1800/3360 [00:41<00:35, 43.57it/s]Candidate embeddings:  54%|█████▎    | 1805/3360 [00:41<00:35, 43.60it/s]Candidate embeddings:  54%|█████▍    | 1810/3360 [00:41<00:35, 43.12it/s]Candidate embeddings:  54%|█████▍    | 1815/3360 [00:41<00:35, 43.36it/s]Candidate embeddings:  54%|█████▍    | 1820/3360 [00:41<00:35, 43.53it/s]Candidate embeddings:  54%|█████▍    | 1825/3360 [00:42<00:35, 43.35it/s]Candidate embeddings:  54%|█████▍    | 1830/3360 [00:42<00:35, 43.49it/s]Candidate embeddings:  55%|█████▍    | 1835/3360 [00:42<00:35, 43.50it/s]Candidate embeddings:  55%|█████▍    | 1840/3360 [00:42<00:34, 43.65it/s]Candidate embeddings:  55%|█████▍    | 1845/3360 [00:42<00:34, 43.60it/s]Candidate embeddings:  55%|█████▌    | 1850/3360 [00:42<00:34, 43.73it/s]Candidate embeddings:  55%|█████▌    | 1855/3360 [00:42<00:34, 43.19it/s]Candidate embeddings:  55%|█████▌    | 1860/3360 [00:42<00:34, 43.42it/s]Candidate embeddings:  56%|█████▌    | 1865/3360 [00:43<00:34, 43.44it/s]Candidate embeddings:  56%|█████▌    | 1870/3360 [00:43<00:34, 43.41it/s]Candidate embeddings:  56%|█████▌    | 1875/3360 [00:43<00:34, 43.41it/s]Candidate embeddings:  56%|█████▌    | 1880/3360 [00:43<00:34, 43.47it/s]Candidate embeddings:  56%|█████▌    | 1885/3360 [00:43<00:33, 43.48it/s]Candidate embeddings:  56%|█████▋    | 1890/3360 [00:43<00:33, 43.55it/s]Candidate embeddings:  56%|█████▋    | 1895/3360 [00:43<00:33, 43.64it/s]Candidate embeddings:  57%|█████▋    | 1900/3360 [00:43<00:33, 43.35it/s]Candidate embeddings:  57%|█████▋    | 1905/3360 [00:43<00:33, 43.19it/s]Candidate embeddings:  57%|█████▋    | 1910/3360 [00:44<00:33, 43.32it/s]Candidate embeddings:  57%|█████▋    | 1915/3360 [00:44<00:33, 43.32it/s]Candidate embeddings:  57%|█████▋    | 1920/3360 [00:44<00:33, 43.36it/s]Candidate embeddings:  57%|█████▋    | 1925/3360 [00:44<00:33, 43.42it/s]Candidate embeddings:  57%|█████▋    | 1930/3360 [00:44<00:32, 43.47it/s]Candidate embeddings:  58%|█████▊    | 1935/3360 [00:44<00:32, 43.54it/s]Candidate embeddings:  58%|█████▊    | 1940/3360 [00:44<00:32, 43.49it/s]Candidate embeddings:  58%|█████▊    | 1945/3360 [00:44<00:32, 43.61it/s]Candidate embeddings:  58%|█████▊    | 1950/3360 [00:44<00:32, 43.59it/s]Candidate embeddings:  58%|█████▊    | 1955/3360 [00:45<00:32, 43.66it/s]Candidate embeddings:  58%|█████▊    | 1960/3360 [00:45<00:32, 43.45it/s]Candidate embeddings:  58%|█████▊    | 1965/3360 [00:45<00:32, 43.58it/s]Candidate embeddings:  59%|█████▊    | 1970/3360 [00:45<00:31, 43.54it/s]Candidate embeddings:  59%|█████▉    | 1975/3360 [00:45<00:31, 43.43it/s]Candidate embeddings:  59%|█████▉    | 1980/3360 [00:45<00:31, 43.30it/s]Candidate embeddings:  59%|█████▉    | 1985/3360 [00:45<00:31, 43.48it/s]Candidate embeddings:  59%|█████▉    | 1990/3360 [00:45<00:31, 43.57it/s]Candidate embeddings:  59%|█████▉    | 1995/3360 [00:45<00:31, 43.69it/s]Candidate embeddings:  60%|█████▉    | 2000/3360 [00:46<00:31, 43.33it/s]Candidate embeddings:  60%|█████▉    | 2005/3360 [00:46<00:31, 43.46it/s]Candidate embeddings:  60%|█████▉    | 2010/3360 [00:46<00:31, 43.48it/s]Candidate embeddings:  60%|█████▉    | 2015/3360 [00:46<00:30, 43.58it/s]Candidate embeddings:  60%|██████    | 2020/3360 [00:46<00:30, 43.58it/s]Candidate embeddings:  60%|██████    | 2025/3360 [00:46<00:30, 43.70it/s]Candidate embeddings:  60%|██████    | 2030/3360 [00:46<00:30, 43.54it/s]Candidate embeddings:  61%|██████    | 2035/3360 [00:46<00:30, 43.54it/s]Candidate embeddings:  61%|██████    | 2040/3360 [00:47<00:30, 43.58it/s]Candidate embeddings:  61%|██████    | 2045/3360 [00:47<00:30, 43.29it/s]Candidate embeddings:  61%|██████    | 2050/3360 [00:47<00:30, 43.40it/s]Candidate embeddings:  61%|██████    | 2055/3360 [00:47<00:30, 43.34it/s]Candidate embeddings:  61%|██████▏   | 2060/3360 [00:47<00:29, 43.43it/s]Candidate embeddings:  61%|██████▏   | 2065/3360 [00:47<00:29, 43.47it/s]Candidate embeddings:  62%|██████▏   | 2070/3360 [00:47<00:29, 43.53it/s]Candidate embeddings:  62%|██████▏   | 2075/3360 [00:47<00:29, 43.55it/s]Candidate embeddings:  62%|██████▏   | 2080/3360 [00:47<00:29, 43.66it/s]Candidate embeddings:  62%|██████▏   | 2085/3360 [00:48<00:29, 43.66it/s]Candidate embeddings:  62%|██████▏   | 2090/3360 [00:48<00:29, 43.59it/s]Candidate embeddings:  62%|██████▏   | 2095/3360 [00:48<00:29, 43.45it/s]Candidate embeddings:  62%|██████▎   | 2100/3360 [00:48<00:28, 43.51it/s]Candidate embeddings:  63%|██████▎   | 2105/3360 [00:48<00:28, 43.56it/s]Candidate embeddings:  63%|██████▎   | 2110/3360 [00:48<00:28, 43.67it/s]Candidate embeddings:  63%|██████▎   | 2115/3360 [00:48<00:28, 43.64it/s]Candidate embeddings:  63%|██████▎   | 2120/3360 [00:48<00:28, 43.66it/s]Candidate embeddings:  63%|██████▎   | 2125/3360 [00:48<00:28, 43.73it/s]Candidate embeddings:  63%|██████▎   | 2130/3360 [00:49<00:28, 43.70it/s]Candidate embeddings:  64%|██████▎   | 2135/3360 [00:49<00:28, 43.52it/s]Candidate embeddings:  64%|██████▎   | 2140/3360 [00:49<00:27, 43.65it/s]Candidate embeddings:  64%|██████▍   | 2145/3360 [00:49<00:27, 43.67it/s]Candidate embeddings:  64%|██████▍   | 2150/3360 [00:49<00:27, 43.60it/s]Candidate embeddings:  64%|██████▍   | 2155/3360 [00:49<00:27, 43.53it/s]Candidate embeddings:  64%|██████▍   | 2160/3360 [00:49<00:27, 43.55it/s]Candidate embeddings:  64%|██████▍   | 2165/3360 [00:49<00:27, 43.55it/s]Candidate embeddings:  65%|██████▍   | 2170/3360 [00:50<00:27, 43.10it/s]Candidate embeddings:  65%|██████▍   | 2175/3360 [00:50<00:27, 42.51it/s]Candidate embeddings:  65%|██████▍   | 2180/3360 [00:50<00:27, 42.55it/s]Candidate embeddings:  65%|██████▌   | 2185/3360 [00:50<00:27, 42.71it/s]Candidate embeddings:  65%|██████▌   | 2190/3360 [00:50<00:27, 42.85it/s]Candidate embeddings:  65%|██████▌   | 2195/3360 [00:50<00:27, 42.88it/s]Candidate embeddings:  65%|██████▌   | 2200/3360 [00:50<00:27, 42.64it/s]Candidate embeddings:  66%|██████▌   | 2205/3360 [00:50<00:26, 42.95it/s]Candidate embeddings:  66%|██████▌   | 2210/3360 [00:50<00:26, 43.21it/s]Candidate embeddings:  66%|██████▌   | 2215/3360 [00:51<00:26, 43.37it/s]Candidate embeddings:  66%|██████▌   | 2220/3360 [00:51<00:26, 43.23it/s]Candidate embeddings:  66%|██████▌   | 2225/3360 [00:51<00:26, 43.34it/s]Candidate embeddings:  66%|██████▋   | 2230/3360 [00:51<00:26, 43.39it/s]Candidate embeddings:  67%|██████▋   | 2235/3360 [00:51<00:25, 43.44it/s]Candidate embeddings:  67%|██████▋   | 2240/3360 [00:51<00:25, 43.51it/s]Candidate embeddings:  67%|██████▋   | 2245/3360 [00:51<00:25, 43.04it/s]Candidate embeddings:  67%|██████▋   | 2250/3360 [00:51<00:25, 43.16it/s]Candidate embeddings:  67%|██████▋   | 2255/3360 [00:51<00:25, 43.41it/s]Candidate embeddings:  67%|██████▋   | 2260/3360 [00:52<00:25, 43.40it/s]Candidate embeddings:  67%|██████▋   | 2265/3360 [00:52<00:25, 43.23it/s]Candidate embeddings:  68%|██████▊   | 2270/3360 [00:52<00:25, 43.33it/s]Candidate embeddings:  68%|██████▊   | 2275/3360 [00:52<00:24, 43.47it/s]Candidate embeddings:  68%|██████▊   | 2280/3360 [00:52<00:24, 43.47it/s]Candidate embeddings:  68%|██████▊   | 2285/3360 [00:52<00:24, 43.60it/s]Candidate embeddings:  68%|██████▊   | 2290/3360 [00:52<00:24, 43.20it/s]Candidate embeddings:  68%|██████▊   | 2295/3360 [00:52<00:24, 43.44it/s]Candidate embeddings:  68%|██████▊   | 2300/3360 [00:53<00:24, 43.39it/s]Candidate embeddings:  69%|██████▊   | 2305/3360 [00:53<00:24, 43.41it/s]Candidate embeddings:  69%|██████▉   | 2310/3360 [00:53<00:24, 43.38it/s]Candidate embeddings:  69%|██████▉   | 2315/3360 [00:53<00:23, 43.56it/s]Candidate embeddings:  69%|██████▉   | 2320/3360 [00:53<00:23, 43.48it/s]Candidate embeddings:  69%|██████▉   | 2325/3360 [00:53<00:23, 43.62it/s]Candidate embeddings:  69%|██████▉   | 2330/3360 [00:53<00:23, 43.25it/s]Candidate embeddings:  69%|██████▉   | 2335/3360 [00:53<00:23, 43.06it/s]Candidate embeddings:  70%|██████▉   | 2340/3360 [00:53<00:23, 42.99it/s]Candidate embeddings:  70%|██████▉   | 2345/3360 [00:54<00:23, 43.18it/s]Candidate embeddings:  70%|██████▉   | 2350/3360 [00:54<00:23, 43.21it/s]Candidate embeddings:  70%|███████   | 2355/3360 [00:54<00:23, 43.35it/s]Candidate embeddings:  70%|███████   | 2360/3360 [00:54<00:23, 43.39it/s]Candidate embeddings:  70%|███████   | 2365/3360 [00:54<00:22, 43.49it/s]Candidate embeddings:  71%|███████   | 2370/3360 [00:54<00:22, 43.63it/s]Candidate embeddings:  71%|███████   | 2375/3360 [00:54<00:22, 43.57it/s]Candidate embeddings:  71%|███████   | 2380/3360 [00:54<00:22, 43.61it/s]Candidate embeddings:  71%|███████   | 2385/3360 [00:54<00:22, 43.53it/s]Candidate embeddings:  71%|███████   | 2390/3360 [00:55<00:22, 43.66it/s]Candidate embeddings:  71%|███████▏  | 2395/3360 [00:55<00:22, 43.32it/s]Candidate embeddings:  71%|███████▏  | 2400/3360 [00:55<00:22, 43.48it/s]Candidate embeddings:  72%|███████▏  | 2405/3360 [00:55<00:21, 43.53it/s]Candidate embeddings:  72%|███████▏  | 2410/3360 [00:55<00:21, 43.65it/s]Candidate embeddings:  72%|███████▏  | 2415/3360 [00:55<00:21, 43.49it/s]Candidate embeddings:  72%|███████▏  | 2420/3360 [00:55<00:21, 43.61it/s]Candidate embeddings:  72%|███████▏  | 2425/3360 [00:55<00:21, 43.55it/s]Candidate embeddings:  72%|███████▏  | 2430/3360 [00:56<00:21, 43.67it/s]Candidate embeddings:  72%|███████▏  | 2435/3360 [00:56<00:21, 43.50it/s]Candidate embeddings:  73%|███████▎  | 2440/3360 [00:56<00:21, 43.58it/s]Candidate embeddings:  73%|███████▎  | 2445/3360 [00:56<00:20, 43.64it/s]Candidate embeddings:  73%|███████▎  | 2450/3360 [00:56<00:20, 43.70it/s]Candidate embeddings:  73%|███████▎  | 2455/3360 [00:56<00:20, 43.51it/s]Candidate embeddings:  73%|███████▎  | 2460/3360 [00:56<00:20, 43.60it/s]Candidate embeddings:  73%|███████▎  | 2465/3360 [00:56<00:20, 43.71it/s]Candidate embeddings:  74%|███████▎  | 2470/3360 [00:56<00:20, 43.73it/s]Candidate embeddings:  74%|███████▎  | 2475/3360 [00:57<00:20, 43.60it/s]Candidate embeddings:  74%|███████▍  | 2480/3360 [00:57<00:20, 43.55it/s]Candidate embeddings:  74%|███████▍  | 2485/3360 [00:57<00:20, 43.60it/s]Candidate embeddings:  74%|███████▍  | 2490/3360 [00:57<00:19, 43.59it/s]Candidate embeddings:  74%|███████▍  | 2495/3360 [00:57<00:19, 43.68it/s]Candidate embeddings:  74%|███████▍  | 2500/3360 [00:57<00:19, 43.67it/s]Candidate embeddings:  75%|███████▍  | 2505/3360 [00:57<00:19, 43.68it/s]Candidate embeddings:  75%|███████▍  | 2510/3360 [00:57<00:19, 43.69it/s]Candidate embeddings:  75%|███████▍  | 2515/3360 [00:57<00:19, 43.72it/s]Candidate embeddings:  75%|███████▌  | 2520/3360 [00:58<00:19, 43.75it/s]Candidate embeddings:  75%|███████▌  | 2525/3360 [00:58<00:19, 43.54it/s]Candidate embeddings:  75%|███████▌  | 2530/3360 [00:58<00:19, 43.49it/s]Candidate embeddings:  75%|███████▌  | 2535/3360 [00:58<00:18, 43.55it/s]Candidate embeddings:  76%|███████▌  | 2540/3360 [00:58<00:18, 43.66it/s]Candidate embeddings:  76%|███████▌  | 2545/3360 [00:58<00:18, 43.66it/s]Candidate embeddings:  76%|███████▌  | 2550/3360 [00:58<00:18, 43.64it/s]Candidate embeddings:  76%|███████▌  | 2555/3360 [00:58<00:18, 43.60it/s]Candidate embeddings:  76%|███████▌  | 2560/3360 [00:58<00:18, 43.67it/s]Candidate embeddings:  76%|███████▋  | 2565/3360 [00:59<00:18, 43.57it/s]Candidate embeddings:  76%|███████▋  | 2570/3360 [00:59<00:18, 43.40it/s]Candidate embeddings:  77%|███████▋  | 2575/3360 [00:59<00:18, 43.40it/s]Candidate embeddings:  77%|███████▋  | 2580/3360 [00:59<00:17, 43.54it/s]Candidate embeddings:  77%|███████▋  | 2585/3360 [00:59<00:17, 43.41it/s]Candidate embeddings:  77%|███████▋  | 2590/3360 [00:59<00:17, 43.56it/s]Candidate embeddings:  77%|███████▋  | 2595/3360 [00:59<00:17, 43.59it/s]Candidate embeddings:  77%|███████▋  | 2600/3360 [00:59<00:17, 43.65it/s]Candidate embeddings:  78%|███████▊  | 2605/3360 [01:00<00:17, 43.04it/s]Candidate embeddings:  78%|███████▊  | 2610/3360 [01:00<00:17, 42.69it/s]Candidate embeddings:  78%|███████▊  | 2615/3360 [01:00<00:17, 42.71it/s]Candidate embeddings:  78%|███████▊  | 2620/3360 [01:00<00:17, 42.78it/s]Candidate embeddings:  78%|███████▊  | 2625/3360 [01:00<00:17, 42.87it/s]Candidate embeddings:  78%|███████▊  | 2630/3360 [01:00<00:16, 42.97it/s]Candidate embeddings:  78%|███████▊  | 2635/3360 [01:00<00:16, 42.83it/s]Candidate embeddings:  79%|███████▊  | 2640/3360 [01:00<00:16, 43.03it/s]Candidate embeddings:  79%|███████▊  | 2645/3360 [01:00<00:16, 43.16it/s]Candidate embeddings:  79%|███████▉  | 2650/3360 [01:01<00:16, 43.28it/s]Candidate embeddings:  79%|███████▉  | 2655/3360 [01:01<00:16, 43.36it/s]Candidate embeddings:  79%|███████▉  | 2660/3360 [01:01<00:16, 43.40it/s]Candidate embeddings:  79%|███████▉  | 2665/3360 [01:01<00:15, 43.48it/s]Candidate embeddings:  79%|███████▉  | 2670/3360 [01:01<00:15, 43.49it/s]Candidate embeddings:  80%|███████▉  | 2675/3360 [01:01<00:15, 43.64it/s]Candidate embeddings:  80%|███████▉  | 2680/3360 [01:01<00:15, 43.06it/s]Candidate embeddings:  80%|███████▉  | 2685/3360 [01:01<00:15, 43.22it/s]Candidate embeddings:  80%|████████  | 2690/3360 [01:02<00:15, 43.38it/s]Candidate embeddings:  80%|████████  | 2695/3360 [01:02<00:15, 43.57it/s]Candidate embeddings:  80%|████████  | 2700/3360 [01:02<00:15, 43.42it/s]Candidate embeddings:  81%|████████  | 2705/3360 [01:02<00:15, 43.46it/s]Candidate embeddings:  81%|████████  | 2710/3360 [01:02<00:14, 43.52it/s]Candidate embeddings:  81%|████████  | 2715/3360 [01:02<00:14, 43.55it/s]Candidate embeddings:  81%|████████  | 2720/3360 [01:02<00:14, 43.44it/s]Candidate embeddings:  81%|████████  | 2725/3360 [01:02<00:14, 42.95it/s]Candidate embeddings:  81%|████████▏ | 2730/3360 [01:02<00:14, 43.02it/s]Candidate embeddings:  81%|████████▏ | 2735/3360 [01:03<00:14, 43.30it/s]Candidate embeddings:  82%|████████▏ | 2740/3360 [01:03<00:14, 43.07it/s]Candidate embeddings:  82%|████████▏ | 2745/3360 [01:03<00:14, 43.20it/s]Candidate embeddings:  82%|████████▏ | 2750/3360 [01:03<00:14, 43.25it/s]Candidate embeddings:  82%|████████▏ | 2755/3360 [01:03<00:13, 43.37it/s]Candidate embeddings:  82%|████████▏ | 2760/3360 [01:03<00:13, 43.38it/s]Candidate embeddings:  82%|████████▏ | 2765/3360 [01:03<00:13, 43.51it/s]Candidate embeddings:  82%|████████▏ | 2770/3360 [01:03<00:13, 43.21it/s]Candidate embeddings:  83%|████████▎ | 2775/3360 [01:03<00:13, 43.13it/s]Candidate embeddings:  83%|████████▎ | 2780/3360 [01:04<00:13, 43.24it/s]Candidate embeddings:  83%|████████▎ | 2785/3360 [01:04<00:13, 43.22it/s]Candidate embeddings:  83%|████████▎ | 2790/3360 [01:04<00:13, 43.30it/s]Candidate embeddings:  83%|████████▎ | 2795/3360 [01:04<00:13, 43.30it/s]Candidate embeddings:  83%|████████▎ | 2800/3360 [01:04<00:12, 43.22it/s]Candidate embeddings:  83%|████████▎ | 2805/3360 [01:04<00:12, 43.42it/s]Candidate embeddings:  84%|████████▎ | 2810/3360 [01:04<00:12, 43.51it/s]Candidate embeddings:  84%|████████▍ | 2815/3360 [01:04<00:12, 43.51it/s]Candidate embeddings:  84%|████████▍ | 2820/3360 [01:05<00:12, 43.52it/s]Candidate embeddings:  84%|████████▍ | 2825/3360 [01:05<00:12, 43.62it/s]Candidate embeddings:  84%|████████▍ | 2830/3360 [01:05<00:12, 43.43it/s]Candidate embeddings:  84%|████████▍ | 2835/3360 [01:05<00:12, 43.34it/s]Candidate embeddings:  85%|████████▍ | 2840/3360 [01:05<00:11, 43.38it/s]Candidate embeddings:  85%|████████▍ | 2845/3360 [01:05<00:11, 43.48it/s]Candidate embeddings:  85%|████████▍ | 2850/3360 [01:05<00:11, 43.64it/s]Candidate embeddings:  85%|████████▍ | 2855/3360 [01:05<00:11, 43.54it/s]Candidate embeddings:  85%|████████▌ | 2860/3360 [01:05<00:11, 43.66it/s]Candidate embeddings:  85%|████████▌ | 2865/3360 [01:06<00:11, 43.71it/s]Candidate embeddings:  85%|████████▌ | 2870/3360 [01:06<00:11, 43.79it/s]Candidate embeddings:  86%|████████▌ | 2875/3360 [01:06<00:11, 43.63it/s]Candidate embeddings:  86%|████████▌ | 2880/3360 [01:06<00:10, 43.73it/s]Candidate embeddings:  86%|████████▌ | 2885/3360 [01:06<00:10, 43.68it/s]Candidate embeddings:  86%|████████▌ | 2890/3360 [01:06<00:10, 43.70it/s]Candidate embeddings:  86%|████████▌ | 2895/3360 [01:06<00:10, 43.56it/s]Candidate embeddings:  86%|████████▋ | 2900/3360 [01:06<00:10, 43.69it/s]Candidate embeddings:  86%|████████▋ | 2905/3360 [01:06<00:10, 43.65it/s]Candidate embeddings:  87%|████████▋ | 2910/3360 [01:07<00:10, 43.72it/s]Candidate embeddings:  87%|████████▋ | 2915/3360 [01:07<00:10, 43.53it/s]Candidate embeddings:  87%|████████▋ | 2920/3360 [01:07<00:10, 43.68it/s]Candidate embeddings:  87%|████████▋ | 2925/3360 [01:07<00:09, 43.56it/s]Candidate embeddings:  87%|████████▋ | 2930/3360 [01:07<00:09, 43.50it/s]Candidate embeddings:  87%|████████▋ | 2935/3360 [01:07<00:09, 43.62it/s]Candidate embeddings:  88%|████████▊ | 2940/3360 [01:07<00:09, 43.63it/s]Candidate embeddings:  88%|████████▊ | 2945/3360 [01:07<00:09, 43.74it/s]Candidate embeddings:  88%|████████▊ | 2950/3360 [01:07<00:09, 43.65it/s]Candidate embeddings:  88%|████████▊ | 2955/3360 [01:08<00:09, 43.74it/s]Candidate embeddings:  88%|████████▊ | 2960/3360 [01:08<00:09, 43.70it/s]Candidate embeddings:  88%|████████▊ | 2965/3360 [01:08<00:09, 43.73it/s]Candidate embeddings:  88%|████████▊ | 2970/3360 [01:08<00:08, 43.52it/s]Candidate embeddings:  89%|████████▊ | 2975/3360 [01:08<00:08, 43.60it/s]Candidate embeddings:  89%|████████▊ | 2980/3360 [01:08<00:08, 43.70it/s]Candidate embeddings:  89%|████████▉ | 2985/3360 [01:08<00:08, 43.73it/s]Candidate embeddings:  89%|████████▉ | 2990/3360 [01:08<00:08, 43.72it/s]Candidate embeddings:  89%|████████▉ | 2995/3360 [01:09<00:08, 43.81it/s]Candidate embeddings:  89%|████████▉ | 3000/3360 [01:09<00:08, 43.60it/s]Candidate embeddings:  89%|████████▉ | 3005/3360 [01:09<00:08, 43.69it/s]Candidate embeddings:  90%|████████▉ | 3010/3360 [01:09<00:08, 43.69it/s]Candidate embeddings:  90%|████████▉ | 3015/3360 [01:09<00:07, 43.75it/s]Candidate embeddings:  90%|████████▉ | 3020/3360 [01:09<00:07, 43.67it/s]Candidate embeddings:  90%|█████████ | 3025/3360 [01:09<00:07, 43.74it/s]Candidate embeddings:  90%|█████████ | 3030/3360 [01:09<00:07, 43.76it/s]Candidate embeddings:  90%|█████████ | 3035/3360 [01:09<00:07, 43.71it/s]Candidate embeddings:  90%|█████████ | 3040/3360 [01:10<00:07, 43.04it/s]Candidate embeddings:  91%|█████████ | 3045/3360 [01:10<00:07, 42.52it/s]Candidate embeddings:  91%|█████████ | 3050/3360 [01:10<00:07, 42.74it/s]Candidate embeddings:  91%|█████████ | 3055/3360 [01:10<00:07, 42.98it/s]Candidate embeddings:  91%|█████████ | 3060/3360 [01:10<00:06, 43.13it/s]Candidate embeddings:  91%|█████████ | 3065/3360 [01:10<00:06, 43.33it/s]Candidate embeddings:  91%|█████████▏| 3070/3360 [01:10<00:06, 43.00it/s]Candidate embeddings:  92%|█████████▏| 3075/3360 [01:10<00:06, 43.19it/s]Candidate embeddings:  92%|█████████▏| 3080/3360 [01:10<00:06, 43.41it/s]Candidate embeddings:  92%|█████████▏| 3085/3360 [01:11<00:06, 43.58it/s]Candidate embeddings:  92%|█████████▏| 3090/3360 [01:11<00:06, 43.42it/s]Candidate embeddings:  92%|█████████▏| 3095/3360 [01:11<00:06, 43.44it/s]Candidate embeddings:  92%|█████████▏| 3100/3360 [01:11<00:05, 43.57it/s]Candidate embeddings:  92%|█████████▏| 3105/3360 [01:11<00:05, 43.66it/s]Candidate embeddings:  93%|█████████▎| 3110/3360 [01:11<00:05, 43.62it/s]Candidate embeddings:  93%|█████████▎| 3115/3360 [01:11<00:05, 43.17it/s]Candidate embeddings:  93%|█████████▎| 3120/3360 [01:11<00:05, 43.40it/s]Candidate embeddings:  93%|█████████▎| 3125/3360 [01:12<00:05, 43.49it/s]Candidate embeddings:  93%|█████████▎| 3130/3360 [01:12<00:05, 43.58it/s]Candidate embeddings:  93%|█████████▎| 3135/3360 [01:12<00:05, 43.35it/s]Candidate embeddings:  93%|█████████▎| 3140/3360 [01:12<00:05, 43.46it/s]Candidate embeddings:  94%|█████████▎| 3145/3360 [01:12<00:04, 43.54it/s]Candidate embeddings:  94%|█████████▍| 3150/3360 [01:12<00:04, 43.54it/s]Candidate embeddings:  94%|█████████▍| 3155/3360 [01:12<00:04, 43.52it/s]Candidate embeddings:  94%|█████████▍| 3160/3360 [01:12<00:04, 43.22it/s]Candidate embeddings:  94%|█████████▍| 3165/3360 [01:12<00:04, 43.36it/s]Candidate embeddings:  94%|█████████▍| 3170/3360 [01:13<00:04, 43.43it/s]Candidate embeddings:  94%|█████████▍| 3175/3360 [01:13<00:04, 43.58it/s]Candidate embeddings:  95%|█████████▍| 3180/3360 [01:13<00:04, 43.54it/s]Candidate embeddings:  95%|█████████▍| 3185/3360 [01:13<00:04, 43.64it/s]Candidate embeddings:  95%|█████████▍| 3190/3360 [01:13<00:03, 43.64it/s]Candidate embeddings:  95%|█████████▌| 3195/3360 [01:13<00:03, 43.68it/s]Candidate embeddings:  95%|█████████▌| 3200/3360 [01:13<00:03, 43.55it/s]Candidate embeddings:  95%|█████████▌| 3205/3360 [01:13<00:03, 43.07it/s]Candidate embeddings:  96%|█████████▌| 3210/3360 [01:13<00:03, 43.00it/s]Candidate embeddings:  96%|█████████▌| 3215/3360 [01:14<00:03, 43.10it/s]Candidate embeddings:  96%|█████████▌| 3220/3360 [01:14<00:03, 43.32it/s]Candidate embeddings:  96%|█████████▌| 3225/3360 [01:14<00:03, 43.37it/s]Candidate embeddings:  96%|█████████▌| 3230/3360 [01:14<00:02, 43.55it/s]Candidate embeddings:  96%|█████████▋| 3235/3360 [01:14<00:02, 43.62it/s]Candidate embeddings:  96%|█████████▋| 3240/3360 [01:14<00:02, 43.73it/s]Candidate embeddings:  97%|█████████▋| 3245/3360 [01:14<00:02, 43.71it/s]Candidate embeddings:  97%|█████████▋| 3250/3360 [01:14<00:02, 43.79it/s]Candidate embeddings:  97%|█████████▋| 3255/3360 [01:14<00:02, 43.68it/s]Candidate embeddings:  97%|█████████▋| 3260/3360 [01:15<00:02, 43.72it/s]Candidate embeddings:  97%|█████████▋| 3265/3360 [01:15<00:02, 43.59it/s]Candidate embeddings:  97%|█████████▋| 3270/3360 [01:15<00:02, 43.47it/s]Candidate embeddings:  97%|█████████▋| 3275/3360 [01:15<00:01, 43.56it/s]Candidate embeddings:  98%|█████████▊| 3280/3360 [01:15<00:01, 43.59it/s]Candidate embeddings:  98%|█████████▊| 3285/3360 [01:15<00:01, 43.60it/s]Candidate embeddings:  98%|█████████▊| 3290/3360 [01:15<00:01, 43.68it/s]Candidate embeddings:  98%|█████████▊| 3295/3360 [01:15<00:01, 43.76it/s]Candidate embeddings:  98%|█████████▊| 3300/3360 [01:16<00:01, 43.70it/s]Candidate embeddings:  98%|█████████▊| 3305/3360 [01:16<00:01, 43.75it/s]Candidate embeddings:  99%|█████████▊| 3310/3360 [01:16<00:01, 43.50it/s]Candidate embeddings:  99%|█████████▊| 3315/3360 [01:16<00:01, 43.59it/s]Candidate embeddings:  99%|█████████▉| 3320/3360 [01:16<00:00, 43.62it/s]Candidate embeddings:  99%|█████████▉| 3325/3360 [01:16<00:00, 43.48it/s]Candidate embeddings:  99%|█████████▉| 3330/3360 [01:16<00:00, 43.57it/s]Candidate embeddings:  99%|█████████▉| 3335/3360 [01:16<00:00, 43.70it/s]Candidate embeddings:  99%|█████████▉| 3340/3360 [01:16<00:00, 43.70it/s]Candidate embeddings: 100%|█████████▉| 3345/3360 [01:17<00:00, 43.70it/s]Candidate embeddings: 100%|█████████▉| 3350/3360 [01:17<00:00, 43.65it/s]Candidate embeddings: 100%|█████████▉| 3355/3360 [01:17<00:00, 43.59it/s]Candidate embeddings: 100%|██████████| 3360/3360 [01:17<00:00, 43.55it/s]Candidate embeddings: 100%|██████████| 3360/3360 [01:17<00:00, 43.41it/s]
+[2025-03-06 19:29:02] INFO - Selected 672 samples out of 3360 (20.0%) using distribution alignment.
+[2025-03-06 19:29:02] INFO - Selected subset size: 672
+[2025-03-06 19:29:02] INFO - Starting fine-tuning with BitFit...
+[2025-03-06 19:29:02] INFO - Applying BitFit: freezing all parameters except biases.
+[2025-03-06 19:29:02] INFO - BitFit: Trainable parameters: 74497
+Training Epoch 1:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 1:   2%|▏         | 1/42 [00:00<00:10,  3.78it/s]Training Epoch 1:   7%|▋         | 3/42 [00:00<00:05,  7.36it/s]Training Epoch 1:  12%|█▏        | 5/42 [00:00<00:04,  8.95it/s]Training Epoch 1:  17%|█▋        | 7/42 [00:00<00:03,  9.76it/s]Training Epoch 1:  21%|██▏       | 9/42 [00:00<00:03, 10.24it/s]Training Epoch 1:  26%|██▌       | 11/42 [00:01<00:02, 10.55it/s]Training Epoch 1:  31%|███       | 13/42 [00:01<00:02, 10.74it/s]Training Epoch 1:  36%|███▌      | 15/42 [00:01<00:02, 10.88it/s]Training Epoch 1:  40%|████      | 17/42 [00:01<00:02, 10.97it/s]Training Epoch 1:  45%|████▌     | 19/42 [00:01<00:02, 11.03it/s]Training Epoch 1:  50%|█████     | 21/42 [00:02<00:01, 11.07it/s]Training Epoch 1:  55%|█████▍    | 23/42 [00:02<00:01, 11.10it/s]Training Epoch 1:  60%|█████▉    | 25/42 [00:02<00:01, 11.13it/s]Training Epoch 1:  64%|██████▍   | 27/42 [00:02<00:01, 11.13it/s]Training Epoch 1:  69%|██████▉   | 29/42 [00:02<00:01, 11.14it/s]Training Epoch 1:  74%|███████▍  | 31/42 [00:02<00:00, 11.14it/s]Training Epoch 1:  79%|███████▊  | 33/42 [00:03<00:00, 11.14it/s]Training Epoch 1:  83%|████████▎ | 35/42 [00:03<00:00, 11.15it/s]Training Epoch 1:  88%|████████▊ | 37/42 [00:03<00:00, 11.16it/s]Training Epoch 1:  93%|█████████▎| 39/42 [00:03<00:00, 11.11it/s]Training Epoch 1:  98%|█████████▊| 41/42 [00:03<00:00, 11.13it/s]Training Epoch 1: 100%|██████████| 42/42 [00:03<00:00, 10.55it/s]
+[2025-03-06 19:29:06] INFO - Epoch 1: Training Loss = 1.4477
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:29:09] INFO - Epoch 1: Validation Loss = 1.3594
+Training Epoch 2:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 2:   2%|▏         | 1/42 [00:00<00:06,  6.18it/s]Training Epoch 2:   7%|▋         | 3/42 [00:00<00:04,  9.24it/s]Training Epoch 2:  12%|█▏        | 5/42 [00:00<00:03, 10.15it/s]Training Epoch 2:  17%|█▋        | 7/42 [00:00<00:03, 10.54it/s]Training Epoch 2:  21%|██▏       | 9/42 [00:00<00:03, 10.78it/s]Training Epoch 2:  26%|██▌       | 11/42 [00:01<00:02, 10.92it/s]Training Epoch 2:  31%|███       | 13/42 [00:01<00:02, 11.00it/s]Training Epoch 2:  36%|███▌      | 15/42 [00:01<00:02, 11.03it/s]Training Epoch 2:  40%|████      | 17/42 [00:01<00:02, 11.07it/s]Training Epoch 2:  45%|████▌     | 19/42 [00:01<00:02, 11.11it/s]Training Epoch 2:  50%|█████     | 21/42 [00:01<00:01, 11.12it/s]Training Epoch 2:  55%|█████▍    | 23/42 [00:02<00:01, 11.14it/s]Training Epoch 2:  60%|█████▉    | 25/42 [00:02<00:01, 11.15it/s]Training Epoch 2:  64%|██████▍   | 27/42 [00:02<00:01, 11.16it/s]Training Epoch 2:  69%|██████▉   | 29/42 [00:02<00:01, 11.16it/s]Training Epoch 2:  74%|███████▍  | 31/42 [00:02<00:00, 11.17it/s]Training Epoch 2:  79%|███████▊  | 33/42 [00:03<00:00, 11.18it/s]Training Epoch 2:  83%|████████▎ | 35/42 [00:03<00:00, 11.18it/s]Training Epoch 2:  88%|████████▊ | 37/42 [00:03<00:00, 11.18it/s]Training Epoch 2:  93%|█████████▎| 39/42 [00:03<00:00, 11.18it/s]Training Epoch 2:  98%|█████████▊| 41/42 [00:03<00:00, 11.16it/s]Training Epoch 2: 100%|██████████| 42/42 [00:03<00:00, 10.83it/s]
+[2025-03-06 19:29:12] INFO - Epoch 2: Training Loss = 1.1274
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:29:15] INFO - Epoch 2: Validation Loss = 1.2780
+Training Epoch 3:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 3:   2%|▏         | 1/42 [00:00<00:06,  5.93it/s]Training Epoch 3:   7%|▋         | 3/42 [00:00<00:04,  9.11it/s]Training Epoch 3:  12%|█▏        | 5/42 [00:00<00:03, 10.07it/s]Training Epoch 3:  17%|█▋        | 7/42 [00:00<00:03, 10.50it/s]Training Epoch 3:  21%|██▏       | 9/42 [00:00<00:03, 10.74it/s]Training Epoch 3:  26%|██▌       | 11/42 [00:01<00:02, 10.89it/s]Training Epoch 3:  31%|███       | 13/42 [00:01<00:02, 10.98it/s]Training Epoch 3:  36%|███▌      | 15/42 [00:01<00:02, 11.04it/s]Training Epoch 3:  40%|████      | 17/42 [00:01<00:02, 11.09it/s]Training Epoch 3:  45%|████▌     | 19/42 [00:01<00:02, 11.10it/s]Training Epoch 3:  50%|█████     | 21/42 [00:01<00:01, 11.11it/s]Training Epoch 3:  55%|█████▍    | 23/42 [00:02<00:01, 11.11it/s]Training Epoch 3:  60%|█████▉    | 25/42 [00:02<00:01, 11.13it/s]Training Epoch 3:  64%|██████▍   | 27/42 [00:02<00:01, 11.15it/s]Training Epoch 3:  69%|██████▉   | 29/42 [00:02<00:01, 11.16it/s]Training Epoch 3:  74%|███████▍  | 31/42 [00:02<00:00, 11.17it/s]Training Epoch 3:  79%|███████▊  | 33/42 [00:03<00:00, 11.18it/s]Training Epoch 3:  83%|████████▎ | 35/42 [00:03<00:00, 11.19it/s]Training Epoch 3:  88%|████████▊ | 37/42 [00:03<00:00, 11.18it/s]Training Epoch 3:  93%|█████████▎| 39/42 [00:03<00:00, 11.18it/s]Training Epoch 3:  98%|█████████▊| 41/42 [00:03<00:00, 11.19it/s]Training Epoch 3: 100%|██████████| 42/42 [00:03<00:00, 10.83it/s]
+[2025-03-06 19:29:19] INFO - Epoch 3: Training Loss = 1.0619
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:29:21] INFO - Epoch 3: Validation Loss = 1.4444
+Training Epoch 4:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 4:   2%|▏         | 1/42 [00:00<00:06,  6.16it/s]Training Epoch 4:   7%|▋         | 3/42 [00:00<00:04,  9.23it/s]Training Epoch 4:  12%|█▏        | 5/42 [00:00<00:03, 10.09it/s]Training Epoch 4:  17%|█▋        | 7/42 [00:00<00:03, 10.46it/s]Training Epoch 4:  21%|██▏       | 9/42 [00:00<00:03, 10.71it/s]Training Epoch 4:  26%|██▌       | 11/42 [00:01<00:02, 10.88it/s]Training Epoch 4:  31%|███       | 13/42 [00:01<00:02, 10.96it/s]Training Epoch 4:  36%|███▌      | 15/42 [00:01<00:02, 11.02it/s]Training Epoch 4:  40%|████      | 17/42 [00:01<00:02, 11.06it/s]Training Epoch 4:  45%|████▌     | 19/42 [00:01<00:02, 11.09it/s]Training Epoch 4:  50%|█████     | 21/42 [00:01<00:01, 11.09it/s]Training Epoch 4:  55%|█████▍    | 23/42 [00:02<00:01, 11.11it/s]Training Epoch 4:  60%|█████▉    | 25/42 [00:02<00:01, 11.13it/s]Training Epoch 4:  64%|██████▍   | 27/42 [00:02<00:01, 11.14it/s]Training Epoch 4:  69%|██████▉   | 29/42 [00:02<00:01, 11.14it/s]Training Epoch 4:  74%|███████▍  | 31/42 [00:02<00:00, 11.15it/s]Training Epoch 4:  79%|███████▊  | 33/42 [00:03<00:00, 11.15it/s]Training Epoch 4:  83%|████████▎ | 35/42 [00:03<00:00, 11.15it/s]Training Epoch 4:  88%|████████▊ | 37/42 [00:03<00:00, 11.14it/s]Training Epoch 4:  93%|█████████▎| 39/42 [00:03<00:00, 11.15it/s]Training Epoch 4:  98%|█████████▊| 41/42 [00:03<00:00, 11.16it/s]Training Epoch 4: 100%|██████████| 42/42 [00:03<00:00, 10.79it/s]
+[2025-03-06 19:29:25] INFO - Epoch 4: Training Loss = 1.0670
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:29:27] INFO - Epoch 4: Validation Loss = 1.2012
+Training Epoch 5:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 5:   2%|▏         | 1/42 [00:00<00:06,  5.89it/s]Training Epoch 5:   7%|▋         | 3/42 [00:00<00:04,  9.05it/s]Training Epoch 5:  12%|█▏        | 5/42 [00:00<00:03, 10.07it/s]Training Epoch 5:  17%|█▋        | 7/42 [00:00<00:03, 10.52it/s]Training Epoch 5:  21%|██▏       | 9/42 [00:00<00:03, 10.76it/s]Training Epoch 5:  26%|██▌       | 11/42 [00:01<00:02, 10.90it/s]Training Epoch 5:  31%|███       | 13/42 [00:01<00:02, 10.99it/s]Training Epoch 5:  36%|███▌      | 15/42 [00:01<00:02, 11.04it/s]Training Epoch 5:  40%|████      | 17/42 [00:01<00:02, 11.08it/s]Training Epoch 5:  45%|████▌     | 19/42 [00:01<00:02, 11.11it/s]Training Epoch 5:  50%|█████     | 21/42 [00:01<00:01, 11.14it/s]Training Epoch 5:  55%|█████▍    | 23/42 [00:02<00:01, 11.14it/s]Training Epoch 5:  60%|█████▉    | 25/42 [00:02<00:01, 11.15it/s]Training Epoch 5:  64%|██████▍   | 27/42 [00:02<00:01, 11.17it/s]Training Epoch 5:  69%|██████▉   | 29/42 [00:02<00:01, 11.18it/s]Training Epoch 5:  74%|███████▍  | 31/42 [00:02<00:00, 11.18it/s]Training Epoch 5:  79%|███████▊  | 33/42 [00:03<00:00, 11.18it/s]Training Epoch 5:  83%|████████▎ | 35/42 [00:03<00:00, 11.18it/s]Training Epoch 5:  88%|████████▊ | 37/42 [00:03<00:00, 11.18it/s]Training Epoch 5:  93%|█████████▎| 39/42 [00:03<00:00, 11.19it/s]Training Epoch 5:  98%|█████████▊| 41/42 [00:03<00:00, 11.19it/s]Training Epoch 5: 100%|██████████| 42/42 [00:03<00:00, 10.81it/s]
+[2025-03-06 19:29:31] INFO - Epoch 5: Training Loss = 0.8848
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:29:33] INFO - Epoch 5: Validation Loss = 1.4855
+[2025-03-06 19:29:33] INFO - Starting fine-tuning with LoRA...
+[2025-03-06 19:29:33] INFO - Applying LoRA: injecting low-rank adapters into selected layers.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.0.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.0.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.0.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.0.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.0.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.1.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.1.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.1.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.1.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.1.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.2.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.2.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.2.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.2.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.2.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.3.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.3.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.3.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.3.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.3.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.4.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.4.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.4.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.4.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.4.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.5.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.5.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.5.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.5.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.5.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.6.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.6.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.6.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.6.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.6.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.7.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.7.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.7.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.7.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.7.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.8.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.8.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.8.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.8.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.8.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.9.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.9.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.9.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.9.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.9.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.10.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.10.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.10.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.10.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.10.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.11.attention.self.query with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.11.attention.self.key with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.11.attention.self.value with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.11.attention.output.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - Replaced encoder.layer.11.intermediate.dense with LoRALinear.
+[2025-03-06 19:29:33] INFO - LoRA: Trainable parameters: 9677569
+Training Epoch 1:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 1:   2%|▏         | 1/42 [00:00<00:08,  5.12it/s]Training Epoch 1:   5%|▍         | 2/42 [00:00<00:05,  6.78it/s]Training Epoch 1:   7%|▋         | 3/42 [00:00<00:05,  7.59it/s]Training Epoch 1:  10%|▉         | 4/42 [00:00<00:04,  8.04it/s]Training Epoch 1:  12%|█▏        | 5/42 [00:00<00:04,  8.31it/s]Training Epoch 1:  14%|█▍        | 6/42 [00:00<00:04,  8.48it/s]Training Epoch 1:  17%|█▋        | 7/42 [00:00<00:04,  8.60it/s]Training Epoch 1:  19%|█▉        | 8/42 [00:00<00:03,  8.67it/s]Training Epoch 1:  21%|██▏       | 9/42 [00:01<00:03,  8.71it/s]Training Epoch 1:  24%|██▍       | 10/42 [00:01<00:03,  8.74it/s]Training Epoch 1:  26%|██▌       | 11/42 [00:01<00:03,  8.77it/s]Training Epoch 1:  29%|██▊       | 12/42 [00:01<00:03,  8.78it/s]Training Epoch 1:  31%|███       | 13/42 [00:01<00:03,  8.79it/s]Training Epoch 1:  33%|███▎      | 14/42 [00:01<00:03,  8.80it/s]Training Epoch 1:  36%|███▌      | 15/42 [00:01<00:03,  8.81it/s]Training Epoch 1:  38%|███▊      | 16/42 [00:01<00:02,  8.80it/s]Training Epoch 1:  40%|████      | 17/42 [00:02<00:02,  8.81it/s]Training Epoch 1:  43%|████▎     | 18/42 [00:02<00:02,  8.80it/s]Training Epoch 1:  45%|████▌     | 19/42 [00:02<00:02,  8.80it/s]Training Epoch 1:  48%|████▊     | 20/42 [00:02<00:02,  8.80it/s]Training Epoch 1:  50%|█████     | 21/42 [00:02<00:02,  8.80it/s]Training Epoch 1:  52%|█████▏    | 22/42 [00:02<00:02,  8.81it/s]Training Epoch 1:  55%|█████▍    | 23/42 [00:02<00:02,  8.82it/s]Training Epoch 1:  57%|█████▋    | 24/42 [00:02<00:02,  8.82it/s]Training Epoch 1:  60%|█████▉    | 25/42 [00:02<00:01,  8.82it/s]Training Epoch 1:  62%|██████▏   | 26/42 [00:03<00:01,  8.81it/s]Training Epoch 1:  64%|██████▍   | 27/42 [00:03<00:01,  8.81it/s]Training Epoch 1:  67%|██████▋   | 28/42 [00:03<00:01,  8.82it/s]Training Epoch 1:  69%|██████▉   | 29/42 [00:03<00:01,  8.82it/s]Training Epoch 1:  71%|███████▏  | 30/42 [00:03<00:01,  8.82it/s]Training Epoch 1:  74%|███████▍  | 31/42 [00:03<00:01,  8.82it/s]Training Epoch 1:  76%|███████▌  | 32/42 [00:03<00:01,  8.82it/s]Training Epoch 1:  79%|███████▊  | 33/42 [00:03<00:01,  8.82it/s]Training Epoch 1:  81%|████████  | 34/42 [00:03<00:00,  8.82it/s]Training Epoch 1:  83%|████████▎ | 35/42 [00:04<00:00,  8.82it/s]Training Epoch 1:  86%|████████▌ | 36/42 [00:04<00:00,  8.81it/s]Training Epoch 1:  88%|████████▊ | 37/42 [00:04<00:00,  8.81it/s]Training Epoch 1:  90%|█████████ | 38/42 [00:04<00:00,  8.80it/s]Training Epoch 1:  93%|█████████▎| 39/42 [00:04<00:00,  8.81it/s]Training Epoch 1:  95%|█████████▌| 40/42 [00:04<00:00,  8.81it/s]Training Epoch 1:  98%|█████████▊| 41/42 [00:04<00:00,  8.82it/s]Training Epoch 1: 100%|██████████| 42/42 [00:04<00:00,  8.82it/s]Training Epoch 1: 100%|██████████| 42/42 [00:04<00:00,  8.58it/s]
+[2025-03-06 19:29:38] INFO - Epoch 1: Training Loss = 3.4848
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:29:40] INFO - Epoch 1: Validation Loss = 1.9027
+Training Epoch 2:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 2:   2%|▏         | 1/42 [00:00<00:07,  5.47it/s]Training Epoch 2:   5%|▍         | 2/42 [00:00<00:05,  6.98it/s]Training Epoch 2:   7%|▋         | 3/42 [00:00<00:05,  7.75it/s]Training Epoch 2:  10%|▉         | 4/42 [00:00<00:04,  8.14it/s]Training Epoch 2:  12%|█▏        | 5/42 [00:00<00:04,  8.41it/s]Training Epoch 2:  14%|█▍        | 6/42 [00:00<00:04,  8.54it/s]Training Epoch 2:  17%|█▋        | 7/42 [00:00<00:04,  8.64it/s]Training Epoch 2:  19%|█▉        | 8/42 [00:00<00:03,  8.69it/s]Training Epoch 2:  21%|██▏       | 9/42 [00:01<00:03,  8.73it/s]Training Epoch 2:  24%|██▍       | 10/42 [00:01<00:03,  8.76it/s]Training Epoch 2:  26%|██▌       | 11/42 [00:01<00:03,  8.78it/s]Training Epoch 2:  29%|██▊       | 12/42 [00:01<00:03,  8.79it/s]Training Epoch 2:  31%|███       | 13/42 [00:01<00:03,  8.80it/s]Training Epoch 2:  33%|███▎      | 14/42 [00:01<00:03,  8.81it/s]Training Epoch 2:  36%|███▌      | 15/42 [00:01<00:03,  8.81it/s]Training Epoch 2:  38%|███▊      | 16/42 [00:01<00:02,  8.81it/s]Training Epoch 2:  40%|████      | 17/42 [00:01<00:02,  8.81it/s]Training Epoch 2:  43%|████▎     | 18/42 [00:02<00:02,  8.81it/s]Training Epoch 2:  45%|████▌     | 19/42 [00:02<00:02,  8.81it/s]Training Epoch 2:  48%|████▊     | 20/42 [00:02<00:02,  8.82it/s]Training Epoch 2:  50%|█████     | 21/42 [00:02<00:02,  8.82it/s]Training Epoch 2:  52%|█████▏    | 22/42 [00:02<00:02,  8.81it/s]Training Epoch 2:  55%|█████▍    | 23/42 [00:02<00:02,  8.82it/s]Training Epoch 2:  57%|█████▋    | 24/42 [00:02<00:02,  8.82it/s]Training Epoch 2:  60%|█████▉    | 25/42 [00:02<00:01,  8.81it/s]Training Epoch 2:  62%|██████▏   | 26/42 [00:03<00:01,  8.81it/s]Training Epoch 2:  64%|██████▍   | 27/42 [00:03<00:01,  8.82it/s]Training Epoch 2:  67%|██████▋   | 28/42 [00:03<00:01,  8.82it/s]Training Epoch 2:  69%|██████▉   | 29/42 [00:03<00:01,  8.83it/s]Training Epoch 2:  71%|███████▏  | 30/42 [00:03<00:01,  8.82it/s]Training Epoch 2:  74%|███████▍  | 31/42 [00:03<00:01,  8.82it/s]Training Epoch 2:  76%|███████▌  | 32/42 [00:03<00:01,  8.82it/s]Training Epoch 2:  79%|███████▊  | 33/42 [00:03<00:01,  8.82it/s]Training Epoch 2:  81%|████████  | 34/42 [00:03<00:00,  8.82it/s]Training Epoch 2:  83%|████████▎ | 35/42 [00:04<00:00,  8.82it/s]Training Epoch 2:  86%|████████▌ | 36/42 [00:04<00:00,  8.82it/s]Training Epoch 2:  88%|████████▊ | 37/42 [00:04<00:00,  8.82it/s]Training Epoch 2:  90%|█████████ | 38/42 [00:04<00:00,  8.82it/s]Training Epoch 2:  93%|█████████▎| 39/42 [00:04<00:00,  8.82it/s]Training Epoch 2:  95%|█████████▌| 40/42 [00:04<00:00,  8.82it/s]Training Epoch 2:  98%|█████████▊| 41/42 [00:04<00:00,  8.83it/s]Training Epoch 2: 100%|██████████| 42/42 [00:04<00:00,  8.83it/s]Training Epoch 2: 100%|██████████| 42/42 [00:04<00:00,  8.61it/s]
+[2025-03-06 19:29:45] INFO - Epoch 2: Training Loss = 1.2856
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:29:47] INFO - Epoch 2: Validation Loss = 1.4721
+Training Epoch 3:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 3:   2%|▏         | 1/42 [00:00<00:07,  5.47it/s]Training Epoch 3:   5%|▍         | 2/42 [00:00<00:05,  6.96it/s]Training Epoch 3:   7%|▋         | 3/42 [00:00<00:05,  7.74it/s]Training Epoch 3:  10%|▉         | 4/42 [00:00<00:04,  8.14it/s]Training Epoch 3:  12%|█▏        | 5/42 [00:00<00:04,  8.39it/s]Training Epoch 3:  14%|█▍        | 6/42 [00:00<00:04,  8.54it/s]Training Epoch 3:  17%|█▋        | 7/42 [00:00<00:04,  8.64it/s]Training Epoch 3:  19%|█▉        | 8/42 [00:00<00:03,  8.69it/s]Training Epoch 3:  21%|██▏       | 9/42 [00:01<00:03,  8.73it/s]Training Epoch 3:  24%|██▍       | 10/42 [00:01<00:03,  8.76it/s]Training Epoch 3:  26%|██▌       | 11/42 [00:01<00:03,  8.77it/s]Training Epoch 3:  29%|██▊       | 12/42 [00:01<00:03,  8.78it/s]Training Epoch 3:  31%|███       | 13/42 [00:01<00:03,  8.80it/s]Training Epoch 3:  33%|███▎      | 14/42 [00:01<00:03,  8.80it/s]Training Epoch 3:  36%|███▌      | 15/42 [00:01<00:03,  8.81it/s]Training Epoch 3:  38%|███▊      | 16/42 [00:01<00:02,  8.80it/s]Training Epoch 3:  40%|████      | 17/42 [00:01<00:02,  8.81it/s]Training Epoch 3:  43%|████▎     | 18/42 [00:02<00:02,  8.81it/s]Training Epoch 3:  45%|████▌     | 19/42 [00:02<00:02,  8.82it/s]Training Epoch 3:  48%|████▊     | 20/42 [00:02<00:02,  8.82it/s]Training Epoch 3:  50%|█████     | 21/42 [00:02<00:02,  8.83it/s]Training Epoch 3:  52%|█████▏    | 22/42 [00:02<00:02,  8.81it/s]Training Epoch 3:  55%|█████▍    | 23/42 [00:02<00:02,  8.82it/s]Training Epoch 3:  57%|█████▋    | 24/42 [00:02<00:02,  8.82it/s]Training Epoch 3:  60%|█████▉    | 25/42 [00:02<00:01,  8.82it/s]Training Epoch 3:  62%|██████▏   | 26/42 [00:03<00:01,  8.83it/s]Training Epoch 3:  64%|██████▍   | 27/42 [00:03<00:01,  8.84it/s]Training Epoch 3:  67%|██████▋   | 28/42 [00:03<00:01,  8.84it/s]Training Epoch 3:  69%|██████▉   | 29/42 [00:03<00:01,  8.84it/s]Training Epoch 3:  71%|███████▏  | 30/42 [00:03<00:01,  8.83it/s]Training Epoch 3:  74%|███████▍  | 31/42 [00:03<00:01,  8.84it/s]Training Epoch 3:  76%|███████▌  | 32/42 [00:03<00:01,  8.84it/s]Training Epoch 3:  79%|███████▊  | 33/42 [00:03<00:01,  8.82it/s]Training Epoch 3:  81%|████████  | 34/42 [00:03<00:00,  8.82it/s]Training Epoch 3:  83%|████████▎ | 35/42 [00:04<00:00,  8.84it/s]Training Epoch 3:  86%|████████▌ | 36/42 [00:04<00:00,  8.84it/s]Training Epoch 3:  88%|████████▊ | 37/42 [00:04<00:00,  8.80it/s]Training Epoch 3:  90%|█████████ | 38/42 [00:04<00:00,  8.80it/s]Training Epoch 3:  93%|█████████▎| 39/42 [00:04<00:00,  8.81it/s]Training Epoch 3:  95%|█████████▌| 40/42 [00:04<00:00,  8.81it/s]Training Epoch 3:  98%|█████████▊| 41/42 [00:04<00:00,  8.82it/s]Training Epoch 3: 100%|██████████| 42/42 [00:04<00:00,  8.82it/s]Training Epoch 3: 100%|██████████| 42/42 [00:04<00:00,  8.61it/s]
+[2025-03-06 19:29:52] INFO - Epoch 3: Training Loss = 1.1718
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:29:55] INFO - Epoch 3: Validation Loss = 1.4242
+Training Epoch 4:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 4:   2%|▏         | 1/42 [00:00<00:08,  5.07it/s]Training Epoch 4:   5%|▍         | 2/42 [00:00<00:05,  6.77it/s]Training Epoch 4:   7%|▋         | 3/42 [00:00<00:05,  7.54it/s]Training Epoch 4:  10%|▉         | 4/42 [00:00<00:04,  8.01it/s]Training Epoch 4:  12%|█▏        | 5/42 [00:00<00:04,  8.28it/s]Training Epoch 4:  14%|█▍        | 6/42 [00:00<00:04,  8.43it/s]Training Epoch 4:  17%|█▋        | 7/42 [00:00<00:04,  8.55it/s]Training Epoch 4:  19%|█▉        | 8/42 [00:00<00:03,  8.60it/s]Training Epoch 4:  21%|██▏       | 9/42 [00:01<00:03,  8.67it/s]Training Epoch 4:  24%|██▍       | 10/42 [00:01<00:03,  8.71it/s]Training Epoch 4:  26%|██▌       | 11/42 [00:01<00:03,  8.74it/s]Training Epoch 4:  29%|██▊       | 12/42 [00:01<00:03,  8.73it/s]Training Epoch 4:  31%|███       | 13/42 [00:01<00:03,  8.76it/s]Training Epoch 4:  33%|███▎      | 14/42 [00:01<00:03,  8.77it/s]Training Epoch 4:  36%|███▌      | 15/42 [00:01<00:03,  8.78it/s]Training Epoch 4:  38%|███▊      | 16/42 [00:01<00:02,  8.78it/s]Training Epoch 4:  40%|████      | 17/42 [00:02<00:02,  8.79it/s]Training Epoch 4:  43%|████▎     | 18/42 [00:02<00:02,  8.79it/s]Training Epoch 4:  45%|████▌     | 19/42 [00:02<00:02,  8.80it/s]Training Epoch 4:  48%|████▊     | 20/42 [00:02<00:02,  8.80it/s]Training Epoch 4:  50%|█████     | 21/42 [00:02<00:02,  8.81it/s]Training Epoch 4:  52%|█████▏    | 22/42 [00:02<00:02,  8.80it/s]Training Epoch 4:  55%|█████▍    | 23/42 [00:02<00:02,  8.80it/s]Training Epoch 4:  57%|█████▋    | 24/42 [00:02<00:02,  8.78it/s]Training Epoch 4:  60%|█████▉    | 25/42 [00:02<00:01,  8.79it/s]Training Epoch 4:  62%|██████▏   | 26/42 [00:03<00:01,  8.79it/s]Training Epoch 4:  64%|██████▍   | 27/42 [00:03<00:01,  8.80it/s]Training Epoch 4:  67%|██████▋   | 28/42 [00:03<00:01,  8.80it/s]Training Epoch 4:  69%|██████▉   | 29/42 [00:03<00:01,  8.80it/s]Training Epoch 4:  71%|███████▏  | 30/42 [00:03<00:01,  8.81it/s]Training Epoch 4:  74%|███████▍  | 31/42 [00:03<00:01,  8.81it/s]Training Epoch 4:  76%|███████▌  | 32/42 [00:03<00:01,  8.82it/s]Training Epoch 4:  79%|███████▊  | 33/42 [00:03<00:01,  8.82it/s]Training Epoch 4:  81%|████████  | 34/42 [00:03<00:00,  8.80it/s]Training Epoch 4:  83%|████████▎ | 35/42 [00:04<00:00,  8.80it/s]Training Epoch 4:  86%|████████▌ | 36/42 [00:04<00:00,  8.78it/s]Training Epoch 4:  88%|████████▊ | 37/42 [00:04<00:00,  8.79it/s]Training Epoch 4:  90%|█████████ | 38/42 [00:04<00:00,  8.79it/s]Training Epoch 4:  93%|█████████▎| 39/42 [00:04<00:00,  8.81it/s]Training Epoch 4:  95%|█████████▌| 40/42 [00:04<00:00,  8.82it/s]Training Epoch 4:  98%|█████████▊| 41/42 [00:04<00:00,  8.82it/s]Training Epoch 4: 100%|██████████| 42/42 [00:04<00:00,  8.83it/s]Training Epoch 4: 100%|██████████| 42/42 [00:04<00:00,  8.57it/s]
+[2025-03-06 19:30:00] INFO - Epoch 4: Training Loss = 1.1218
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:30:02] INFO - Epoch 4: Validation Loss = 1.3661
+Training Epoch 5:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 5:   2%|▏         | 1/42 [00:00<00:08,  5.02it/s]Training Epoch 5:   5%|▍         | 2/42 [00:00<00:05,  6.72it/s]Training Epoch 5:   7%|▋         | 3/42 [00:00<00:05,  7.55it/s]Training Epoch 5:  10%|▉         | 4/42 [00:00<00:04,  7.97it/s]Training Epoch 5:  12%|█▏        | 5/42 [00:00<00:04,  8.29it/s]Training Epoch 5:  14%|█▍        | 6/42 [00:00<00:04,  8.46it/s]Training Epoch 5:  17%|█▋        | 7/42 [00:00<00:04,  8.57it/s]Training Epoch 5:  19%|█▉        | 8/42 [00:00<00:03,  8.65it/s]Training Epoch 5:  21%|██▏       | 9/42 [00:01<00:03,  8.70it/s]Training Epoch 5:  24%|██▍       | 10/42 [00:01<00:03,  8.73it/s]Training Epoch 5:  26%|██▌       | 11/42 [00:01<00:03,  8.76it/s]Training Epoch 5:  29%|██▊       | 12/42 [00:01<00:03,  8.78it/s]Training Epoch 5:  31%|███       | 13/42 [00:01<00:03,  8.79it/s]Training Epoch 5:  33%|███▎      | 14/42 [00:01<00:03,  8.79it/s]Training Epoch 5:  36%|███▌      | 15/42 [00:01<00:03,  8.79it/s]Training Epoch 5:  38%|███▊      | 16/42 [00:01<00:02,  8.79it/s]Training Epoch 5:  40%|████      | 17/42 [00:02<00:02,  8.80it/s]Training Epoch 5:  43%|████▎     | 18/42 [00:02<00:02,  8.81it/s]Training Epoch 5:  45%|████▌     | 19/42 [00:02<00:02,  8.81it/s]Training Epoch 5:  48%|████▊     | 20/42 [00:02<00:02,  8.81it/s]Training Epoch 5:  50%|█████     | 21/42 [00:02<00:02,  8.81it/s]Training Epoch 5:  52%|█████▏    | 22/42 [00:02<00:02,  8.81it/s]Training Epoch 5:  55%|█████▍    | 23/42 [00:02<00:02,  8.82it/s]Training Epoch 5:  57%|█████▋    | 24/42 [00:02<00:02,  8.82it/s]Training Epoch 5:  60%|█████▉    | 25/42 [00:02<00:01,  8.81it/s]Training Epoch 5:  62%|██████▏   | 26/42 [00:03<00:01,  8.81it/s]Training Epoch 5:  64%|██████▍   | 27/42 [00:03<00:01,  8.81it/s]Training Epoch 5:  67%|██████▋   | 28/42 [00:03<00:01,  8.81it/s]Training Epoch 5:  69%|██████▉   | 29/42 [00:03<00:01,  8.81it/s]Training Epoch 5:  71%|███████▏  | 30/42 [00:03<00:01,  8.80it/s]Training Epoch 5:  74%|███████▍  | 31/42 [00:03<00:01,  8.80it/s]Training Epoch 5:  76%|███████▌  | 32/42 [00:03<00:01,  8.81it/s]Training Epoch 5:  79%|███████▊  | 33/42 [00:03<00:01,  8.81it/s]Training Epoch 5:  81%|████████  | 34/42 [00:03<00:00,  8.81it/s]Training Epoch 5:  83%|████████▎ | 35/42 [00:04<00:00,  8.81it/s]Training Epoch 5:  86%|████████▌ | 36/42 [00:04<00:00,  8.76it/s]Training Epoch 5:  88%|████████▊ | 37/42 [00:04<00:00,  8.75it/s]Training Epoch 5:  90%|█████████ | 38/42 [00:04<00:00,  8.75it/s]Training Epoch 5:  93%|█████████▎| 39/42 [00:04<00:00,  8.76it/s]Training Epoch 5:  95%|█████████▌| 40/42 [00:04<00:00,  8.78it/s]Training Epoch 5:  98%|█████████▊| 41/42 [00:04<00:00,  8.79it/s]Training Epoch 5: 100%|██████████| 42/42 [00:04<00:00,  8.81it/s]Training Epoch 5: 100%|██████████| 42/42 [00:04<00:00,  8.56it/s]
+[2025-03-06 19:30:07] INFO - Epoch 5: Training Loss = 1.0611
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:30:09] INFO - Epoch 5: Validation Loss = 1.2891
+[2025-03-06 19:30:09] INFO - Starting fine-tuning with iA3...
+[2025-03-06 19:30:10] INFO - Applying iA3: injecting learned scaling vectors into selected layers.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.0.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.0.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.0.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.0.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.0.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.1.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.1.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.1.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.1.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.1.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.2.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.2.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.2.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.2.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.2.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.3.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.3.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.3.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.3.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.3.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.4.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.4.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.4.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.4.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.4.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.5.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.5.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.5.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.5.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.5.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.6.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.6.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.6.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.6.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.6.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.7.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.7.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.7.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.7.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.7.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.8.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.8.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.8.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.8.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.8.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.9.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.9.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.9.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.9.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.9.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.10.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.10.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.10.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.10.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.10.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.11.attention.self.query with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.11.attention.self.key with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.11.attention.self.value with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.11.attention.output.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - Wrapped encoder.layer.11.intermediate.dense with IA3 scaling.
+[2025-03-06 19:30:10] INFO - iA3: Trainable parameters: 44421889
+Training Epoch 1:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 1:   2%|▏         | 1/42 [00:00<00:08,  4.84it/s]Training Epoch 1:   5%|▍         | 2/42 [00:00<00:06,  6.14it/s]Training Epoch 1:   7%|▋         | 3/42 [00:00<00:05,  6.77it/s]Training Epoch 1:  10%|▉         | 4/42 [00:00<00:05,  7.06it/s]Training Epoch 1:  12%|█▏        | 5/42 [00:00<00:05,  7.26it/s]Training Epoch 1:  14%|█▍        | 6/42 [00:00<00:04,  7.37it/s]Training Epoch 1:  17%|█▋        | 7/42 [00:00<00:04,  7.45it/s]Training Epoch 1:  19%|█▉        | 8/42 [00:01<00:04,  7.51it/s]Training Epoch 1:  21%|██▏       | 9/42 [00:01<00:04,  7.54it/s]Training Epoch 1:  24%|██▍       | 10/42 [00:01<00:04,  7.55it/s]Training Epoch 1:  26%|██▌       | 11/42 [00:01<00:04,  7.58it/s]Training Epoch 1:  29%|██▊       | 12/42 [00:01<00:03,  7.59it/s]Training Epoch 1:  31%|███       | 13/42 [00:01<00:03,  7.61it/s]Training Epoch 1:  33%|███▎      | 14/42 [00:01<00:03,  7.61it/s]Training Epoch 1:  36%|███▌      | 15/42 [00:02<00:03,  7.61it/s]Training Epoch 1:  38%|███▊      | 16/42 [00:02<00:03,  7.62it/s]Training Epoch 1:  40%|████      | 17/42 [00:02<00:03,  7.62it/s]Training Epoch 1:  43%|████▎     | 18/42 [00:02<00:03,  7.62it/s]Training Epoch 1:  45%|████▌     | 19/42 [00:02<00:03,  7.62it/s]Training Epoch 1:  48%|████▊     | 20/42 [00:02<00:02,  7.62it/s]Training Epoch 1:  50%|█████     | 21/42 [00:02<00:02,  7.62it/s]Training Epoch 1:  52%|█████▏    | 22/42 [00:02<00:02,  7.62it/s]Training Epoch 1:  55%|█████▍    | 23/42 [00:03<00:02,  7.62it/s]Training Epoch 1:  57%|█████▋    | 24/42 [00:03<00:02,  7.63it/s]Training Epoch 1:  60%|█████▉    | 25/42 [00:03<00:02,  7.63it/s]Training Epoch 1:  62%|██████▏   | 26/42 [00:03<00:02,  7.63it/s]Training Epoch 1:  64%|██████▍   | 27/42 [00:03<00:01,  7.63it/s]Training Epoch 1:  67%|██████▋   | 28/42 [00:03<00:01,  7.62it/s]Training Epoch 1:  69%|██████▉   | 29/42 [00:03<00:01,  7.63it/s]Training Epoch 1:  71%|███████▏  | 30/42 [00:04<00:01,  7.63it/s]Training Epoch 1:  74%|███████▍  | 31/42 [00:04<00:01,  7.63it/s]Training Epoch 1:  76%|███████▌  | 32/42 [00:04<00:01,  7.63it/s]Training Epoch 1:  79%|███████▊  | 33/42 [00:04<00:01,  7.61it/s]Training Epoch 1:  81%|████████  | 34/42 [00:04<00:01,  7.62it/s]Training Epoch 1:  83%|████████▎ | 35/42 [00:04<00:00,  7.62it/s]Training Epoch 1:  86%|████████▌ | 36/42 [00:04<00:00,  7.60it/s]Training Epoch 1:  88%|████████▊ | 37/42 [00:04<00:00,  7.59it/s]Training Epoch 1:  90%|█████████ | 38/42 [00:05<00:00,  7.60it/s]Training Epoch 1:  93%|█████████▎| 39/42 [00:05<00:00,  7.61it/s]Training Epoch 1:  95%|█████████▌| 40/42 [00:05<00:00,  7.62it/s]Training Epoch 1:  98%|█████████▊| 41/42 [00:05<00:00,  7.63it/s]Training Epoch 1: 100%|██████████| 42/42 [00:05<00:00,  7.63it/s]Training Epoch 1: 100%|██████████| 42/42 [00:05<00:00,  7.45it/s]
+[2025-03-06 19:30:15] INFO - Epoch 1: Training Loss = 1.3076
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:30:17] INFO - Epoch 1: Validation Loss = 1.0756
+Training Epoch 2:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 2:   2%|▏         | 1/42 [00:00<00:08,  4.69it/s]Training Epoch 2:   5%|▍         | 2/42 [00:00<00:06,  6.05it/s]Training Epoch 2:   7%|▋         | 3/42 [00:00<00:05,  6.68it/s]Training Epoch 2:  10%|▉         | 4/42 [00:00<00:05,  7.00it/s]Training Epoch 2:  12%|█▏        | 5/42 [00:00<00:05,  7.23it/s]Training Epoch 2:  14%|█▍        | 6/42 [00:00<00:04,  7.36it/s]Training Epoch 2:  17%|█▋        | 7/42 [00:01<00:04,  7.44it/s]Training Epoch 2:  19%|█▉        | 8/42 [00:01<00:04,  7.49it/s]Training Epoch 2:  21%|██▏       | 9/42 [00:01<00:04,  7.53it/s]Training Epoch 2:  24%|██▍       | 10/42 [00:01<00:04,  7.56it/s]Training Epoch 2:  26%|██▌       | 11/42 [00:01<00:04,  7.58it/s]Training Epoch 2:  29%|██▊       | 12/42 [00:01<00:03,  7.60it/s]Training Epoch 2:  31%|███       | 13/42 [00:01<00:03,  7.61it/s]Training Epoch 2:  33%|███▎      | 14/42 [00:01<00:03,  7.60it/s]Training Epoch 2:  36%|███▌      | 15/42 [00:02<00:03,  7.61it/s]Training Epoch 2:  38%|███▊      | 16/42 [00:02<00:03,  7.62it/s]Training Epoch 2:  40%|████      | 17/42 [00:02<00:03,  7.62it/s]Training Epoch 2:  43%|████▎     | 18/42 [00:02<00:03,  7.62it/s]Training Epoch 2:  45%|████▌     | 19/42 [00:02<00:03,  7.62it/s]Training Epoch 2:  48%|████▊     | 20/42 [00:02<00:02,  7.62it/s]Training Epoch 2:  50%|█████     | 21/42 [00:02<00:02,  7.62it/s]Training Epoch 2:  52%|█████▏    | 22/42 [00:02<00:02,  7.62it/s]Training Epoch 2:  55%|█████▍    | 23/42 [00:03<00:02,  7.62it/s]Training Epoch 2:  57%|█████▋    | 24/42 [00:03<00:02,  7.63it/s]Training Epoch 2:  60%|█████▉    | 25/42 [00:03<00:02,  7.63it/s]Training Epoch 2:  62%|██████▏   | 26/42 [00:03<00:02,  7.63it/s]Training Epoch 2:  64%|██████▍   | 27/42 [00:03<00:01,  7.63it/s]Training Epoch 2:  67%|██████▋   | 28/42 [00:03<00:01,  7.63it/s]Training Epoch 2:  69%|██████▉   | 29/42 [00:03<00:01,  7.63it/s]Training Epoch 2:  71%|███████▏  | 30/42 [00:04<00:01,  7.63it/s]Training Epoch 2:  74%|███████▍  | 31/42 [00:04<00:01,  7.62it/s]Training Epoch 2:  76%|███████▌  | 32/42 [00:04<00:01,  7.61it/s]Training Epoch 2:  79%|███████▊  | 33/42 [00:04<00:01,  7.62it/s]Training Epoch 2:  81%|████████  | 34/42 [00:04<00:01,  7.62it/s]Training Epoch 2:  83%|████████▎ | 35/42 [00:04<00:00,  7.62it/s]Training Epoch 2:  86%|████████▌ | 36/42 [00:04<00:00,  7.61it/s]Training Epoch 2:  88%|████████▊ | 37/42 [00:04<00:00,  7.62it/s]Training Epoch 2:  90%|█████████ | 38/42 [00:05<00:00,  7.62it/s]Training Epoch 2:  93%|█████████▎| 39/42 [00:05<00:00,  7.62it/s]Training Epoch 2:  95%|█████████▌| 40/42 [00:05<00:00,  7.62it/s]Training Epoch 2:  98%|█████████▊| 41/42 [00:05<00:00,  7.62it/s]Training Epoch 2: 100%|██████████| 42/42 [00:05<00:00,  7.63it/s]Training Epoch 2: 100%|██████████| 42/42 [00:05<00:00,  7.44it/s]
+[2025-03-06 19:30:23] INFO - Epoch 2: Training Loss = 0.6971
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:30:25] INFO - Epoch 2: Validation Loss = 0.9405
+Training Epoch 3:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 3:   2%|▏         | 1/42 [00:00<00:08,  4.84it/s]Training Epoch 3:   5%|▍         | 2/42 [00:00<00:06,  6.08it/s]Training Epoch 3:   7%|▋         | 3/42 [00:00<00:05,  6.72it/s]Training Epoch 3:  10%|▉         | 4/42 [00:00<00:05,  7.05it/s]Training Epoch 3:  12%|█▏        | 5/42 [00:00<00:05,  7.28it/s]Training Epoch 3:  14%|█▍        | 6/42 [00:00<00:04,  7.40it/s]Training Epoch 3:  17%|█▋        | 7/42 [00:00<00:04,  7.47it/s]Training Epoch 3:  19%|█▉        | 8/42 [00:01<00:04,  7.52it/s]Training Epoch 3:  21%|██▏       | 9/42 [00:01<00:04,  7.55it/s]Training Epoch 3:  24%|██▍       | 10/42 [00:01<00:04,  7.57it/s]Training Epoch 3:  26%|██▌       | 11/42 [00:01<00:04,  7.59it/s]Training Epoch 3:  29%|██▊       | 12/42 [00:01<00:03,  7.60it/s]Training Epoch 3:  31%|███       | 13/42 [00:01<00:03,  7.61it/s]Training Epoch 3:  33%|███▎      | 14/42 [00:01<00:03,  7.62it/s]Training Epoch 3:  36%|███▌      | 15/42 [00:02<00:03,  7.62it/s]Training Epoch 3:  38%|███▊      | 16/42 [00:02<00:03,  7.63it/s]Training Epoch 3:  40%|████      | 17/42 [00:02<00:03,  7.63it/s]Training Epoch 3:  43%|████▎     | 18/42 [00:02<00:03,  7.63it/s]Training Epoch 3:  45%|████▌     | 19/42 [00:02<00:03,  7.63it/s]Training Epoch 3:  48%|████▊     | 20/42 [00:02<00:02,  7.63it/s]Training Epoch 3:  50%|█████     | 21/42 [00:02<00:02,  7.63it/s]Training Epoch 3:  52%|█████▏    | 22/42 [00:02<00:02,  7.63it/s]Training Epoch 3:  55%|█████▍    | 23/42 [00:03<00:02,  7.63it/s]Training Epoch 3:  57%|█████▋    | 24/42 [00:03<00:02,  7.63it/s]Training Epoch 3:  60%|█████▉    | 25/42 [00:03<00:02,  7.63it/s]Training Epoch 3:  62%|██████▏   | 26/42 [00:03<00:02,  7.62it/s]Training Epoch 3:  64%|██████▍   | 27/42 [00:03<00:01,  7.62it/s]Training Epoch 3:  67%|██████▋   | 28/42 [00:03<00:01,  7.61it/s]Training Epoch 3:  69%|██████▉   | 29/42 [00:03<00:01,  7.62it/s]Training Epoch 3:  71%|███████▏  | 30/42 [00:04<00:01,  7.62it/s]Training Epoch 3:  74%|███████▍  | 31/42 [00:04<00:01,  7.62it/s]Training Epoch 3:  76%|███████▌  | 32/42 [00:04<00:01,  7.62it/s]Training Epoch 3:  79%|███████▊  | 33/42 [00:04<00:01,  7.62it/s]Training Epoch 3:  81%|████████  | 34/42 [00:04<00:01,  7.62it/s]Training Epoch 3:  83%|████████▎ | 35/42 [00:04<00:00,  7.62it/s]Training Epoch 3:  86%|████████▌ | 36/42 [00:04<00:00,  7.62it/s]Training Epoch 3:  88%|████████▊ | 37/42 [00:04<00:00,  7.62it/s]Training Epoch 3:  90%|█████████ | 38/42 [00:05<00:00,  7.63it/s]Training Epoch 3:  93%|█████████▎| 39/42 [00:05<00:00,  7.63it/s]Training Epoch 3:  95%|█████████▌| 40/42 [00:05<00:00,  7.63it/s]Training Epoch 3:  98%|█████████▊| 41/42 [00:05<00:00,  7.64it/s]Training Epoch 3: 100%|██████████| 42/42 [00:05<00:00,  7.64it/s]Training Epoch 3: 100%|██████████| 42/42 [00:05<00:00,  7.46it/s]
+[2025-03-06 19:30:31] INFO - Epoch 3: Training Loss = 0.4124
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:30:33] INFO - Epoch 3: Validation Loss = 0.8599
+Training Epoch 4:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 4:   2%|▏         | 1/42 [00:00<00:08,  4.98it/s]Training Epoch 4:   5%|▍         | 2/42 [00:00<00:06,  6.20it/s]Training Epoch 4:   7%|▋         | 3/42 [00:00<00:05,  6.81it/s]Training Epoch 4:  10%|▉         | 4/42 [00:00<00:05,  7.11it/s]Training Epoch 4:  12%|█▏        | 5/42 [00:00<00:05,  7.32it/s]Training Epoch 4:  14%|█▍        | 6/42 [00:00<00:04,  7.42it/s]Training Epoch 4:  17%|█▋        | 7/42 [00:00<00:04,  7.49it/s]Training Epoch 4:  19%|█▉        | 8/42 [00:01<00:04,  7.53it/s]Training Epoch 4:  21%|██▏       | 9/42 [00:01<00:04,  7.56it/s]Training Epoch 4:  24%|██▍       | 10/42 [00:01<00:04,  7.59it/s]Training Epoch 4:  26%|██▌       | 11/42 [00:01<00:04,  7.60it/s]Training Epoch 4:  29%|██▊       | 12/42 [00:01<00:03,  7.61it/s]Training Epoch 4:  31%|███       | 13/42 [00:01<00:03,  7.62it/s]Training Epoch 4:  33%|███▎      | 14/42 [00:01<00:03,  7.62it/s]Training Epoch 4:  36%|███▌      | 15/42 [00:02<00:03,  7.62it/s]Training Epoch 4:  38%|███▊      | 16/42 [00:02<00:03,  7.60it/s]Training Epoch 4:  40%|████      | 17/42 [00:02<00:03,  7.61it/s]Training Epoch 4:  43%|████▎     | 18/42 [00:02<00:03,  7.61it/s]Training Epoch 4:  45%|████▌     | 19/42 [00:02<00:03,  7.61it/s]Training Epoch 4:  48%|████▊     | 20/42 [00:02<00:02,  7.62it/s]Training Epoch 4:  50%|█████     | 21/42 [00:02<00:02,  7.62it/s]Training Epoch 4:  52%|█████▏    | 22/42 [00:02<00:02,  7.62it/s]Training Epoch 4:  55%|█████▍    | 23/42 [00:03<00:02,  7.62it/s]Training Epoch 4:  57%|█████▋    | 24/42 [00:03<00:02,  7.63it/s]Training Epoch 4:  60%|█████▉    | 25/42 [00:03<00:02,  7.63it/s]Training Epoch 4:  62%|██████▏   | 26/42 [00:03<00:02,  7.63it/s]Training Epoch 4:  64%|██████▍   | 27/42 [00:03<00:01,  7.62it/s]Training Epoch 4:  67%|██████▋   | 28/42 [00:03<00:01,  7.63it/s]Training Epoch 4:  69%|██████▉   | 29/42 [00:03<00:01,  7.63it/s]Training Epoch 4:  71%|███████▏  | 30/42 [00:04<00:01,  7.63it/s]Training Epoch 4:  74%|███████▍  | 31/42 [00:04<00:01,  7.63it/s]Training Epoch 4:  76%|███████▌  | 32/42 [00:04<00:01,  7.63it/s]Training Epoch 4:  79%|███████▊  | 33/42 [00:04<00:01,  7.63it/s]Training Epoch 4:  81%|████████  | 34/42 [00:04<00:01,  7.63it/s]Training Epoch 4:  83%|████████▎ | 35/42 [00:04<00:00,  7.62it/s]Training Epoch 4:  86%|████████▌ | 36/42 [00:04<00:00,  7.62it/s]Training Epoch 4:  88%|████████▊ | 37/42 [00:04<00:00,  7.62it/s]Training Epoch 4:  90%|█████████ | 38/42 [00:05<00:00,  7.63it/s]Training Epoch 4:  93%|█████████▎| 39/42 [00:05<00:00,  7.63it/s]Training Epoch 4:  95%|█████████▌| 40/42 [00:05<00:00,  7.63it/s]Training Epoch 4:  98%|█████████▊| 41/42 [00:05<00:00,  7.63it/s]Training Epoch 4: 100%|██████████| 42/42 [00:05<00:00,  7.64it/s]Training Epoch 4: 100%|██████████| 42/42 [00:05<00:00,  7.47it/s]
+[2025-03-06 19:30:39] INFO - Epoch 4: Training Loss = 0.3035
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:30:41] INFO - Epoch 4: Validation Loss = 0.8927
+Training Epoch 5:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 5:   2%|▏         | 1/42 [00:00<00:08,  4.98it/s]Training Epoch 5:   5%|▍         | 2/42 [00:00<00:06,  6.20it/s]Training Epoch 5:   7%|▋         | 3/42 [00:00<00:05,  6.80it/s]Training Epoch 5:  10%|▉         | 4/42 [00:00<00:05,  7.11it/s]Training Epoch 5:  12%|█▏        | 5/42 [00:00<00:05,  7.32it/s]Training Epoch 5:  14%|█▍        | 6/42 [00:00<00:04,  7.43it/s]Training Epoch 5:  17%|█▋        | 7/42 [00:00<00:04,  7.50it/s]Training Epoch 5:  19%|█▉        | 8/42 [00:01<00:04,  7.54it/s]Training Epoch 5:  21%|██▏       | 9/42 [00:01<00:04,  7.57it/s]Training Epoch 5:  24%|██▍       | 10/42 [00:01<00:04,  7.58it/s]Training Epoch 5:  26%|██▌       | 11/42 [00:01<00:04,  7.60it/s]Training Epoch 5:  29%|██▊       | 12/42 [00:01<00:03,  7.61it/s]Training Epoch 5:  31%|███       | 13/42 [00:01<00:03,  7.61it/s]Training Epoch 5:  33%|███▎      | 14/42 [00:01<00:03,  7.60it/s]Training Epoch 5:  36%|███▌      | 15/42 [00:02<00:03,  7.61it/s]Training Epoch 5:  38%|███▊      | 16/42 [00:02<00:03,  7.61it/s]Training Epoch 5:  40%|████      | 17/42 [00:02<00:03,  7.62it/s]Training Epoch 5:  43%|████▎     | 18/42 [00:02<00:03,  7.62it/s]Training Epoch 5:  45%|████▌     | 19/42 [00:02<00:03,  7.62it/s]Training Epoch 5:  48%|████▊     | 20/42 [00:02<00:02,  7.62it/s]Training Epoch 5:  50%|█████     | 21/42 [00:02<00:02,  7.61it/s]Training Epoch 5:  52%|█████▏    | 22/42 [00:02<00:02,  7.62it/s]Training Epoch 5:  55%|█████▍    | 23/42 [00:03<00:02,  7.62it/s]Training Epoch 5:  57%|█████▋    | 24/42 [00:03<00:02,  7.62it/s]Training Epoch 5:  60%|█████▉    | 25/42 [00:03<00:02,  7.62it/s]Training Epoch 5:  62%|██████▏   | 26/42 [00:03<00:02,  7.60it/s]Training Epoch 5:  64%|██████▍   | 27/42 [00:03<00:01,  7.61it/s]Training Epoch 5:  67%|██████▋   | 28/42 [00:03<00:01,  7.62it/s]Training Epoch 5:  69%|██████▉   | 29/42 [00:03<00:01,  7.62it/s]Training Epoch 5:  71%|███████▏  | 30/42 [00:04<00:01,  7.62it/s]Training Epoch 5:  74%|███████▍  | 31/42 [00:04<00:01,  7.62it/s]Training Epoch 5:  76%|███████▌  | 32/42 [00:04<00:01,  7.62it/s]Training Epoch 5:  79%|███████▊  | 33/42 [00:04<00:01,  7.62it/s]Training Epoch 5:  81%|████████  | 34/42 [00:04<00:01,  7.62it/s]Training Epoch 5:  83%|████████▎ | 35/42 [00:04<00:00,  7.61it/s]Training Epoch 5:  86%|████████▌ | 36/42 [00:04<00:00,  7.61it/s]Training Epoch 5:  88%|████████▊ | 37/42 [00:04<00:00,  7.61it/s]Training Epoch 5:  90%|█████████ | 38/42 [00:05<00:00,  7.57it/s]Training Epoch 5:  93%|█████████▎| 39/42 [00:05<00:00,  7.58it/s]Training Epoch 5:  95%|█████████▌| 40/42 [00:05<00:00,  7.60it/s]Training Epoch 5:  98%|█████████▊| 41/42 [00:05<00:00,  7.61it/s]Training Epoch 5: 100%|██████████| 42/42 [00:05<00:00,  7.61it/s]Training Epoch 5: 100%|██████████| 42/42 [00:05<00:00,  7.46it/s]
+[2025-03-06 19:30:47] INFO - Epoch 5: Training Loss = 0.2354
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:30:49] INFO - Epoch 5: Validation Loss = 0.9146
+[2025-03-06 19:30:49] INFO - === Experiment Results ===
+[2025-03-06 19:30:49] INFO - BitFit: MSE=1.4830, MAE=0.9452, R2=-0.0205, TrainTime=30.40s, TrainableParams=74497
+[2025-03-06 19:30:49] INFO - LoRA: MSE=1.2905, MAE=0.9228, R2=0.1120, TrainTime=36.57s, TrainableParams=9677569
+[2025-03-06 19:30:49] INFO - iA3: MSE=0.9274, MAE=0.7411, R2=0.3618, TrainTime=39.49s, TrainableParams=44421889
+[2025-03-06 19:30:49] INFO - Saved experiment results to logs/task3_results.csv
+Task 3 completed at Thu Mar  6 19:30:50 UTC 2025

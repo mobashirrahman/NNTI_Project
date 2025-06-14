@@ -1,0 +1,918 @@
+WandB environment variables set:
+  WANDB_API_KEY: dce2ca13c46a133ee8830759315cc6e8cbad8a05
+  WANDB_ENTITY: mobashirrahman-saarland-university
+  WANDB_PROJECT: Task3
+  WANDB_SWEEP: 
+=== Starting Task 3: Data Selection & Fine-Tuning Exploration ===
+Hostname: neuronet_team159-25064.0-uller.hpc.uni-saarland.de
+Date: Thu Mar  6 19:55:56 UTC 2025
+Process ID: 7
+Allocated GPUs (nvidia-smi):
+Thu Mar  6 19:55:56 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.127.08             Driver Version: 550.127.08     CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla P100-PCIE-16GB           Off |   00000000:06:00.0 Off |                    0 |
+| N/A   30C    P0             25W /  250W |       3MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Memory info (free -h):
+               total        used        free      shared  buff/cache   available
+Mem:           503Gi       8.9Gi       188Gi        34Mi       306Gi       491Gi
+Swap:          8.0Gi          0B       8.0Gi
+Installed Python version:
+/opt/conda/bin/python3
+Python 3.10.13
+Installing Python dependencies from requirements.txt...
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: pip in /home/neuronet_team159/.local/lib/python3.10/site-packages (25.0.1)
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: ipywidgets in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 1)) (8.1.5)
+Requirement already satisfied: jupyter in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 2)) (1.1.1)
+Requirement already satisfied: numpy in /opt/conda/lib/python3.10/site-packages (from -r requirements.txt (line 3)) (1.26.3)
+Requirement already satisfied: pandas in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 4)) (2.2.3)
+Requirement already satisfied: matplotlib in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 5)) (3.10.1)
+Requirement already satisfied: torch in /opt/conda/lib/python3.10/site-packages (from -r requirements.txt (line 6)) (2.2.1)
+Requirement already satisfied: datasets in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 7)) (3.3.2)
+Requirement already satisfied: transformers in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 8)) (4.49.0)
+Requirement already satisfied: scikit-learn in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 9)) (1.6.1)
+Requirement already satisfied: wandb>=0.12.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 10)) (0.19.7)
+Requirement already satisfied: comm>=0.1.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (0.2.2)
+Requirement already satisfied: ipython>=6.1.0 in /opt/conda/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (8.20.0)
+Requirement already satisfied: traitlets>=4.3.1 in /opt/conda/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (5.7.1)
+Requirement already satisfied: widgetsnbextension~=4.0.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (4.0.13)
+Requirement already satisfied: jupyterlab-widgets~=3.0.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (3.0.13)
+Requirement already satisfied: notebook in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (7.3.2)
+Requirement already satisfied: jupyter-console in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (6.6.3)
+Requirement already satisfied: nbconvert in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (7.16.6)
+Requirement already satisfied: ipykernel in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (6.29.5)
+Requirement already satisfied: jupyterlab in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (4.3.5)
+Requirement already satisfied: python-dateutil>=2.8.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 4)) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in /opt/conda/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 4)) (2023.3.post1)
+Requirement already satisfied: tzdata>=2022.7 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 4)) (2025.1)
+Requirement already satisfied: contourpy>=1.0.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (1.3.1)
+Requirement already satisfied: cycler>=0.10 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (4.56.0)
+Requirement already satisfied: kiwisolver>=1.3.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (1.4.8)
+Requirement already satisfied: packaging>=20.0 in /opt/conda/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (23.1)
+Requirement already satisfied: pillow>=8 in /opt/conda/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (10.2.0)
+Requirement already satisfied: pyparsing>=2.3.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (3.2.1)
+Requirement already satisfied: filelock in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (3.13.1)
+Requirement already satisfied: typing-extensions>=4.8.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (4.12.2)
+Requirement already satisfied: sympy in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (1.12)
+Requirement already satisfied: networkx in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (3.1)
+Requirement already satisfied: jinja2 in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (3.1.3)
+Requirement already satisfied: fsspec in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (2024.2.0)
+Requirement already satisfied: pyarrow>=15.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (19.0.1)
+Requirement already satisfied: dill<0.3.9,>=0.3.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (0.3.8)
+Requirement already satisfied: requests>=2.32.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (2.32.3)
+Requirement already satisfied: tqdm>=4.66.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (4.67.1)
+Requirement already satisfied: xxhash in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (3.5.0)
+Requirement already satisfied: multiprocess<0.70.17 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (0.70.16)
+Requirement already satisfied: aiohttp in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (3.11.13)
+Requirement already satisfied: huggingface-hub>=0.24.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (0.29.1)
+Requirement already satisfied: pyyaml>=5.1 in /opt/conda/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (6.0.1)
+Requirement already satisfied: regex!=2019.12.17 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from transformers->-r requirements.txt (line 8)) (2024.11.6)
+Requirement already satisfied: tokenizers<0.22,>=0.21 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from transformers->-r requirements.txt (line 8)) (0.21.0)
+Requirement already satisfied: safetensors>=0.4.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from transformers->-r requirements.txt (line 8)) (0.5.3)
+Requirement already satisfied: scipy>=1.6.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from scikit-learn->-r requirements.txt (line 9)) (1.15.2)
+Requirement already satisfied: joblib>=1.2.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from scikit-learn->-r requirements.txt (line 9)) (1.4.2)
+Requirement already satisfied: threadpoolctl>=3.1.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from scikit-learn->-r requirements.txt (line 9)) (3.5.0)
+Requirement already satisfied: click!=8.0.0,>=7.1 in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (8.1.7)
+Requirement already satisfied: docker-pycreds>=0.4.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (0.4.0)
+Requirement already satisfied: gitpython!=3.1.29,>=1.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (3.1.44)
+Requirement already satisfied: platformdirs in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (3.10.0)
+Requirement already satisfied: protobuf!=4.21.0,!=5.28.0,<6,>=3.19.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (5.29.3)
+Requirement already satisfied: psutil>=5.0.0 in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (5.9.0)
+Requirement already satisfied: pydantic<3,>=2.6 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (2.10.6)
+Requirement already satisfied: sentry-sdk>=2.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (2.22.0)
+Requirement already satisfied: setproctitle in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (1.3.5)
+Requirement already satisfied: setuptools in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (68.2.2)
+Requirement already satisfied: six>=1.4.0 in /opt/conda/lib/python3.10/site-packages (from docker-pycreds>=0.4.0->wandb>=0.12.0->-r requirements.txt (line 10)) (1.16.0)
+Requirement already satisfied: aiohappyeyeballs>=2.3.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (2.4.8)
+Requirement already satisfied: aiosignal>=1.1.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (1.3.2)
+Requirement already satisfied: async-timeout<6.0,>=4.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (5.0.1)
+Requirement already satisfied: attrs>=17.3.0 in /opt/conda/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (23.1.0)
+Requirement already satisfied: frozenlist>=1.1.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (1.5.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (6.1.0)
+Requirement already satisfied: propcache>=0.2.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (0.3.0)
+Requirement already satisfied: yarl<2.0,>=1.17.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (1.18.3)
+Requirement already satisfied: gitdb<5,>=4.0.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from gitpython!=3.1.29,>=1.0.0->wandb>=0.12.0->-r requirements.txt (line 10)) (4.0.12)
+Requirement already satisfied: decorator in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (5.1.1)
+Requirement already satisfied: jedi>=0.16 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.18.1)
+Requirement already satisfied: matplotlib-inline in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.1.6)
+Requirement already satisfied: prompt-toolkit<3.1.0,>=3.0.41 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (3.0.43)
+Requirement already satisfied: pygments>=2.4.0 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (2.15.1)
+Requirement already satisfied: stack-data in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.2.0)
+Requirement already satisfied: exceptiongroup in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (1.2.0)
+Requirement already satisfied: pexpect>4.3 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (4.8.0)
+Requirement already satisfied: annotated-types>=0.6.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pydantic<3,>=2.6->wandb>=0.12.0->-r requirements.txt (line 10)) (0.7.0)
+Requirement already satisfied: pydantic-core==2.27.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pydantic<3,>=2.6->wandb>=0.12.0->-r requirements.txt (line 10)) (2.27.2)
+Requirement already satisfied: charset-normalizer<4,>=2 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (2.0.4)
+Requirement already satisfied: idna<4,>=2.5 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (3.4)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (2.1.0)
+Requirement already satisfied: certifi>=2017.4.17 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (2024.2.2)
+Requirement already satisfied: debugpy>=1.6.5 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (1.8.12)
+Requirement already satisfied: jupyter-client>=6.1.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (8.6.3)
+Requirement already satisfied: jupyter-core!=5.0.*,>=4.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (5.7.2)
+Requirement already satisfied: nest-asyncio in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (1.6.0)
+Requirement already satisfied: pyzmq>=24 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (26.2.1)
+Requirement already satisfied: tornado>=6.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (6.4.2)
+Requirement already satisfied: MarkupSafe>=2.0 in /opt/conda/lib/python3.10/site-packages (from jinja2->torch->-r requirements.txt (line 6)) (2.1.3)
+Requirement already satisfied: async-lru>=1.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.0.4)
+Requirement already satisfied: httpx>=0.25.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (0.28.1)
+Requirement already satisfied: jupyter-lsp>=2.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.2.5)
+Requirement already satisfied: jupyter-server<3,>=2.4.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.15.0)
+Requirement already satisfied: jupyterlab-server<3,>=2.27.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.27.3)
+Requirement already satisfied: notebook-shim>=0.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (0.2.4)
+Requirement already satisfied: tomli>=1.2.2 in /opt/conda/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.0.1)
+Requirement already satisfied: beautifulsoup4 in /opt/conda/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (4.12.2)
+Requirement already satisfied: bleach!=5.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from bleach[css]!=5.0.0->nbconvert->jupyter->-r requirements.txt (line 2)) (6.2.0)
+Requirement already satisfied: defusedxml in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (0.7.1)
+Requirement already satisfied: jupyterlab-pygments in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (0.3.0)
+Requirement already satisfied: mistune<4,>=2.0.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (3.1.2)
+Requirement already satisfied: nbclient>=0.5.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (0.10.2)
+Requirement already satisfied: nbformat>=5.7 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (5.10.4)
+Requirement already satisfied: pandocfilters>=1.4.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (1.5.1)
+Requirement already satisfied: mpmath>=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy->torch->-r requirements.txt (line 6)) (1.3.0)
+Requirement already satisfied: webencodings in /home/neuronet_team159/.local/lib/python3.10/site-packages (from bleach!=5.0.0->bleach[css]!=5.0.0->nbconvert->jupyter->-r requirements.txt (line 2)) (0.5.1)
+Requirement already satisfied: tinycss2<1.5,>=1.1.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from bleach[css]!=5.0.0->nbconvert->jupyter->-r requirements.txt (line 2)) (1.4.0)
+Requirement already satisfied: smmap<6,>=3.0.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.29,>=1.0.0->wandb>=0.12.0->-r requirements.txt (line 10)) (5.0.2)
+Requirement already satisfied: anyio in /home/neuronet_team159/.local/lib/python3.10/site-packages (from httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (4.8.0)
+Requirement already satisfied: httpcore==1.* in /home/neuronet_team159/.local/lib/python3.10/site-packages (from httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.0.7)
+Requirement already satisfied: h11<0.15,>=0.13 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from httpcore==1.*->httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.14.0)
+Requirement already satisfied: parso<0.9.0,>=0.8.0 in /opt/conda/lib/python3.10/site-packages (from jedi>=0.16->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.8.3)
+Requirement already satisfied: argon2-cffi>=21.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (23.1.0)
+Requirement already satisfied: jupyter-events>=0.11.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.12.0)
+Requirement already satisfied: jupyter-server-terminals>=0.4.4 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.5.3)
+Requirement already satisfied: overrides>=5.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (7.7.0)
+Requirement already satisfied: prometheus-client>=0.9 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.21.1)
+Requirement already satisfied: send2trash>=1.8.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.8.3)
+Requirement already satisfied: terminado>=0.8.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.18.1)
+Requirement already satisfied: websocket-client>=1.7 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.8.0)
+Requirement already satisfied: babel>=2.10 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.17.0)
+Requirement already satisfied: json5>=0.9.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.10.0)
+Requirement already satisfied: jsonschema>=4.18.0 in /opt/conda/lib/python3.10/site-packages (from jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (4.19.2)
+Requirement already satisfied: fastjsonschema>=2.15 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbformat>=5.7->nbconvert->jupyter->-r requirements.txt (line 2)) (2.21.1)
+Requirement already satisfied: ptyprocess>=0.5 in /opt/conda/lib/python3.10/site-packages (from pexpect>4.3->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.7.0)
+Requirement already satisfied: wcwidth in /opt/conda/lib/python3.10/site-packages (from prompt-toolkit<3.1.0,>=3.0.41->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.2.5)
+Requirement already satisfied: soupsieve>1.2 in /opt/conda/lib/python3.10/site-packages (from beautifulsoup4->nbconvert->jupyter->-r requirements.txt (line 2)) (2.5)
+Requirement already satisfied: executing in /opt/conda/lib/python3.10/site-packages (from stack-data->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.8.3)
+Requirement already satisfied: asttokens in /opt/conda/lib/python3.10/site-packages (from stack-data->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (2.0.5)
+Requirement already satisfied: pure-eval in /opt/conda/lib/python3.10/site-packages (from stack-data->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.2.2)
+Requirement already satisfied: sniffio>=1.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from anyio->httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.3.1)
+Requirement already satisfied: argon2-cffi-bindings in /home/neuronet_team159/.local/lib/python3.10/site-packages (from argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (21.2.0)
+Requirement already satisfied: jsonschema-specifications>=2023.03.6 in /opt/conda/lib/python3.10/site-packages (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (2023.7.1)
+Requirement already satisfied: referencing>=0.28.4 in /opt/conda/lib/python3.10/site-packages (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.30.2)
+Requirement already satisfied: rpds-py>=0.7.1 in /opt/conda/lib/python3.10/site-packages (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.10.6)
+Requirement already satisfied: python-json-logger>=2.0.4 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (3.2.1)
+Requirement already satisfied: rfc3339-validator in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.1.4)
+Requirement already satisfied: rfc3986-validator>=0.1.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.1.1)
+Requirement already satisfied: fqdn in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.5.1)
+Requirement already satisfied: isoduration in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (20.11.0)
+Requirement already satisfied: jsonpointer>1.13 in /opt/conda/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.1)
+Requirement already satisfied: uri-template in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.3.0)
+Requirement already satisfied: webcolors>=1.11 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (24.11.1)
+Requirement already satisfied: cffi>=1.0.1 in /opt/conda/lib/python3.10/site-packages (from argon2-cffi-bindings->argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.16.0)
+Requirement already satisfied: pycparser in /opt/conda/lib/python3.10/site-packages (from cffi>=1.0.1->argon2-cffi-bindings->argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.21)
+Requirement already satisfied: arrow>=0.15.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from isoduration->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.3.0)
+Requirement already satisfied: types-python-dateutil>=2.8.10 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from arrow>=0.15.0->isoduration->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.9.0.20241206)
+Installed package versions:
+aiohappyeyeballs==2.4.8
+aiohttp==3.11.13
+aiosignal==1.3.2
+annotated-types==0.7.0
+anyio==4.8.0
+archspec @ file:///croot/archspec_1697725767277/work
+argon2-cffi==23.1.0
+argon2-cffi-bindings==21.2.0
+arrow==1.3.0
+asttokens @ file:///opt/conda/conda-bld/asttokens_1646925590279/work
+astunparse==1.6.3
+async-lru==2.0.4
+async-timeout==5.0.1
+attrs @ file:///croot/attrs_1695717823297/work
+babel==2.17.0
+beautifulsoup4 @ file:///croot/beautifulsoup4-split_1681493039619/work
+bleach==6.2.0
+boltons @ file:///croot/boltons_1677628692245/work
+Brotli @ file:///tmp/abs_ecyw11_7ze/croots/recipe/brotli-split_1659616059936/work
+certifi @ file:///croot/certifi_1707229174982/work/certifi
+cffi @ file:///croot/cffi_1700254295673/work
+chardet @ file:///home/builder/ci_310/chardet_1640804867535/work
+charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
+click @ file:///croot/click_1698129812380/work
+comm==0.2.2
+conda @ file:///croot/conda_1696257509808/work
+conda-build @ file:///croot/conda-build_1708025865815/work
+conda-content-trust @ file:///croot/conda-content-trust_1693490622020/work
+conda-libmamba-solver @ file:///croot/conda-libmamba-solver_1691418897561/work/src
+conda-package-handling @ file:///croot/conda-package-handling_1690999929514/work
+conda_index @ file:///croot/conda-index_1706633791028/work
+conda_package_streaming @ file:///croot/conda-package-streaming_1690987966409/work
+contourpy==1.3.1
+cryptography @ file:///croot/cryptography_1707523700518/work
+cycler==0.12.1
+datasets==3.3.2
+debugpy==1.8.12
+decorator @ file:///opt/conda/conda-bld/decorator_1643638310831/work
+defusedxml==0.7.1
+dill==0.3.8
+distro @ file:///croot/distro_1701455004953/work
+dnspython==2.6.1
+docker-pycreds==0.4.0
+exceptiongroup @ file:///croot/exceptiongroup_1706031385326/work
+executing @ file:///opt/conda/conda-bld/executing_1646925071911/work
+expecttest==0.2.1
+fastjsonschema==2.21.1
+filelock @ file:///croot/filelock_1700591183607/work
+fonttools==4.56.0
+fqdn==1.5.1
+frozenlist==1.5.0
+fsspec==2024.2.0
+gitdb==4.0.12
+GitPython==3.1.44
+gmpy2 @ file:///tmp/build/80754af9/gmpy2_1645455533097/work
+h11==0.14.0
+httpcore==1.0.7
+httpx==0.28.1
+huggingface-hub==0.29.1
+hypothesis==6.98.10
+idna @ file:///croot/idna_1666125576474/work
+ipykernel==6.29.5
+ipython @ file:///croot/ipython_1704833016303/work
+ipywidgets==8.1.5
+isoduration==20.11.0
+jedi @ file:///tmp/build/80754af9/jedi_1644315229345/work
+Jinja2 @ file:///croot/jinja2_1706733616596/work
+joblib==1.4.2
+json5==0.10.0
+jsonpatch @ file:///tmp/build/80754af9/jsonpatch_1615747632069/work
+jsonpointer==2.1
+jsonschema @ file:///croot/jsonschema_1699041609003/work
+jsonschema-specifications @ file:///croot/jsonschema-specifications_1699032386549/work
+jupyter==1.1.1
+jupyter-console==6.6.3
+jupyter-events==0.12.0
+jupyter-lsp==2.2.5
+jupyter_client==8.6.3
+jupyter_core==5.7.2
+jupyter_server==2.15.0
+jupyter_server_terminals==0.5.3
+jupyterlab==4.3.5
+jupyterlab_pygments==0.3.0
+jupyterlab_server==2.27.3
+jupyterlab_widgets==3.0.13
+kiwisolver==1.4.8
+libarchive-c @ file:///tmp/build/80754af9/python-libarchive-c_1617780486945/work
+libmambapy @ file:///croot/mamba-split_1698782620632/work/libmambapy
+MarkupSafe @ file:///croot/markupsafe_1704205993651/work
+matplotlib==3.10.1
+matplotlib-inline @ file:///opt/conda/conda-bld/matplotlib-inline_1662014470464/work
+menuinst @ file:///croot/menuinst_1706732933928/work
+mistune==3.1.2
+mkl-fft @ file:///croot/mkl_fft_1695058164594/work
+mkl-random @ file:///croot/mkl_random_1695059800811/work
+mkl-service==2.4.0
+more-itertools @ file:///croot/more-itertools_1700662129964/work
+mpmath @ file:///croot/mpmath_1690848262763/work
+multidict==6.1.0
+multiprocess==0.70.16
+nbclient==0.10.2
+nbconvert==7.16.6
+nbformat==5.10.4
+nest-asyncio==1.6.0
+networkx @ file:///croot/networkx_1690561992265/work
+notebook==7.3.2
+notebook_shim==0.2.4
+numpy @ file:///croot/numpy_and_numpy_base_1704311704800/work/dist/numpy-1.26.3-cp310-cp310-linux_x86_64.whl#sha256=a281f24b826e51f1c25bdd24960ab44b4bc294c65d81560441ba7fffd8ddd2a7
+optree==0.10.0
+overrides==7.7.0
+packaging @ file:///croot/packaging_1693575174725/work
+pandas==2.2.3
+pandocfilters==1.5.1
+parso @ file:///opt/conda/conda-bld/parso_1641458642106/work
+pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
+pillow @ file:///croot/pillow_1707233021655/work
+pkginfo @ file:///croot/pkginfo_1679431160147/work
+platformdirs @ file:///croot/platformdirs_1692205439124/work
+pluggy @ file:///tmp/build/80754af9/pluggy_1648024709248/work
+prometheus_client==0.21.1
+prompt-toolkit @ file:///croot/prompt-toolkit_1704404351921/work
+propcache==0.3.0
+protobuf==5.29.3
+psutil @ file:///opt/conda/conda-bld/psutil_1656431268089/work
+ptyprocess @ file:///tmp/build/80754af9/ptyprocess_1609355006118/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
+pure-eval @ file:///opt/conda/conda-bld/pure_eval_1646925070566/work
+pyarrow==19.0.1
+pycosat @ file:///croot/pycosat_1696536503704/work
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pydantic==2.10.6
+pydantic_core==2.27.2
+Pygments @ file:///croot/pygments_1684279966437/work
+pyOpenSSL @ file:///croot/pyopenssl_1708380408460/work
+pyparsing==3.2.1
+PySocks @ file:///home/builder/ci_310/pysocks_1640793678128/work
+python-dateutil==2.9.0.post0
+python-etcd==0.4.5
+python-json-logger==3.2.1
+pytz @ file:///croot/pytz_1695131579487/work
+PyYAML @ file:///croot/pyyaml_1698096049011/work
+pyzmq==26.2.1
+referencing @ file:///croot/referencing_1699012038513/work
+regex==2024.11.6
+requests==2.32.3
+rfc3339-validator==0.1.4
+rfc3986-validator==0.1.1
+rpds-py @ file:///croot/rpds-py_1698945930462/work
+ruamel.yaml @ file:///croot/ruamel.yaml_1666304550667/work
+ruamel.yaml.clib @ file:///croot/ruamel.yaml.clib_1666302247304/work
+safetensors==0.5.3
+scikit-learn==1.6.1
+scipy==1.15.2
+Send2Trash==1.8.3
+sentry-sdk==2.22.0
+setproctitle==1.3.5
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+smmap==5.0.2
+sniffio==1.3.1
+sortedcontainers==2.4.0
+soupsieve @ file:///croot/soupsieve_1696347547217/work
+stack-data @ file:///opt/conda/conda-bld/stack_data_1646927590127/work
+sympy @ file:///croot/sympy_1701397643339/work
+terminado==0.18.1
+threadpoolctl==3.5.0
+tinycss2==1.4.0
+tokenizers==0.21.0
+tomli @ file:///opt/conda/conda-bld/tomli_1657175507142/work
+toolz @ file:///croot/toolz_1667464077321/work
+torch==2.2.1
+torchaudio==2.2.1
+torchelastic==0.2.2
+torchvision==0.17.1
+tornado==6.4.2
+tqdm==4.67.1
+traitlets @ file:///croot/traitlets_1671143879854/work
+transformers==4.49.0
+triton==2.2.0
+truststore @ file:///croot/truststore_1695244293384/work
+types-dataclasses==0.6.6
+types-python-dateutil==2.9.0.20241206
+typing_extensions==4.12.2
+tzdata==2025.1
+uri-template==1.3.0
+urllib3 @ file:///croot/urllib3_1707770551213/work
+wandb==0.19.7
+wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work
+webcolors==24.11.1
+webencodings==0.5.1
+websocket-client==1.8.0
+widgetsnbextension==4.0.13
+xxhash==3.5.0
+yarl==1.18.3
+zstandard @ file:///croot/zstandard_1677013143055/work
+Running task3.py...
+wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
+[2025-03-06 19:56:06] DEBUG - Starting new HTTPS connection (1): api.wandb.ai:443
+[2025-03-06 19:56:06] DEBUG - https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+[2025-03-06 19:56:06] DEBUG - https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 383
+wandb: Currently logged in as: mobashirrahman (mobashirrahman-saarland-university) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.7
+wandb: Run data is saved locally in /raid/condor/lib/condor/execute/dir_1249829/wandb/run-20250306_195606-8qh0ztiy
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run divine-fire-43
+wandb: ⭐️ View project at https://wandb.ai/mobashirrahman-saarland-university/nnti-project
+wandb: 🚀 View run at https://wandb.ai/mobashirrahman-saarland-university/nnti-project/runs/8qh0ztiy
+[2025-03-06 19:56:07] INFO - WandB run initialized with config: {'selection_percent': 0.2, 'epochs': 5, 'batch_size': 16, 'lr_bitfit': 0.005, 'lr_lora': 2e-05, 'lr_ia3': 0.0001, 'patience': 2, 'wandb_project': 'nnti-project', 'wandb_entity': 'mobashirrahman-saarland-university', 'model_name': 'ibm/MoLFormer-XL-both-10pct', 'dataset_path': 'scikit-fingerprints/MoleculeNet_Lipophilicity'}
+[2025-03-06 19:56:07] INFO - Using device: cuda
+[2025-03-06 19:56:07] DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+[2025-03-06 19:56:07] DEBUG - https://huggingface.co:443 "HEAD /ibm/MoLFormer-XL-both-10pct/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+[2025-03-06 19:56:07] DEBUG - https://huggingface.co:443 "HEAD /ibm-research/MoLFormer-XL-both-10pct/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+[2025-03-06 19:56:07] DEBUG - https://huggingface.co:443 "HEAD /ibm/MoLFormer-XL-both-10pct/resolve/main/tokenization_molformer_fast.py HTTP/1.1" 307 0
+[2025-03-06 19:56:07] DEBUG - https://huggingface.co:443 "HEAD /ibm-research/MoLFormer-XL-both-10pct/resolve/main/tokenization_molformer_fast.py HTTP/1.1" 200 0
+[2025-03-06 19:56:07] DEBUG - https://huggingface.co:443 "HEAD /ibm/MoLFormer-XL-both-10pct/resolve/main/config.json HTTP/1.1" 307 0
+[2025-03-06 19:56:07] DEBUG - https://huggingface.co:443 "HEAD /ibm-research/MoLFormer-XL-both-10pct/resolve/main/config.json HTTP/1.1" 200 0
+[2025-03-06 19:56:07] DEBUG - https://huggingface.co:443 "HEAD /ibm/MoLFormer-XL-both-10pct/resolve/main/configuration_molformer.py HTTP/1.1" 307 0
+[2025-03-06 19:56:08] DEBUG - https://huggingface.co:443 "HEAD /ibm-research/MoLFormer-XL-both-10pct/resolve/main/configuration_molformer.py HTTP/1.1" 200 0
+[2025-03-06 19:56:08] DEBUG - https://huggingface.co:443 "HEAD /ibm/MoLFormer-XL-both-10pct/resolve/main/modeling_molformer.py HTTP/1.1" 307 0
+[2025-03-06 19:56:08] DEBUG - https://huggingface.co:443 "HEAD /ibm-research/MoLFormer-XL-both-10pct/resolve/main/modeling_molformer.py HTTP/1.1" 200 0
+[2025-03-06 19:56:10] DEBUG - https://huggingface.co:443 "HEAD /datasets/scikit-fingerprints/MoleculeNet_Lipophilicity/resolve/main/README.md HTTP/1.1" 200 0
+[2025-03-06 19:56:10] DEBUG - https://huggingface.co:443 "HEAD /datasets/scikit-fingerprints/MoleculeNet_Lipophilicity/resolve/bc521192fdea6cfd144096a0843f2735b06a09fa/MoleculeNet_Lipophilicity.py HTTP/1.1" 404 0
+[2025-03-06 19:56:10] DEBUG - Starting new HTTPS connection (1): s3.amazonaws.com:443
+[2025-03-06 19:56:10] DEBUG - https://s3.amazonaws.com:443 "HEAD /datasets.huggingface.co/datasets/datasets/scikit-fingerprints/MoleculeNet_Lipophilicity/scikit-fingerprints/MoleculeNet_Lipophilicity.py HTTP/1.1" 404 0
+[2025-03-06 19:56:10] DEBUG - https://huggingface.co:443 "GET /api/datasets/scikit-fingerprints/MoleculeNet_Lipophilicity/revision/bc521192fdea6cfd144096a0843f2735b06a09fa HTTP/1.1" 200 1840
+[2025-03-06 19:56:10] DEBUG - https://huggingface.co:443 "HEAD /datasets/scikit-fingerprints/MoleculeNet_Lipophilicity/resolve/bc521192fdea6cfd144096a0843f2735b06a09fa/.huggingface.yaml HTTP/1.1" 404 0
+[2025-03-06 19:56:10] DEBUG - Starting new HTTPS connection (1): datasets-server.huggingface.co:443
+[2025-03-06 19:56:11] DEBUG - https://datasets-server.huggingface.co:443 "GET /info?dataset=scikit-fingerprints/MoleculeNet_Lipophilicity HTTP/1.1" 200 None
+[2025-03-06 19:56:11] DEBUG - https://huggingface.co:443 "GET /api/datasets/scikit-fingerprints/MoleculeNet_Lipophilicity/revision/bc521192fdea6cfd144096a0843f2735b06a09fa HTTP/1.1" 200 1840
+[2025-03-06 19:56:11] DEBUG - https://huggingface.co:443 "GET /api/datasets/scikit-fingerprints/MoleculeNet_Lipophilicity/tree/bc521192fdea6cfd144096a0843f2735b06a09fa?recursive=False&expand=False HTTP/1.1" 200 421
+[2025-03-06 19:56:11] DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+[2025-03-06 19:56:11] DEBUG - https://huggingface.co:443 "GET /api/datasets/scikit-fingerprints/MoleculeNet_Lipophilicity/revision/bc521192fdea6cfd144096a0843f2735b06a09fa HTTP/1.1" 200 1840
+[2025-03-06 19:56:11] DEBUG - https://huggingface.co:443 "HEAD /datasets/scikit-fingerprints/MoleculeNet_Lipophilicity/resolve/bc521192fdea6cfd144096a0843f2735b06a09fa/dataset_infos.json HTTP/1.1" 404 0
+[2025-03-06 19:56:11] DEBUG - Attempting to acquire lock 140068096353632 on /home/neuronet_team159/.cache/huggingface/datasets/_home_neuronet_team159_.cache_huggingface_datasets_scikit-fingerprints___molecule_net_lipophilicity_default_0.0.0_bc521192fdea6cfd144096a0843f2735b06a09fa.lock
+[2025-03-06 19:56:11] DEBUG - Lock 140068096353632 acquired on /home/neuronet_team159/.cache/huggingface/datasets/_home_neuronet_team159_.cache_huggingface_datasets_scikit-fingerprints___molecule_net_lipophilicity_default_0.0.0_bc521192fdea6cfd144096a0843f2735b06a09fa.lock
+[2025-03-06 19:56:11] DEBUG - open file: /home/neuronet_team159/.cache/huggingface/datasets/scikit-fingerprints___molecule_net_lipophilicity/default/0.0.0/bc521192fdea6cfd144096a0843f2735b06a09fa/dataset_info.json
+[2025-03-06 19:56:11] DEBUG - Attempting to release lock 140068096353632 on /home/neuronet_team159/.cache/huggingface/datasets/_home_neuronet_team159_.cache_huggingface_datasets_scikit-fingerprints___molecule_net_lipophilicity_default_0.0.0_bc521192fdea6cfd144096a0843f2735b06a09fa.lock
+[2025-03-06 19:56:11] DEBUG - Lock 140068096353632 released on /home/neuronet_team159/.cache/huggingface/datasets/_home_neuronet_team159_.cache_huggingface_datasets_scikit-fingerprints___molecule_net_lipophilicity_default_0.0.0_bc521192fdea6cfd144096a0843f2735b06a09fa.lock
+[2025-03-06 19:56:11] DEBUG - Attempting to acquire lock 140067649459376 on /home/neuronet_team159/.cache/huggingface/datasets/scikit-fingerprints___molecule_net_lipophilicity/default/0.0.0/bc521192fdea6cfd144096a0843f2735b06a09fa_builder.lock
+[2025-03-06 19:56:11] DEBUG - Lock 140067649459376 acquired on /home/neuronet_team159/.cache/huggingface/datasets/scikit-fingerprints___molecule_net_lipophilicity/default/0.0.0/bc521192fdea6cfd144096a0843f2735b06a09fa_builder.lock
+[2025-03-06 19:56:11] DEBUG - open file: /home/neuronet_team159/.cache/huggingface/datasets/scikit-fingerprints___molecule_net_lipophilicity/default/0.0.0/bc521192fdea6cfd144096a0843f2735b06a09fa/dataset_info.json
+[2025-03-06 19:56:11] DEBUG - Attempting to release lock 140067649459376 on /home/neuronet_team159/.cache/huggingface/datasets/scikit-fingerprints___molecule_net_lipophilicity/default/0.0.0/bc521192fdea6cfd144096a0843f2735b06a09fa_builder.lock
+[2025-03-06 19:56:11] DEBUG - Lock 140067649459376 released on /home/neuronet_team159/.cache/huggingface/datasets/scikit-fingerprints___molecule_net_lipophilicity/default/0.0.0/bc521192fdea6cfd144096a0843f2735b06a09fa_builder.lock
+[2025-03-06 19:56:12] INFO - Full training set size: 3360
+[2025-03-06 19:56:12] INFO - Starting data selection using target distribution alignment...
+Computing embeddings in batches:   0%|          | 0/7 [00:00<?, ?it/s]Computing embeddings in batches:  14%|█▍        | 1/7 [00:00<00:01,  3.32it/s]Computing embeddings in batches:  57%|█████▋    | 4/7 [00:00<00:00, 10.53it/s]Computing embeddings in batches: 100%|██████████| 7/7 [00:00<00:00, 15.64it/s]Computing embeddings in batches: 100%|██████████| 7/7 [00:00<00:00, 12.64it/s]
+Computing embeddings in batches:   0%|          | 0/210 [00:00<?, ?it/s]Computing embeddings in batches:   1%|▏         | 3/210 [00:00<00:09, 22.08it/s]Computing embeddings in batches:   3%|▎         | 6/210 [00:00<00:09, 22.00it/s]Computing embeddings in batches:   4%|▍         | 9/210 [00:00<00:09, 22.01it/s]Computing embeddings in batches:   6%|▌         | 12/210 [00:00<00:08, 22.05it/s]Computing embeddings in batches:   7%|▋         | 15/210 [00:00<00:08, 22.03it/s]Computing embeddings in batches:   9%|▊         | 18/210 [00:00<00:08, 22.05it/s]Computing embeddings in batches:  10%|█         | 21/210 [00:00<00:08, 22.04it/s]Computing embeddings in batches:  11%|█▏        | 24/210 [00:01<00:08, 22.03it/s]Computing embeddings in batches:  13%|█▎        | 27/210 [00:01<00:08, 21.97it/s]Computing embeddings in batches:  14%|█▍        | 30/210 [00:01<00:08, 21.96it/s]Computing embeddings in batches:  16%|█▌        | 33/210 [00:01<00:08, 22.03it/s]Computing embeddings in batches:  17%|█▋        | 36/210 [00:01<00:07, 22.12it/s]Computing embeddings in batches:  19%|█▊        | 39/210 [00:01<00:07, 22.17it/s]Computing embeddings in batches:  20%|██        | 42/210 [00:01<00:07, 22.22it/s]Computing embeddings in batches:  21%|██▏       | 45/210 [00:02<00:07, 22.23it/s]Computing embeddings in batches:  23%|██▎       | 48/210 [00:02<00:07, 22.21it/s]Computing embeddings in batches:  24%|██▍       | 51/210 [00:02<00:07, 22.22it/s]Computing embeddings in batches:  26%|██▌       | 54/210 [00:02<00:07, 22.23it/s]Computing embeddings in batches:  27%|██▋       | 57/210 [00:02<00:06, 22.29it/s]Computing embeddings in batches:  29%|██▊       | 60/210 [00:02<00:06, 22.23it/s]Computing embeddings in batches:  30%|███       | 63/210 [00:02<00:06, 22.19it/s]Computing embeddings in batches:  31%|███▏      | 66/210 [00:02<00:06, 22.17it/s]Computing embeddings in batches:  33%|███▎      | 69/210 [00:03<00:06, 22.14it/s]Computing embeddings in batches:  34%|███▍      | 72/210 [00:03<00:06, 22.14it/s]Computing embeddings in batches:  36%|███▌      | 75/210 [00:03<00:06, 22.19it/s]Computing embeddings in batches:  37%|███▋      | 78/210 [00:03<00:05, 22.20it/s]Computing embeddings in batches:  39%|███▊      | 81/210 [00:03<00:05, 22.17it/s]Computing embeddings in batches:  40%|████      | 84/210 [00:03<00:05, 22.17it/s]Computing embeddings in batches:  41%|████▏     | 87/210 [00:03<00:05, 22.17it/s]Computing embeddings in batches:  43%|████▎     | 90/210 [00:04<00:05, 22.14it/s]Computing embeddings in batches:  44%|████▍     | 93/210 [00:04<00:05, 22.08it/s]Computing embeddings in batches:  46%|████▌     | 96/210 [00:04<00:05, 22.15it/s]Computing embeddings in batches:  47%|████▋     | 99/210 [00:04<00:04, 22.21it/s]Computing embeddings in batches:  49%|████▊     | 102/210 [00:04<00:04, 22.19it/s]Computing embeddings in batches:  50%|█████     | 105/210 [00:04<00:04, 22.17it/s]Computing embeddings in batches:  51%|█████▏    | 108/210 [00:04<00:04, 22.21it/s]Computing embeddings in batches:  53%|█████▎    | 111/210 [00:05<00:04, 22.21it/s]Computing embeddings in batches:  54%|█████▍    | 114/210 [00:05<00:04, 22.21it/s]Computing embeddings in batches:  56%|█████▌    | 117/210 [00:05<00:04, 22.23it/s]Computing embeddings in batches:  57%|█████▋    | 120/210 [00:05<00:04, 22.25it/s]Computing embeddings in batches:  59%|█████▊    | 123/210 [00:05<00:03, 22.31it/s]Computing embeddings in batches:  60%|██████    | 126/210 [00:05<00:03, 22.29it/s]Computing embeddings in batches:  61%|██████▏   | 129/210 [00:05<00:03, 22.28it/s]Computing embeddings in batches:  63%|██████▎   | 132/210 [00:05<00:03, 22.09it/s]Computing embeddings in batches:  64%|██████▍   | 135/210 [00:06<00:03, 22.20it/s]Computing embeddings in batches:  66%|██████▌   | 138/210 [00:06<00:03, 22.09it/s]Computing embeddings in batches:  67%|██████▋   | 141/210 [00:06<00:03, 22.09it/s]Computing embeddings in batches:  69%|██████▊   | 144/210 [00:06<00:02, 22.09it/s]Computing embeddings in batches:  70%|███████   | 147/210 [00:06<00:02, 22.15it/s]Computing embeddings in batches:  71%|███████▏  | 150/210 [00:06<00:02, 22.20it/s]Computing embeddings in batches:  73%|███████▎  | 153/210 [00:06<00:02, 22.22it/s]Computing embeddings in batches:  74%|███████▍  | 156/210 [00:07<00:02, 22.24it/s]Computing embeddings in batches:  76%|███████▌  | 159/210 [00:07<00:02, 22.29it/s]Computing embeddings in batches:  77%|███████▋  | 162/210 [00:07<00:02, 22.29it/s]Computing embeddings in batches:  79%|███████▊  | 165/210 [00:07<00:02, 22.34it/s]Computing embeddings in batches:  80%|████████  | 168/210 [00:07<00:01, 22.35it/s]Computing embeddings in batches:  81%|████████▏ | 171/210 [00:07<00:01, 22.32it/s]Computing embeddings in batches:  83%|████████▎ | 174/210 [00:07<00:01, 22.30it/s]Computing embeddings in batches:  84%|████████▍ | 177/210 [00:07<00:01, 22.34it/s]Computing embeddings in batches:  86%|████████▌ | 180/210 [00:08<00:01, 22.33it/s]Computing embeddings in batches:  87%|████████▋ | 183/210 [00:08<00:01, 22.35it/s]Computing embeddings in batches:  89%|████████▊ | 186/210 [00:08<00:01, 22.34it/s]Computing embeddings in batches:  90%|█████████ | 189/210 [00:08<00:00, 22.33it/s]Computing embeddings in batches:  91%|█████████▏| 192/210 [00:08<00:00, 22.30it/s]Computing embeddings in batches:  93%|█████████▎| 195/210 [00:08<00:00, 22.31it/s]Computing embeddings in batches:  94%|█████████▍| 198/210 [00:08<00:00, 22.33it/s]Computing embeddings in batches:  96%|█████████▌| 201/210 [00:09<00:00, 22.35it/s]Computing embeddings in batches:  97%|█████████▋| 204/210 [00:09<00:00, 22.25it/s]Computing embeddings in batches:  99%|█████████▊| 207/210 [00:09<00:00, 22.23it/s]Computing embeddings in batches: 100%|██████████| 210/210 [00:09<00:00, 22.30it/s]Computing embeddings in batches: 100%|██████████| 210/210 [00:09<00:00, 22.20it/s]
+[2025-03-06 19:56:22] INFO - Selected 672 samples out of 3360 (20.0%) using distribution alignment.
+[2025-03-06 19:56:22] INFO - Selected subset size: 672
+[2025-03-06 19:56:22] INFO - Starting fine-tuning with BitFit...
+[2025-03-06 19:56:22] INFO - Applying BitFit: freezing all parameters except biases.
+[2025-03-06 19:56:22] INFO - BitFit: Trainable parameters: 74497
+/opt/conda/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:28: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn("The verbose parameter is deprecated. Please use get_last_lr() "
+Training Epoch 1:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 1:   2%|▏         | 1/42 [00:00<00:11,  3.63it/s]Training Epoch 1:   7%|▋         | 3/42 [00:00<00:05,  7.13it/s]Training Epoch 1:  12%|█▏        | 5/42 [00:00<00:04,  8.79it/s]Training Epoch 1:  17%|█▋        | 7/42 [00:00<00:03,  9.66it/s]Training Epoch 1:  21%|██▏       | 9/42 [00:00<00:03, 10.17it/s]Training Epoch 1:  26%|██▌       | 11/42 [00:01<00:02, 10.50it/s]Training Epoch 1:  31%|███       | 13/42 [00:01<00:02, 10.71it/s]Training Epoch 1:  36%|███▌      | 15/42 [00:01<00:02, 10.86it/s]Training Epoch 1:  40%|████      | 17/42 [00:01<00:02, 10.95it/s]Training Epoch 1:  45%|████▌     | 19/42 [00:01<00:02, 11.01it/s]Training Epoch 1:  50%|█████     | 21/42 [00:02<00:01, 11.05it/s]Training Epoch 1:  55%|█████▍    | 23/42 [00:02<00:01, 11.09it/s]Training Epoch 1:  60%|█████▉    | 25/42 [00:02<00:01, 11.10it/s]Training Epoch 1:  64%|██████▍   | 27/42 [00:02<00:01, 11.12it/s]Training Epoch 1:  69%|██████▉   | 29/42 [00:02<00:01, 11.12it/s]Training Epoch 1:  74%|███████▍  | 31/42 [00:02<00:00, 11.12it/s]Training Epoch 1:  79%|███████▊  | 33/42 [00:03<00:00, 11.12it/s]Training Epoch 1:  83%|████████▎ | 35/42 [00:03<00:00, 11.14it/s]Training Epoch 1:  88%|████████▊ | 37/42 [00:03<00:00, 11.04it/s]Training Epoch 1:  93%|█████████▎| 39/42 [00:03<00:00, 11.07it/s]Training Epoch 1:  98%|█████████▊| 41/42 [00:03<00:00, 11.11it/s]Training Epoch 1: 100%|██████████| 42/42 [00:04<00:00, 10.49it/s]
+[2025-03-06 19:56:26] DEBUG - Epoch 1: Training Loss = 1.4945
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:56:28] INFO - Epoch 1: Validation Loss = 1.4366
+Training Epoch 2:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 2:   2%|▏         | 1/42 [00:00<00:06,  6.15it/s]Training Epoch 2:   7%|▋         | 3/42 [00:00<00:04,  9.17it/s]Training Epoch 2:  12%|█▏        | 5/42 [00:00<00:03, 10.13it/s]Training Epoch 2:  17%|█▋        | 7/42 [00:00<00:03, 10.53it/s]Training Epoch 2:  21%|██▏       | 9/42 [00:00<00:03, 10.76it/s]Training Epoch 2:  26%|██▌       | 11/42 [00:01<00:02, 10.89it/s]Training Epoch 2:  31%|███       | 13/42 [00:01<00:02, 10.98it/s]Training Epoch 2:  36%|███▌      | 15/42 [00:01<00:02, 11.02it/s]Training Epoch 2:  40%|████      | 17/42 [00:01<00:02, 11.06it/s]Training Epoch 2:  45%|████▌     | 19/42 [00:01<00:02, 11.08it/s]Training Epoch 2:  50%|█████     | 21/42 [00:01<00:01, 11.11it/s]Training Epoch 2:  55%|█████▍    | 23/42 [00:02<00:01, 11.13it/s]Training Epoch 2:  60%|█████▉    | 25/42 [00:02<00:01, 11.13it/s]Training Epoch 2:  64%|██████▍   | 27/42 [00:02<00:01, 11.14it/s]Training Epoch 2:  69%|██████▉   | 29/42 [00:02<00:01, 11.15it/s]Training Epoch 2:  74%|███████▍  | 31/42 [00:02<00:00, 11.14it/s]Training Epoch 2:  79%|███████▊  | 33/42 [00:03<00:00, 11.14it/s]Training Epoch 2:  83%|████████▎ | 35/42 [00:03<00:00, 11.14it/s]Training Epoch 2:  88%|████████▊ | 37/42 [00:03<00:00, 11.14it/s]Training Epoch 2:  93%|█████████▎| 39/42 [00:03<00:00, 11.14it/s]Training Epoch 2:  98%|█████████▊| 41/42 [00:03<00:00, 11.15it/s]Training Epoch 2: 100%|██████████| 42/42 [00:03<00:00, 10.82it/s]
+[2025-03-06 19:56:32] DEBUG - Epoch 2: Training Loss = 1.1056
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:56:34] INFO - Epoch 2: Validation Loss = 1.3791
+Training Epoch 3:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 3:   2%|▏         | 1/42 [00:00<00:06,  6.04it/s]Training Epoch 3:   7%|▋         | 3/42 [00:00<00:04,  9.06it/s]Training Epoch 3:  12%|█▏        | 5/42 [00:00<00:03, 10.06it/s]Training Epoch 3:  17%|█▋        | 7/42 [00:00<00:03, 10.50it/s]Training Epoch 3:  21%|██▏       | 9/42 [00:00<00:03, 10.74it/s]Training Epoch 3:  26%|██▌       | 11/42 [00:01<00:02, 10.89it/s]Training Epoch 3:  31%|███       | 13/42 [00:01<00:02, 10.98it/s]Training Epoch 3:  36%|███▌      | 15/42 [00:01<00:02, 11.04it/s]Training Epoch 3:  40%|████      | 17/42 [00:01<00:02, 11.08it/s]Training Epoch 3:  45%|████▌     | 19/42 [00:01<00:02, 11.10it/s]Training Epoch 3:  50%|█████     | 21/42 [00:01<00:01, 11.13it/s]Training Epoch 3:  55%|█████▍    | 23/42 [00:02<00:01, 11.14it/s]Training Epoch 3:  60%|█████▉    | 25/42 [00:02<00:01, 11.13it/s]Training Epoch 3:  64%|██████▍   | 27/42 [00:02<00:01, 11.11it/s]Training Epoch 3:  69%|██████▉   | 29/42 [00:02<00:01, 11.11it/s]Training Epoch 3:  74%|███████▍  | 31/42 [00:02<00:00, 11.10it/s]Training Epoch 3:  79%|███████▊  | 33/42 [00:03<00:00, 11.12it/s]Training Epoch 3:  83%|████████▎ | 35/42 [00:03<00:00, 11.05it/s]Training Epoch 3:  88%|████████▊ | 37/42 [00:03<00:00, 11.08it/s]Training Epoch 3:  93%|█████████▎| 39/42 [00:03<00:00, 11.10it/s]Training Epoch 3:  98%|█████████▊| 41/42 [00:03<00:00, 11.12it/s]Training Epoch 3: 100%|██████████| 42/42 [00:03<00:00, 10.77it/s]
+[2025-03-06 19:56:38] DEBUG - Epoch 3: Training Loss = 0.9936
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:56:41] INFO - Epoch 3: Validation Loss = 1.2734
+Training Epoch 4:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 4:   2%|▏         | 1/42 [00:00<00:07,  5.79it/s]Training Epoch 4:   7%|▋         | 3/42 [00:00<00:04,  8.94it/s]Training Epoch 4:  12%|█▏        | 5/42 [00:00<00:03, 10.00it/s]Training Epoch 4:  17%|█▋        | 7/42 [00:00<00:03, 10.46it/s]Training Epoch 4:  21%|██▏       | 9/42 [00:00<00:03, 10.72it/s]Training Epoch 4:  26%|██▌       | 11/42 [00:01<00:02, 10.86it/s]Training Epoch 4:  31%|███       | 13/42 [00:01<00:02, 10.96it/s]Training Epoch 4:  36%|███▌      | 15/42 [00:01<00:02, 11.01it/s]Training Epoch 4:  40%|████      | 17/42 [00:01<00:02, 11.05it/s]Training Epoch 4:  45%|████▌     | 19/42 [00:01<00:02, 11.03it/s]Training Epoch 4:  50%|█████     | 21/42 [00:01<00:01, 11.08it/s]Training Epoch 4:  55%|█████▍    | 23/42 [00:02<00:01, 11.11it/s]Training Epoch 4:  60%|█████▉    | 25/42 [00:02<00:01, 11.13it/s]Training Epoch 4:  64%|██████▍   | 27/42 [00:02<00:01, 11.13it/s]Training Epoch 4:  69%|██████▉   | 29/42 [00:02<00:01, 11.14it/s]Training Epoch 4:  74%|███████▍  | 31/42 [00:02<00:00, 11.15it/s]Training Epoch 4:  79%|███████▊  | 33/42 [00:03<00:00, 11.16it/s]Training Epoch 4:  83%|████████▎ | 35/42 [00:03<00:00, 11.17it/s]Training Epoch 4:  88%|████████▊ | 37/42 [00:03<00:00, 11.13it/s]Training Epoch 4:  93%|█████████▎| 39/42 [00:03<00:00, 11.11it/s]Training Epoch 4:  98%|█████████▊| 41/42 [00:03<00:00, 11.09it/s]Training Epoch 4: 100%|██████████| 42/42 [00:03<00:00, 10.77it/s]
+[2025-03-06 19:56:45] DEBUG - Epoch 4: Training Loss = 0.8819
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:56:47] INFO - Epoch 4: Validation Loss = 1.1722
+Training Epoch 5:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 5:   2%|▏         | 1/42 [00:00<00:07,  5.47it/s]Training Epoch 5:   7%|▋         | 3/42 [00:00<00:04,  8.77it/s]Training Epoch 5:  12%|█▏        | 5/42 [00:00<00:03,  9.87it/s]Training Epoch 5:  17%|█▋        | 7/42 [00:00<00:03, 10.38it/s]Training Epoch 5:  21%|██▏       | 9/42 [00:00<00:03, 10.66it/s]Training Epoch 5:  26%|██▌       | 11/42 [00:01<00:02, 10.83it/s]Training Epoch 5:  31%|███       | 13/42 [00:01<00:02, 10.93it/s]Training Epoch 5:  36%|███▌      | 15/42 [00:01<00:02, 11.01it/s]Training Epoch 5:  40%|████      | 17/42 [00:01<00:02, 11.05it/s]Training Epoch 5:  45%|████▌     | 19/42 [00:01<00:02, 11.09it/s]Training Epoch 5:  50%|█████     | 21/42 [00:01<00:01, 11.12it/s]Training Epoch 5:  55%|█████▍    | 23/42 [00:02<00:01, 11.12it/s]Training Epoch 5:  60%|█████▉    | 25/42 [00:02<00:01, 11.13it/s]Training Epoch 5:  64%|██████▍   | 27/42 [00:02<00:01, 11.15it/s]Training Epoch 5:  69%|██████▉   | 29/42 [00:02<00:01, 11.16it/s]Training Epoch 5:  74%|███████▍  | 31/42 [00:02<00:00, 11.17it/s]Training Epoch 5:  79%|███████▊  | 33/42 [00:03<00:00, 11.18it/s]Training Epoch 5:  83%|████████▎ | 35/42 [00:03<00:00, 11.17it/s]Training Epoch 5:  88%|████████▊ | 37/42 [00:03<00:00, 11.17it/s]Training Epoch 5:  93%|█████████▎| 39/42 [00:03<00:00, 11.17it/s]Training Epoch 5:  98%|█████████▊| 41/42 [00:03<00:00, 11.19it/s]Training Epoch 5: 100%|██████████| 42/42 [00:03<00:00, 10.76it/s]
+[2025-03-06 19:56:51] DEBUG - Epoch 5: Training Loss = 0.8511
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:56:53] INFO - Epoch 5: Validation Loss = 1.0841
+[2025-03-06 19:56:53] INFO - Starting fine-tuning with LoRA...
+[2025-03-06 19:56:53] INFO - Applying LoRA: injecting low-rank adapters into selected layers.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.0.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.0.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.0.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.0.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.0.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.1.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.1.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.1.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.1.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.1.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.2.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.2.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.2.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.2.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.2.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.3.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.3.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.3.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.3.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.3.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.4.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.4.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.4.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.4.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.4.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.5.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.5.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.5.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.5.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.5.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.6.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.6.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.6.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.6.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.6.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.7.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.7.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.7.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.7.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.7.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.8.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.8.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.8.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.8.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.8.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.9.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.9.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.9.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.9.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.9.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.10.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.10.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.10.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.10.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.10.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.11.attention.self.query with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.11.attention.self.key with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.11.attention.self.value with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.11.attention.output.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - Replaced encoder.layer.11.intermediate.dense with LoRALinear.
+[2025-03-06 19:56:53] INFO - LoRA: Trainable parameters: 9677569
+/opt/conda/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:28: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn("The verbose parameter is deprecated. Please use get_last_lr() "
+Training Epoch 1:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 1:   2%|▏         | 1/42 [00:00<00:08,  5.04it/s]Training Epoch 1:   5%|▍         | 2/42 [00:00<00:06,  6.64it/s]Training Epoch 1:   7%|▋         | 3/42 [00:00<00:05,  7.51it/s]Training Epoch 1:  10%|▉         | 4/42 [00:00<00:04,  7.98it/s]Training Epoch 1:  12%|█▏        | 5/42 [00:00<00:04,  8.28it/s]Training Epoch 1:  14%|█▍        | 6/42 [00:00<00:04,  8.45it/s]Training Epoch 1:  17%|█▋        | 7/42 [00:00<00:04,  8.54it/s]Training Epoch 1:  19%|█▉        | 8/42 [00:00<00:03,  8.63it/s]Training Epoch 1:  21%|██▏       | 9/42 [00:01<00:03,  8.69it/s]Training Epoch 1:  24%|██▍       | 10/42 [00:01<00:03,  8.72it/s]Training Epoch 1:  26%|██▌       | 11/42 [00:01<00:03,  8.74it/s]Training Epoch 1:  29%|██▊       | 12/42 [00:01<00:03,  8.77it/s]Training Epoch 1:  31%|███       | 13/42 [00:01<00:03,  8.77it/s]Training Epoch 1:  33%|███▎      | 14/42 [00:01<00:03,  8.78it/s]Training Epoch 1:  36%|███▌      | 15/42 [00:01<00:03,  8.77it/s]Training Epoch 1:  38%|███▊      | 16/42 [00:01<00:02,  8.79it/s]Training Epoch 1:  40%|████      | 17/42 [00:02<00:02,  8.75it/s]Training Epoch 1:  43%|████▎     | 18/42 [00:02<00:02,  8.77it/s]Training Epoch 1:  45%|████▌     | 19/42 [00:02<00:02,  8.77it/s]Training Epoch 1:  48%|████▊     | 20/42 [00:02<00:02,  8.77it/s]Training Epoch 1:  50%|█████     | 21/42 [00:02<00:02,  8.76it/s]Training Epoch 1:  52%|█████▏    | 22/42 [00:02<00:02,  8.78it/s]Training Epoch 1:  55%|█████▍    | 23/42 [00:02<00:02,  8.77it/s]Training Epoch 1:  57%|█████▋    | 24/42 [00:02<00:02,  8.79it/s]Training Epoch 1:  60%|█████▉    | 25/42 [00:02<00:01,  8.75it/s]Training Epoch 1:  62%|██████▏   | 26/42 [00:03<00:01,  8.76it/s]Training Epoch 1:  64%|██████▍   | 27/42 [00:03<00:01,  8.77it/s]Training Epoch 1:  67%|██████▋   | 28/42 [00:03<00:01,  8.79it/s]Training Epoch 1:  69%|██████▉   | 29/42 [00:03<00:01,  8.70it/s]Training Epoch 1:  71%|███████▏  | 30/42 [00:03<00:01,  8.74it/s]Training Epoch 1:  74%|███████▍  | 31/42 [00:03<00:01,  8.75it/s]Training Epoch 1:  76%|███████▌  | 32/42 [00:03<00:01,  8.77it/s]Training Epoch 1:  79%|███████▊  | 33/42 [00:03<00:01,  8.75it/s]Training Epoch 1:  81%|████████  | 34/42 [00:03<00:00,  8.77it/s]Training Epoch 1:  83%|████████▎ | 35/42 [00:04<00:00,  8.77it/s]Training Epoch 1:  86%|████████▌ | 36/42 [00:04<00:00,  8.78it/s]Training Epoch 1:  88%|████████▊ | 37/42 [00:04<00:00,  8.78it/s]Training Epoch 1:  90%|█████████ | 38/42 [00:04<00:00,  8.78it/s]Training Epoch 1:  93%|█████████▎| 39/42 [00:04<00:00,  8.79it/s]Training Epoch 1:  95%|█████████▌| 40/42 [00:04<00:00,  8.78it/s]Training Epoch 1:  98%|█████████▊| 41/42 [00:04<00:00,  8.79it/s]Training Epoch 1: 100%|██████████| 42/42 [00:04<00:00,  8.80it/s]Training Epoch 1: 100%|██████████| 42/42 [00:04<00:00,  8.54it/s]
+[2025-03-06 19:56:58] DEBUG - Epoch 1: Training Loss = 3.3897
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:57:01] INFO - Epoch 1: Validation Loss = 1.8709
+Training Epoch 2:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 2:   2%|▏         | 1/42 [00:00<00:07,  5.35it/s]Training Epoch 2:   5%|▍         | 2/42 [00:00<00:05,  6.92it/s]Training Epoch 2:   7%|▋         | 3/42 [00:00<00:05,  7.70it/s]Training Epoch 2:  10%|▉         | 4/42 [00:00<00:04,  8.10it/s]Training Epoch 2:  12%|█▏        | 5/42 [00:00<00:04,  8.35it/s]Training Epoch 2:  14%|█▍        | 6/42 [00:00<00:04,  8.50it/s]Training Epoch 2:  17%|█▋        | 7/42 [00:00<00:04,  8.59it/s]Training Epoch 2:  19%|█▉        | 8/42 [00:00<00:03,  8.67it/s]Training Epoch 2:  21%|██▏       | 9/42 [00:01<00:03,  8.71it/s]Training Epoch 2:  24%|██▍       | 10/42 [00:01<00:03,  8.74it/s]Training Epoch 2:  26%|██▌       | 11/42 [00:01<00:03,  8.74it/s]Training Epoch 2:  29%|██▊       | 12/42 [00:01<00:03,  8.76it/s]Training Epoch 2:  31%|███       | 13/42 [00:01<00:03,  8.77it/s]Training Epoch 2:  33%|███▎      | 14/42 [00:01<00:03,  8.78it/s]Training Epoch 2:  36%|███▌      | 15/42 [00:01<00:03,  8.79it/s]Training Epoch 2:  38%|███▊      | 16/42 [00:01<00:02,  8.80it/s]Training Epoch 2:  40%|████      | 17/42 [00:02<00:02,  8.81it/s]Training Epoch 2:  43%|████▎     | 18/42 [00:02<00:02,  8.82it/s]Training Epoch 2:  45%|████▌     | 19/42 [00:02<00:02,  8.82it/s]Training Epoch 2:  48%|████▊     | 20/42 [00:02<00:02,  8.80it/s]Training Epoch 2:  50%|█████     | 21/42 [00:02<00:02,  8.81it/s]Training Epoch 2:  52%|█████▏    | 22/42 [00:02<00:02,  8.81it/s]Training Epoch 2:  55%|█████▍    | 23/42 [00:02<00:02,  8.81it/s]Training Epoch 2:  57%|█████▋    | 24/42 [00:02<00:02,  8.82it/s]Training Epoch 2:  60%|█████▉    | 25/42 [00:02<00:01,  8.81it/s]Training Epoch 2:  62%|██████▏   | 26/42 [00:03<00:01,  8.81it/s]Training Epoch 2:  64%|██████▍   | 27/42 [00:03<00:01,  8.82it/s]Training Epoch 2:  67%|██████▋   | 28/42 [00:03<00:01,  8.82it/s]Training Epoch 2:  69%|██████▉   | 29/42 [00:03<00:01,  8.82it/s]Training Epoch 2:  71%|███████▏  | 30/42 [00:03<00:01,  8.81it/s]Training Epoch 2:  74%|███████▍  | 31/42 [00:03<00:01,  8.81it/s]Training Epoch 2:  76%|███████▌  | 32/42 [00:03<00:01,  8.82it/s]Training Epoch 2:  79%|███████▊  | 33/42 [00:03<00:01,  8.82it/s]Training Epoch 2:  81%|████████  | 34/42 [00:03<00:00,  8.83it/s]Training Epoch 2:  83%|████████▎ | 35/42 [00:04<00:00,  8.81it/s]Training Epoch 2:  86%|████████▌ | 36/42 [00:04<00:00,  8.82it/s]Training Epoch 2:  88%|████████▊ | 37/42 [00:04<00:00,  8.82it/s]Training Epoch 2:  90%|█████████ | 38/42 [00:04<00:00,  8.81it/s]Training Epoch 2:  93%|█████████▎| 39/42 [00:04<00:00,  8.81it/s]Training Epoch 2:  95%|█████████▌| 40/42 [00:04<00:00,  8.81it/s]Training Epoch 2:  98%|█████████▊| 41/42 [00:04<00:00,  8.82it/s]Training Epoch 2: 100%|██████████| 42/42 [00:04<00:00,  8.82it/s]Training Epoch 2: 100%|██████████| 42/42 [00:04<00:00,  8.59it/s]
+[2025-03-06 19:57:06] DEBUG - Epoch 2: Training Loss = 1.2873
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:57:08] INFO - Epoch 2: Validation Loss = 1.4709
+Training Epoch 3:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 3:   2%|▏         | 1/42 [00:00<00:07,  5.40it/s]Training Epoch 3:   5%|▍         | 2/42 [00:00<00:05,  6.87it/s]Training Epoch 3:   7%|▋         | 3/42 [00:00<00:05,  7.66it/s]Training Epoch 3:  10%|▉         | 4/42 [00:00<00:04,  8.08it/s]Training Epoch 3:  12%|█▏        | 5/42 [00:00<00:04,  8.36it/s]Training Epoch 3:  14%|█▍        | 6/42 [00:00<00:04,  8.48it/s]Training Epoch 3:  17%|█▋        | 7/42 [00:00<00:04,  8.58it/s]Training Epoch 3:  19%|█▉        | 8/42 [00:00<00:03,  8.63it/s]Training Epoch 3:  21%|██▏       | 9/42 [00:01<00:03,  8.69it/s]Training Epoch 3:  24%|██▍       | 10/42 [00:01<00:03,  8.72it/s]Training Epoch 3:  26%|██▌       | 11/42 [00:01<00:03,  8.74it/s]Training Epoch 3:  29%|██▊       | 12/42 [00:01<00:03,  8.77it/s]Training Epoch 3:  31%|███       | 13/42 [00:01<00:03,  8.78it/s]Training Epoch 3:  33%|███▎      | 14/42 [00:01<00:03,  8.79it/s]Training Epoch 3:  36%|███▌      | 15/42 [00:01<00:03,  8.80it/s]Training Epoch 3:  38%|███▊      | 16/42 [00:01<00:02,  8.78it/s]Training Epoch 3:  40%|████      | 17/42 [00:02<00:02,  8.79it/s]Training Epoch 3:  43%|████▎     | 18/42 [00:02<00:02,  8.80it/s]Training Epoch 3:  45%|████▌     | 19/42 [00:02<00:02,  8.81it/s]Training Epoch 3:  48%|████▊     | 20/42 [00:02<00:02,  8.81it/s]Training Epoch 3:  50%|█████     | 21/42 [00:02<00:02,  8.81it/s]Training Epoch 3:  52%|█████▏    | 22/42 [00:02<00:02,  8.81it/s]Training Epoch 3:  55%|█████▍    | 23/42 [00:02<00:02,  8.81it/s]Training Epoch 3:  57%|█████▋    | 24/42 [00:02<00:02,  8.80it/s]Training Epoch 3:  60%|█████▉    | 25/42 [00:02<00:01,  8.81it/s]Training Epoch 3:  62%|██████▏   | 26/42 [00:03<00:01,  8.81it/s]Training Epoch 3:  64%|██████▍   | 27/42 [00:03<00:01,  8.81it/s]Training Epoch 3:  67%|██████▋   | 28/42 [00:03<00:01,  8.81it/s]Training Epoch 3:  69%|██████▉   | 29/42 [00:03<00:01,  8.81it/s]Training Epoch 3:  71%|███████▏  | 30/42 [00:03<00:01,  8.81it/s]Training Epoch 3:  74%|███████▍  | 31/42 [00:03<00:01,  8.81it/s]Training Epoch 3:  76%|███████▌  | 32/42 [00:03<00:01,  8.80it/s]Training Epoch 3:  79%|███████▊  | 33/42 [00:03<00:01,  8.81it/s]Training Epoch 3:  81%|████████  | 34/42 [00:03<00:00,  8.81it/s]Training Epoch 3:  83%|████████▎ | 35/42 [00:04<00:00,  8.81it/s]Training Epoch 3:  86%|████████▌ | 36/42 [00:04<00:00,  8.80it/s]Training Epoch 3:  88%|████████▊ | 37/42 [00:04<00:00,  8.80it/s]Training Epoch 3:  90%|█████████ | 38/42 [00:04<00:00,  8.81it/s]Training Epoch 3:  93%|█████████▎| 39/42 [00:04<00:00,  8.80it/s]Training Epoch 3:  95%|█████████▌| 40/42 [00:04<00:00,  8.81it/s]Training Epoch 3:  98%|█████████▊| 41/42 [00:04<00:00,  8.81it/s]Training Epoch 3: 100%|██████████| 42/42 [00:04<00:00,  8.82it/s]Training Epoch 3: 100%|██████████| 42/42 [00:04<00:00,  8.58it/s]
+[2025-03-06 19:57:13] DEBUG - Epoch 3: Training Loss = 1.1759
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:57:15] INFO - Epoch 3: Validation Loss = 1.4111
+Training Epoch 4:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 4:   2%|▏         | 1/42 [00:00<00:07,  5.28it/s]Training Epoch 4:   5%|▍         | 2/42 [00:00<00:05,  6.86it/s]Training Epoch 4:   7%|▋         | 3/42 [00:00<00:05,  7.67it/s]Training Epoch 4:  10%|▉         | 4/42 [00:00<00:04,  8.07it/s]Training Epoch 4:  12%|█▏        | 5/42 [00:00<00:04,  8.33it/s]Training Epoch 4:  14%|█▍        | 6/42 [00:00<00:04,  8.49it/s]Training Epoch 4:  17%|█▋        | 7/42 [00:00<00:04,  8.60it/s]Training Epoch 4:  19%|█▉        | 8/42 [00:00<00:03,  8.67it/s]Training Epoch 4:  21%|██▏       | 9/42 [00:01<00:03,  8.71it/s]Training Epoch 4:  24%|██▍       | 10/42 [00:01<00:03,  8.75it/s]Training Epoch 4:  26%|██▌       | 11/42 [00:01<00:03,  8.77it/s]Training Epoch 4:  29%|██▊       | 12/42 [00:01<00:03,  8.78it/s]Training Epoch 4:  31%|███       | 13/42 [00:01<00:03,  8.79it/s]Training Epoch 4:  33%|███▎      | 14/42 [00:01<00:03,  8.80it/s]Training Epoch 4:  36%|███▌      | 15/42 [00:01<00:03,  8.80it/s]Training Epoch 4:  38%|███▊      | 16/42 [00:01<00:02,  8.81it/s]Training Epoch 4:  40%|████      | 17/42 [00:02<00:02,  8.81it/s]Training Epoch 4:  43%|████▎     | 18/42 [00:02<00:02,  8.81it/s]Training Epoch 4:  45%|████▌     | 19/42 [00:02<00:02,  8.82it/s]Training Epoch 4:  48%|████▊     | 20/42 [00:02<00:02,  8.82it/s]Training Epoch 4:  50%|█████     | 21/42 [00:02<00:02,  8.82it/s]Training Epoch 4:  52%|█████▏    | 22/42 [00:02<00:02,  8.81it/s]Training Epoch 4:  55%|█████▍    | 23/42 [00:02<00:02,  8.81it/s]Training Epoch 4:  57%|█████▋    | 24/42 [00:02<00:02,  8.81it/s]Training Epoch 4:  60%|█████▉    | 25/42 [00:02<00:01,  8.81it/s]Training Epoch 4:  62%|██████▏   | 26/42 [00:03<00:01,  8.81it/s]Training Epoch 4:  64%|██████▍   | 27/42 [00:03<00:01,  8.82it/s]Training Epoch 4:  67%|██████▋   | 28/42 [00:03<00:01,  8.82it/s]Training Epoch 4:  69%|██████▉   | 29/42 [00:03<00:01,  8.82it/s]Training Epoch 4:  71%|███████▏  | 30/42 [00:03<00:01,  8.81it/s]Training Epoch 4:  74%|███████▍  | 31/42 [00:03<00:01,  8.82it/s]Training Epoch 4:  76%|███████▌  | 32/42 [00:03<00:01,  8.81it/s]Training Epoch 4:  79%|███████▊  | 33/42 [00:03<00:01,  8.81it/s]Training Epoch 4:  81%|████████  | 34/42 [00:03<00:00,  8.82it/s]Training Epoch 4:  83%|████████▎ | 35/42 [00:04<00:00,  8.82it/s]Training Epoch 4:  86%|████████▌ | 36/42 [00:04<00:00,  8.82it/s]Training Epoch 4:  88%|████████▊ | 37/42 [00:04<00:00,  8.82it/s]Training Epoch 4:  90%|█████████ | 38/42 [00:04<00:00,  8.82it/s]Training Epoch 4:  93%|█████████▎| 39/42 [00:04<00:00,  8.83it/s]Training Epoch 4:  95%|█████████▌| 40/42 [00:04<00:00,  8.83it/s]Training Epoch 4:  98%|█████████▊| 41/42 [00:04<00:00,  8.83it/s]Training Epoch 4: 100%|██████████| 42/42 [00:04<00:00,  8.84it/s]Training Epoch 4: 100%|██████████| 42/42 [00:04<00:00,  8.59it/s]
+[2025-03-06 19:57:20] DEBUG - Epoch 4: Training Loss = 1.1069
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:57:23] INFO - Epoch 4: Validation Loss = 1.3643
+Training Epoch 5:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 5:   2%|▏         | 1/42 [00:00<00:07,  5.35it/s]Training Epoch 5:   5%|▍         | 2/42 [00:00<00:05,  6.87it/s]Training Epoch 5:   7%|▋         | 3/42 [00:00<00:05,  7.68it/s]Training Epoch 5:  10%|▉         | 4/42 [00:00<00:04,  8.09it/s]Training Epoch 5:  12%|█▏        | 5/42 [00:00<00:04,  8.37it/s]Training Epoch 5:  14%|█▍        | 6/42 [00:00<00:04,  8.52it/s]Training Epoch 5:  17%|█▋        | 7/42 [00:00<00:04,  8.62it/s]Training Epoch 5:  19%|█▉        | 8/42 [00:00<00:03,  8.68it/s]Training Epoch 5:  21%|██▏       | 9/42 [00:01<00:03,  8.72it/s]Training Epoch 5:  24%|██▍       | 10/42 [00:01<00:03,  8.75it/s]Training Epoch 5:  26%|██▌       | 11/42 [00:01<00:03,  8.77it/s]Training Epoch 5:  29%|██▊       | 12/42 [00:01<00:03,  8.79it/s]Training Epoch 5:  31%|███       | 13/42 [00:01<00:03,  8.79it/s]Training Epoch 5:  33%|███▎      | 14/42 [00:01<00:03,  8.80it/s]Training Epoch 5:  36%|███▌      | 15/42 [00:01<00:03,  8.81it/s]Training Epoch 5:  38%|███▊      | 16/42 [00:01<00:02,  8.81it/s]Training Epoch 5:  40%|████      | 17/42 [00:02<00:02,  8.82it/s]Training Epoch 5:  43%|████▎     | 18/42 [00:02<00:02,  8.82it/s]Training Epoch 5:  45%|████▌     | 19/42 [00:02<00:02,  8.83it/s]Training Epoch 5:  48%|████▊     | 20/42 [00:02<00:02,  8.83it/s]Training Epoch 5:  50%|█████     | 21/42 [00:02<00:02,  8.82it/s]Training Epoch 5:  52%|█████▏    | 22/42 [00:02<00:02,  8.81it/s]Training Epoch 5:  55%|█████▍    | 23/42 [00:02<00:02,  8.81it/s]Training Epoch 5:  57%|█████▋    | 24/42 [00:02<00:02,  8.81it/s]Training Epoch 5:  60%|█████▉    | 25/42 [00:02<00:01,  8.81it/s]Training Epoch 5:  62%|██████▏   | 26/42 [00:03<00:01,  8.81it/s]Training Epoch 5:  64%|██████▍   | 27/42 [00:03<00:01,  8.81it/s]Training Epoch 5:  67%|██████▋   | 28/42 [00:03<00:01,  8.81it/s]Training Epoch 5:  69%|██████▉   | 29/42 [00:03<00:01,  8.81it/s]Training Epoch 5:  71%|███████▏  | 30/42 [00:03<00:01,  8.82it/s]Training Epoch 5:  74%|███████▍  | 31/42 [00:03<00:01,  8.82it/s]Training Epoch 5:  76%|███████▌  | 32/42 [00:03<00:01,  8.82it/s]Training Epoch 5:  79%|███████▊  | 33/42 [00:03<00:01,  8.82it/s]Training Epoch 5:  81%|████████  | 34/42 [00:03<00:00,  8.77it/s]Training Epoch 5:  83%|████████▎ | 35/42 [00:04<00:00,  8.77it/s]Training Epoch 5:  86%|████████▌ | 36/42 [00:04<00:00,  8.78it/s]Training Epoch 5:  88%|████████▊ | 37/42 [00:04<00:00,  8.77it/s]Training Epoch 5:  90%|█████████ | 38/42 [00:04<00:00,  8.78it/s]Training Epoch 5:  93%|█████████▎| 39/42 [00:04<00:00,  8.80it/s]Training Epoch 5:  95%|█████████▌| 40/42 [00:04<00:00,  8.81it/s]Training Epoch 5:  98%|█████████▊| 41/42 [00:04<00:00,  8.81it/s]Training Epoch 5: 100%|██████████| 42/42 [00:04<00:00,  8.82it/s]Training Epoch 5: 100%|██████████| 42/42 [00:04<00:00,  8.60it/s]
+[2025-03-06 19:57:27] DEBUG - Epoch 5: Training Loss = 1.0416
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:57:30] INFO - Epoch 5: Validation Loss = 1.3141
+[2025-03-06 19:57:30] INFO - Starting fine-tuning with iA3...
+[2025-03-06 19:57:30] INFO - Applying iA3: injecting learned scaling vectors into selected layers.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.0.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.0.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.0.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.0.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.0.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.1.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.1.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.1.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.1.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.1.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.2.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.2.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.2.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.2.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.2.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.3.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.3.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.3.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.3.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.3.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.4.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.4.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.4.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.4.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.4.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.5.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.5.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.5.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.5.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.5.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.6.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.6.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.6.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.6.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.6.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.7.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.7.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.7.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.7.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.7.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.8.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.8.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.8.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.8.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.8.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.9.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.9.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.9.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.9.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.9.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.10.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.10.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.10.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.10.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.10.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.11.attention.self.query with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.11.attention.self.key with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.11.attention.self.value with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.11.attention.output.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - Wrapped encoder.layer.11.intermediate.dense with IA3 scaling.
+[2025-03-06 19:57:30] INFO - iA3: Trainable parameters: 44421889
+/opt/conda/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:28: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn("The verbose parameter is deprecated. Please use get_last_lr() "
+Training Epoch 1:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 1:   2%|▏         | 1/42 [00:00<00:08,  4.87it/s]Training Epoch 1:   5%|▍         | 2/42 [00:00<00:06,  6.13it/s]Training Epoch 1:   7%|▋         | 3/42 [00:00<00:05,  6.76it/s]Training Epoch 1:  10%|▉         | 4/42 [00:00<00:05,  7.06it/s]Training Epoch 1:  12%|█▏        | 5/42 [00:00<00:05,  7.27it/s]Training Epoch 1:  14%|█▍        | 6/42 [00:00<00:04,  7.39it/s]Training Epoch 1:  17%|█▋        | 7/42 [00:00<00:04,  7.46it/s]Training Epoch 1:  19%|█▉        | 8/42 [00:01<00:04,  7.51it/s]Training Epoch 1:  21%|██▏       | 9/42 [00:01<00:04,  7.54it/s]Training Epoch 1:  24%|██▍       | 10/42 [00:01<00:04,  7.55it/s]Training Epoch 1:  26%|██▌       | 11/42 [00:01<00:04,  7.57it/s]Training Epoch 1:  29%|██▊       | 12/42 [00:01<00:03,  7.58it/s]Training Epoch 1:  31%|███       | 13/42 [00:01<00:03,  7.60it/s]Training Epoch 1:  33%|███▎      | 14/42 [00:01<00:03,  7.60it/s]Training Epoch 1:  36%|███▌      | 15/42 [00:02<00:03,  7.61it/s]Training Epoch 1:  38%|███▊      | 16/42 [00:02<00:03,  7.61it/s]Training Epoch 1:  40%|████      | 17/42 [00:02<00:03,  7.61it/s]Training Epoch 1:  43%|████▎     | 18/42 [00:02<00:03,  7.62it/s]Training Epoch 1:  45%|████▌     | 19/42 [00:02<00:03,  7.62it/s]Training Epoch 1:  48%|████▊     | 20/42 [00:02<00:02,  7.62it/s]Training Epoch 1:  50%|█████     | 21/42 [00:02<00:02,  7.62it/s]Training Epoch 1:  52%|█████▏    | 22/42 [00:02<00:02,  7.62it/s]Training Epoch 1:  55%|█████▍    | 23/42 [00:03<00:02,  7.62it/s]Training Epoch 1:  57%|█████▋    | 24/42 [00:03<00:02,  7.62it/s]Training Epoch 1:  60%|█████▉    | 25/42 [00:03<00:02,  7.62it/s]Training Epoch 1:  62%|██████▏   | 26/42 [00:03<00:02,  7.61it/s]Training Epoch 1:  64%|██████▍   | 27/42 [00:03<00:01,  7.62it/s]Training Epoch 1:  67%|██████▋   | 28/42 [00:03<00:01,  7.62it/s]Training Epoch 1:  69%|██████▉   | 29/42 [00:03<00:01,  7.62it/s]Training Epoch 1:  71%|███████▏  | 30/42 [00:04<00:01,  7.63it/s]Training Epoch 1:  74%|███████▍  | 31/42 [00:04<00:01,  7.63it/s]Training Epoch 1:  76%|███████▌  | 32/42 [00:04<00:01,  7.63it/s]Training Epoch 1:  79%|███████▊  | 33/42 [00:04<00:01,  7.63it/s]Training Epoch 1:  81%|████████  | 34/42 [00:04<00:01,  7.63it/s]Training Epoch 1:  83%|████████▎ | 35/42 [00:04<00:00,  7.63it/s]Training Epoch 1:  86%|████████▌ | 36/42 [00:04<00:00,  7.62it/s]Training Epoch 1:  88%|████████▊ | 37/42 [00:04<00:00,  7.60it/s]Training Epoch 1:  90%|█████████ | 38/42 [00:05<00:00,  7.60it/s]Training Epoch 1:  93%|█████████▎| 39/42 [00:05<00:00,  7.61it/s]Training Epoch 1:  95%|█████████▌| 40/42 [00:05<00:00,  7.60it/s]Training Epoch 1:  98%|█████████▊| 41/42 [00:05<00:00,  7.61it/s]Training Epoch 1: 100%|██████████| 42/42 [00:05<00:00,  7.62it/s]Training Epoch 1: 100%|██████████| 42/42 [00:05<00:00,  7.46it/s]
+[2025-03-06 19:57:36] DEBUG - Epoch 1: Training Loss = 1.3996
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:57:38] INFO - Epoch 1: Validation Loss = 1.1414
+Training Epoch 2:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 2:   2%|▏         | 1/42 [00:00<00:08,  4.88it/s]Training Epoch 2:   5%|▍         | 2/42 [00:00<00:06,  6.09it/s]Training Epoch 2:   7%|▋         | 3/42 [00:00<00:05,  6.72it/s]Training Epoch 2:  10%|▉         | 4/42 [00:00<00:05,  7.05it/s]Training Epoch 2:  12%|█▏        | 5/42 [00:00<00:05,  7.27it/s]Training Epoch 2:  14%|█▍        | 6/42 [00:00<00:04,  7.38it/s]Training Epoch 2:  17%|█▋        | 7/42 [00:00<00:04,  7.46it/s]Training Epoch 2:  19%|█▉        | 8/42 [00:01<00:04,  7.51it/s]Training Epoch 2:  21%|██▏       | 9/42 [00:01<00:04,  7.55it/s]Training Epoch 2:  24%|██▍       | 10/42 [00:01<00:04,  7.58it/s]Training Epoch 2:  26%|██▌       | 11/42 [00:01<00:04,  7.59it/s]Training Epoch 2:  29%|██▊       | 12/42 [00:01<00:03,  7.60it/s]Training Epoch 2:  31%|███       | 13/42 [00:01<00:03,  7.60it/s]Training Epoch 2:  33%|███▎      | 14/42 [00:01<00:03,  7.61it/s]Training Epoch 2:  36%|███▌      | 15/42 [00:02<00:03,  7.61it/s]Training Epoch 2:  38%|███▊      | 16/42 [00:02<00:03,  7.60it/s]Training Epoch 2:  40%|████      | 17/42 [00:02<00:03,  7.60it/s]Training Epoch 2:  43%|████▎     | 18/42 [00:02<00:03,  7.61it/s]Training Epoch 2:  45%|████▌     | 19/42 [00:02<00:03,  7.62it/s]Training Epoch 2:  48%|████▊     | 20/42 [00:02<00:02,  7.62it/s]Training Epoch 2:  50%|█████     | 21/42 [00:02<00:02,  7.62it/s]Training Epoch 2:  52%|█████▏    | 22/42 [00:02<00:02,  7.62it/s]Training Epoch 2:  55%|█████▍    | 23/42 [00:03<00:02,  7.62it/s]Training Epoch 2:  57%|█████▋    | 24/42 [00:03<00:02,  7.62it/s]Training Epoch 2:  60%|█████▉    | 25/42 [00:03<00:02,  7.62it/s]Training Epoch 2:  62%|██████▏   | 26/42 [00:03<00:02,  7.62it/s]Training Epoch 2:  64%|██████▍   | 27/42 [00:03<00:01,  7.62it/s]Training Epoch 2:  67%|██████▋   | 28/42 [00:03<00:01,  7.61it/s]Training Epoch 2:  69%|██████▉   | 29/42 [00:03<00:01,  7.61it/s]Training Epoch 2:  71%|███████▏  | 30/42 [00:04<00:01,  7.61it/s]Training Epoch 2:  74%|███████▍  | 31/42 [00:04<00:01,  7.61it/s]Training Epoch 2:  76%|███████▌  | 32/42 [00:04<00:01,  7.61it/s]Training Epoch 2:  79%|███████▊  | 33/42 [00:04<00:01,  7.60it/s]Training Epoch 2:  81%|████████  | 34/42 [00:04<00:01,  7.58it/s]Training Epoch 2:  83%|████████▎ | 35/42 [00:04<00:00,  7.54it/s]Training Epoch 2:  86%|████████▌ | 36/42 [00:04<00:00,  7.55it/s]Training Epoch 2:  88%|████████▊ | 37/42 [00:04<00:00,  7.56it/s]Training Epoch 2:  90%|█████████ | 38/42 [00:05<00:00,  7.58it/s]Training Epoch 2:  93%|█████████▎| 39/42 [00:05<00:00,  7.60it/s]Training Epoch 2:  95%|█████████▌| 40/42 [00:05<00:00,  7.60it/s]Training Epoch 2:  98%|█████████▊| 41/42 [00:05<00:00,  7.61it/s]Training Epoch 2: 100%|██████████| 42/42 [00:05<00:00,  7.62it/s]Training Epoch 2: 100%|██████████| 42/42 [00:05<00:00,  7.44it/s]
+[2025-03-06 19:57:44] DEBUG - Epoch 2: Training Loss = 0.6491
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:57:46] INFO - Epoch 2: Validation Loss = 0.9975
+Training Epoch 3:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 3:   2%|▏         | 1/42 [00:00<00:08,  4.73it/s]Training Epoch 3:   5%|▍         | 2/42 [00:00<00:06,  6.01it/s]Training Epoch 3:   7%|▋         | 3/42 [00:00<00:05,  6.68it/s]Training Epoch 3:  10%|▉         | 4/42 [00:00<00:05,  7.02it/s]Training Epoch 3:  12%|█▏        | 5/42 [00:00<00:05,  7.24it/s]Training Epoch 3:  14%|█▍        | 6/42 [00:00<00:04,  7.37it/s]Training Epoch 3:  17%|█▋        | 7/42 [00:01<00:04,  7.45it/s]Training Epoch 3:  19%|█▉        | 8/42 [00:01<00:04,  7.50it/s]Training Epoch 3:  21%|██▏       | 9/42 [00:01<00:04,  7.54it/s]Training Epoch 3:  24%|██▍       | 10/42 [00:01<00:04,  7.56it/s]Training Epoch 3:  26%|██▌       | 11/42 [00:01<00:04,  7.58it/s]Training Epoch 3:  29%|██▊       | 12/42 [00:01<00:03,  7.59it/s]Training Epoch 3:  31%|███       | 13/42 [00:01<00:03,  7.60it/s]Training Epoch 3:  33%|███▎      | 14/42 [00:01<00:03,  7.61it/s]Training Epoch 3:  36%|███▌      | 15/42 [00:02<00:03,  7.61it/s]Training Epoch 3:  38%|███▊      | 16/42 [00:02<00:03,  7.62it/s]Training Epoch 3:  40%|████      | 17/42 [00:02<00:03,  7.62it/s]Training Epoch 3:  43%|████▎     | 18/42 [00:02<00:03,  7.62it/s]Training Epoch 3:  45%|████▌     | 19/42 [00:02<00:03,  7.62it/s]Training Epoch 3:  48%|████▊     | 20/42 [00:02<00:02,  7.62it/s]Training Epoch 3:  50%|█████     | 21/42 [00:02<00:02,  7.62it/s]Training Epoch 3:  52%|█████▏    | 22/42 [00:02<00:02,  7.61it/s]Training Epoch 3:  55%|█████▍    | 23/42 [00:03<00:02,  7.61it/s]Training Epoch 3:  57%|█████▋    | 24/42 [00:03<00:02,  7.62it/s]Training Epoch 3:  60%|█████▉    | 25/42 [00:03<00:02,  7.62it/s]Training Epoch 3:  62%|██████▏   | 26/42 [00:03<00:02,  7.62it/s]Training Epoch 3:  64%|██████▍   | 27/42 [00:03<00:01,  7.63it/s]Training Epoch 3:  67%|██████▋   | 28/42 [00:03<00:01,  7.63it/s]Training Epoch 3:  69%|██████▉   | 29/42 [00:03<00:01,  7.63it/s]Training Epoch 3:  71%|███████▏  | 30/42 [00:04<00:01,  7.63it/s]Training Epoch 3:  74%|███████▍  | 31/42 [00:04<00:01,  7.62it/s]Training Epoch 3:  76%|███████▌  | 32/42 [00:04<00:01,  7.62it/s]Training Epoch 3:  79%|███████▊  | 33/42 [00:04<00:01,  7.62it/s]Training Epoch 3:  81%|████████  | 34/42 [00:04<00:01,  7.62it/s]Training Epoch 3:  83%|████████▎ | 35/42 [00:04<00:00,  7.62it/s]Training Epoch 3:  86%|████████▌ | 36/42 [00:04<00:00,  7.62it/s]Training Epoch 3:  88%|████████▊ | 37/42 [00:04<00:00,  7.62it/s]Training Epoch 3:  90%|█████████ | 38/42 [00:05<00:00,  7.62it/s]Training Epoch 3:  93%|█████████▎| 39/42 [00:05<00:00,  7.62it/s]Training Epoch 3:  95%|█████████▌| 40/42 [00:05<00:00,  7.62it/s]Training Epoch 3:  98%|█████████▊| 41/42 [00:05<00:00,  7.63it/s]Training Epoch 3: 100%|██████████| 42/42 [00:05<00:00,  7.63it/s]Training Epoch 3: 100%|██████████| 42/42 [00:05<00:00,  7.44it/s]
+[2025-03-06 19:57:52] DEBUG - Epoch 3: Training Loss = 0.3684
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:57:54] INFO - Epoch 3: Validation Loss = 0.9041
+Training Epoch 4:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 4:   2%|▏         | 1/42 [00:00<00:08,  4.69it/s]Training Epoch 4:   5%|▍         | 2/42 [00:00<00:06,  6.01it/s]Training Epoch 4:   7%|▋         | 3/42 [00:00<00:05,  6.67it/s]Training Epoch 4:  10%|▉         | 4/42 [00:00<00:05,  7.02it/s]Training Epoch 4:  12%|█▏        | 5/42 [00:00<00:05,  7.23it/s]Training Epoch 4:  14%|█▍        | 6/42 [00:00<00:04,  7.36it/s]Training Epoch 4:  17%|█▋        | 7/42 [00:01<00:04,  7.44it/s]Training Epoch 4:  19%|█▉        | 8/42 [00:01<00:04,  7.50it/s]Training Epoch 4:  21%|██▏       | 9/42 [00:01<00:04,  7.54it/s]Training Epoch 4:  24%|██▍       | 10/42 [00:01<00:04,  7.56it/s]Training Epoch 4:  26%|██▌       | 11/42 [00:01<00:04,  7.58it/s]Training Epoch 4:  29%|██▊       | 12/42 [00:01<00:03,  7.59it/s]Training Epoch 4:  31%|███       | 13/42 [00:01<00:03,  7.60it/s]Training Epoch 4:  33%|███▎      | 14/42 [00:01<00:03,  7.60it/s]Training Epoch 4:  36%|███▌      | 15/42 [00:02<00:03,  7.61it/s]Training Epoch 4:  38%|███▊      | 16/42 [00:02<00:03,  7.61it/s]Training Epoch 4:  40%|████      | 17/42 [00:02<00:03,  7.62it/s]Training Epoch 4:  43%|████▎     | 18/42 [00:02<00:03,  7.62it/s]Training Epoch 4:  45%|████▌     | 19/42 [00:02<00:03,  7.62it/s]Training Epoch 4:  48%|████▊     | 20/42 [00:02<00:02,  7.62it/s]Training Epoch 4:  50%|█████     | 21/42 [00:02<00:02,  7.63it/s]Training Epoch 4:  52%|█████▏    | 22/42 [00:02<00:02,  7.63it/s]Training Epoch 4:  55%|█████▍    | 23/42 [00:03<00:02,  7.63it/s]Training Epoch 4:  57%|█████▋    | 24/42 [00:03<00:02,  7.62it/s]Training Epoch 4:  60%|█████▉    | 25/42 [00:03<00:02,  7.63it/s]Training Epoch 4:  62%|██████▏   | 26/42 [00:03<00:02,  7.63it/s]Training Epoch 4:  64%|██████▍   | 27/42 [00:03<00:01,  7.63it/s]Training Epoch 4:  67%|██████▋   | 28/42 [00:03<00:01,  7.62it/s]Training Epoch 4:  69%|██████▉   | 29/42 [00:03<00:01,  7.62it/s]Training Epoch 4:  71%|███████▏  | 30/42 [00:04<00:01,  7.63it/s]Training Epoch 4:  74%|███████▍  | 31/42 [00:04<00:01,  7.63it/s]Training Epoch 4:  76%|███████▌  | 32/42 [00:04<00:01,  7.62it/s]Training Epoch 4:  79%|███████▊  | 33/42 [00:04<00:01,  7.62it/s]Training Epoch 4:  81%|████████  | 34/42 [00:04<00:01,  7.62it/s]Training Epoch 4:  83%|████████▎ | 35/42 [00:04<00:00,  7.62it/s]Training Epoch 4:  86%|████████▌ | 36/42 [00:04<00:00,  7.62it/s]Training Epoch 4:  88%|████████▊ | 37/42 [00:04<00:00,  7.59it/s]Training Epoch 4:  90%|█████████ | 38/42 [00:05<00:00,  7.60it/s]Training Epoch 4:  93%|█████████▎| 39/42 [00:05<00:00,  7.59it/s]Training Epoch 4:  95%|█████████▌| 40/42 [00:05<00:00,  7.61it/s]Training Epoch 4:  98%|█████████▊| 41/42 [00:05<00:00,  7.61it/s]Training Epoch 4: 100%|██████████| 42/42 [00:05<00:00,  7.62it/s]Training Epoch 4: 100%|██████████| 42/42 [00:05<00:00,  7.45it/s]
+[2025-03-06 19:58:00] DEBUG - Epoch 4: Training Loss = 0.2882
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:58:02] INFO - Epoch 4: Validation Loss = 0.9272
+Training Epoch 5:   0%|          | 0/42 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Training Epoch 5:   2%|▏         | 1/42 [00:00<00:08,  4.61it/s]Training Epoch 5:   5%|▍         | 2/42 [00:00<00:06,  5.92it/s]Training Epoch 5:   7%|▋         | 3/42 [00:00<00:05,  6.62it/s]Training Epoch 5:  10%|▉         | 4/42 [00:00<00:05,  6.98it/s]Training Epoch 5:  12%|█▏        | 5/42 [00:00<00:05,  7.16it/s]Training Epoch 5:  14%|█▍        | 6/42 [00:00<00:04,  7.30it/s]Training Epoch 5:  17%|█▋        | 7/42 [00:01<00:04,  7.40it/s]Training Epoch 5:  19%|█▉        | 8/42 [00:01<00:04,  7.46it/s]Training Epoch 5:  21%|██▏       | 9/42 [00:01<00:04,  7.51it/s]Training Epoch 5:  24%|██▍       | 10/42 [00:01<00:04,  7.49it/s]Training Epoch 5:  26%|██▌       | 11/42 [00:01<00:04,  7.52it/s]Training Epoch 5:  29%|██▊       | 12/42 [00:01<00:03,  7.55it/s]Training Epoch 5:  31%|███       | 13/42 [00:01<00:03,  7.57it/s]Training Epoch 5:  33%|███▎      | 14/42 [00:01<00:03,  7.58it/s]Training Epoch 5:  36%|███▌      | 15/42 [00:02<00:03,  7.59it/s]Training Epoch 5:  38%|███▊      | 16/42 [00:02<00:03,  7.59it/s]Training Epoch 5:  40%|████      | 17/42 [00:02<00:03,  7.60it/s]Training Epoch 5:  43%|████▎     | 18/42 [00:02<00:03,  7.61it/s]Training Epoch 5:  45%|████▌     | 19/42 [00:02<00:03,  7.60it/s]Training Epoch 5:  48%|████▊     | 20/42 [00:02<00:02,  7.61it/s]Training Epoch 5:  50%|█████     | 21/42 [00:02<00:02,  7.61it/s]Training Epoch 5:  52%|█████▏    | 22/42 [00:02<00:02,  7.62it/s]Training Epoch 5:  55%|█████▍    | 23/42 [00:03<00:02,  7.62it/s]Training Epoch 5:  57%|█████▋    | 24/42 [00:03<00:02,  7.59it/s]Training Epoch 5:  60%|█████▉    | 25/42 [00:03<00:02,  7.60it/s]Training Epoch 5:  62%|██████▏   | 26/42 [00:03<00:02,  7.60it/s]Training Epoch 5:  64%|██████▍   | 27/42 [00:03<00:01,  7.60it/s]Training Epoch 5:  67%|██████▋   | 28/42 [00:03<00:01,  7.61it/s]Training Epoch 5:  69%|██████▉   | 29/42 [00:03<00:01,  7.62it/s]Training Epoch 5:  71%|███████▏  | 30/42 [00:04<00:01,  7.46it/s]Training Epoch 5:  74%|███████▍  | 31/42 [00:04<00:01,  7.51it/s]Training Epoch 5:  76%|███████▌  | 32/42 [00:04<00:01,  7.54it/s]Training Epoch 5:  79%|███████▊  | 33/42 [00:04<00:01,  7.57it/s]Training Epoch 5:  81%|████████  | 34/42 [00:04<00:01,  7.57it/s]Training Epoch 5:  83%|████████▎ | 35/42 [00:04<00:00,  7.59it/s]Training Epoch 5:  86%|████████▌ | 36/42 [00:04<00:00,  7.59it/s]Training Epoch 5:  88%|████████▊ | 37/42 [00:04<00:00,  7.60it/s]Training Epoch 5:  90%|█████████ | 38/42 [00:05<00:00,  7.60it/s]Training Epoch 5:  93%|█████████▎| 39/42 [00:05<00:00,  7.61it/s]Training Epoch 5:  95%|█████████▌| 40/42 [00:05<00:00,  7.61it/s]Training Epoch 5:  98%|█████████▊| 41/42 [00:05<00:00,  7.62it/s]Training Epoch 5: 100%|██████████| 42/42 [00:05<00:00,  7.62it/s]Training Epoch 5: 100%|██████████| 42/42 [00:05<00:00,  7.41it/s]
+[2025-03-06 19:58:08] DEBUG - Epoch 5: Training Loss = 0.2332
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[2025-03-06 19:58:10] INFO - Epoch 5: Validation Loss = 1.0045
+[2025-03-06 19:58:10] INFO - Early stopping triggered at epoch 5
+[2025-03-06 19:58:10] INFO - === Experiment Results ===
+[2025-03-06 19:58:10] INFO - BitFit: MSE=1.0915, MAE=0.8276, R2=0.2489, TrainTime=30.54s, TrainableParams=74497
+[2025-03-06 19:58:10] INFO - LoRA: MSE=1.3153, MAE=0.9384, R2=0.0949, TrainTime=36.60s, TrainableParams=9677569
+[2025-03-06 19:58:10] INFO - iA3: MSE=1.0223, MAE=0.7697, R2=0.2965, TrainTime=39.55s, TrainableParams=44421889
+[2025-03-06 19:58:10] INFO - Saved experiment results to logs/task3_results.csv
+[2025-03-06 19:58:11] DEBUG - Using selector: EpollSelector
+wandb: uploading saved_models/model_ia3.pt; uploading saved_models/model_bitfit.pt; uploading saved_models/model_lora.pt
+wandb: uploading saved_models/model_bitfit.pt; uploading saved_models/model_lora.pt; uploading saved_models/model_ia3.pt
+wandb: uploading saved_models/model_ia3.pt
+wandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:             BitFit_MAE ▁
+wandb:             BitFit_MSE ▁
+wandb:              BitFit_R2 ▁
+wandb:       BitFit_TrainTime ▁
+wandb: BitFit_TrainableParams ▁
+wandb:               LoRA_MAE ▁
+wandb:               LoRA_MSE ▁
+wandb:                LoRA_R2 ▁
+wandb:         LoRA_TrainTime ▁
+wandb:   LoRA_TrainableParams ▁
+wandb:                  epoch ▁▃▅▆█▁▃▅▆█▁▃▅▆█
+wandb:                iA3_MAE ▁
+wandb:                iA3_MSE ▁
+wandb:                 iA3_R2 ▁
+wandb:          iA3_TrainTime ▁
+wandb:    iA3_TrainableParams ▁
+wandb:                     lr █████▁▁▁▁▁▁▁▁▁▁
+wandb:             train_loss ▄▃▃▂▂█▃▃▃▃▄▂▁▁▁
+wandb:               val_loss ▅▄▄▃▂█▅▅▄▄▃▂▁▁▂
+wandb: 
+wandb: Run summary:
+wandb:             BitFit_MAE 0.82764
+wandb:             BitFit_MSE 1.09152
+wandb:              BitFit_R2 0.2489
+wandb:       BitFit_TrainTime 30.53955
+wandb: BitFit_TrainableParams 74497
+wandb:               LoRA_MAE 0.93835
+wandb:               LoRA_MSE 1.31532
+wandb:                LoRA_R2 0.0949
+wandb:         LoRA_TrainTime 36.59664
+wandb:   LoRA_TrainableParams 9677569
+wandb:                  epoch 5
+wandb:                iA3_MAE 0.76973
+wandb:                iA3_MSE 1.02233
+wandb:                 iA3_R2 0.29651
+wandb:          iA3_TrainTime 39.55286
+wandb:    iA3_TrainableParams 44421889
+wandb:                     lr 0.0001
+wandb:             train_loss 0.23318
+wandb:               val_loss 1.00447
+wandb: 
+wandb: 🚀 View run divine-fire-43 at: https://wandb.ai/mobashirrahman-saarland-university/nnti-project/runs/8qh0ztiy
+wandb: ⭐️ View project at: https://wandb.ai/mobashirrahman-saarland-university/nnti-project
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 4 other file(s)
+wandb: Find logs at: ./wandb/run-20250306_195606-8qh0ztiy/logs
+Task 3 completed at Thu Mar  6 19:58:29 UTC 2025

@@ -1,0 +1,50 @@
+000 (25192.000.000) 2025-03-08 22:47:08 Job submitted from host: <134.96.227.101:9618?addrs=134.96.227.101-9618&alias=conduit2.hpc.uni-saarland.de&noUDP&sock=schedd_1648_f82a>
+...
+040 (25192.000.000) 2025-03-08 22:47:08 Started transferring input files
+	Transferring to host: <134.96.59.24:9618?addrs=134.96.59.24-9618&alias=tenos.hpc.uni-saarland.de&noUDP&sock=teaching4_2504_0b5f_75609>
+...
+040 (25192.000.000) 2025-03-08 22:47:08 Finished transferring input files
+...
+001 (25192.000.000) 2025-03-08 22:47:08 Job executing on host: <134.96.59.24:9618?addrs=134.96.59.24-9618&alias=tenos.hpc.uni-saarland.de&noUDP&sock=startd_2183_ef55>
+	SlotName: @tenos.hpc.uni-saarland.de
+	AvailableGPUs = { GPUs_GPU_a452c067 }
+	CondorScratchDir = "/raid/condor/lib/condor/execute/dir_446990"
+	Cpus = 7
+	Disk = 446757435
+	GPUs = 1
+	GPUs_GPU_a452c067 = [ Id = "GPU-a452c067"; Capability = 6.0; DeviceName = "Tesla P100-SXM2-16GB"; DeviceUuid = "a452c067-0d65-e291-c4ee-82d9aa851f4c"; ECCEnabled = true; DriverVersion = 12.4; DevicePciBusId = "0000:86:00.0"; GlobalMemoryMb = 16269; MaxSupportedVersion = 12040 ]
+	Memory = 96737
+...
+006 (25192.000.000) 2025-03-08 22:47:17 Image size of job updated: 41
+	41  -  MemoryUsage of job (MB)
+	42184  -  ResidentSetSize of job (KB)
+...
+006 (25192.000.000) 2025-03-08 22:52:18 Image size of job updated: 2135
+	2135  -  MemoryUsage of job (MB)
+	2187248  -  ResidentSetSize of job (KB)
+...
+040 (25192.000.000) 2025-03-08 22:56:28 Started transferring output files
+...
+040 (25192.000.000) 2025-03-08 22:56:42 Finished transferring output files
+...
+005 (25192.000.000) 2025-03-08 22:56:42 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:04:57, Sys 0 00:00:07  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:04:57, Sys 0 00:00:07  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	1076958976  -  Run Bytes Sent By Job
+	22713  -  Run Bytes Received By Job
+	1076958976  -  Total Bytes Sent By Job
+	22713  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated Assigned
+	   Cpus                 :       0.00        4         7 
+	   Disk (KB)            : 1052862          25 446757435 
+	   GPUs                 :       0.86        1         1 "GPU-a452c067"
+	   GpusMemory (MB)      :    3721                       
+	   Memory (MB)          :    2135       16384     96737 
+	   TimeExecute (s)      :     560                       
+	   TimeSlotBusy (s)     :     574                       
+
+	Job terminated of its own accord at 2025-03-08T21:56:28Z with exit-code 0.
+...

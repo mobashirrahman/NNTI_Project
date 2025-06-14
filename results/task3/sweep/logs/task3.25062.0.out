@@ -1,0 +1,133 @@
+WandB environment variables set:
+  WANDB_API_KEY: dce2ca13c46a133ee8830759315cc6e8cbad8a05
+  WANDB_ENTITY: mobashirrahman-saarland-university
+  WANDB_PROJECT: nnti-project
+  WANDB_SWEEP: true
+=== Starting Task 3: Data Selection & Fine-Tuning Exploration ===
+Hostname: neuronet_team159-25062.0-tenos.hpc.uni-saarland.de
+Date: Thu Mar  6 19:23:57 UTC 2025
+Process ID: 7
+Allocated GPUs (nvidia-smi):
+Thu Mar  6 19:23:57 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.127.08             Driver Version: 550.127.08     CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla P100-SXM2-16GB           Off |   00000000:0A:00.0 Off |                    0 |
+| N/A   30C    P0             31W /  300W |       7MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Memory info (free -h):
+              total        used        free      shared  buff/cache   available
+Mem:           755G        6.9G        535G        6.0M        213G        744G
+Swap:          8.0G          0B        8.0G
+Installed Python version:
+/opt/conda/bin/python3
+Python 3.7.13
+Installing Python dependencies from requirements.txt...
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: pip in /opt/conda/lib/python3.7/site-packages (22.1.2)
+Collecting pip
+  Downloading pip-24.0-py3-none-any.whl (2.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 23.4 MB/s eta 0:00:00
+Installing collected packages: pip
+Successfully installed pip-24.0
+Defaulting to user installation because normal site-packages is not writeable
+Collecting ipywidgets (from -r requirements.txt (line 1))
+  Using cached ipywidgets-8.1.5-py3-none-any.whl.metadata (2.3 kB)
+Collecting jupyter (from -r requirements.txt (line 2))
+  Using cached jupyter-1.1.1-py2.py3-none-any.whl.metadata (2.0 kB)
+Requirement already satisfied: numpy in /opt/conda/lib/python3.7/site-packages (from -r requirements.txt (line 3)) (1.21.5)
+Collecting pandas (from -r requirements.txt (line 4))
+  Downloading pandas-1.3.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (12 kB)
+Collecting matplotlib (from -r requirements.txt (line 5))
+  Downloading matplotlib-3.5.3-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.whl.metadata (6.7 kB)
+Requirement already satisfied: torch in /opt/conda/lib/python3.7/site-packages (from -r requirements.txt (line 6)) (1.12.1)
+Collecting datasets (from -r requirements.txt (line 7))
+  Downloading datasets-2.13.2-py3-none-any.whl.metadata (20 kB)
+Collecting transformers (from -r requirements.txt (line 8))
+  Downloading transformers-4.30.2-py3-none-any.whl.metadata (113 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 113.6/113.6 kB 3.9 MB/s eta 0:00:00
+Collecting scikit-learn (from -r requirements.txt (line 9))
+  Downloading scikit_learn-1.0.2-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (10 kB)
+Collecting wandb>=0.12.0 (from -r requirements.txt (line 10))
+  Downloading wandb-0.18.7-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.7 kB)
+Collecting comm>=0.1.3 (from ipywidgets->-r requirements.txt (line 1))
+  Downloading comm-0.1.4-py3-none-any.whl.metadata (4.2 kB)
+Requirement already satisfied: ipython>=6.1.0 in /opt/conda/lib/python3.7/site-packages (from ipywidgets->-r requirements.txt (line 1)) (7.31.1)
+Requirement already satisfied: traitlets>=4.3.1 in /opt/conda/lib/python3.7/site-packages (from ipywidgets->-r requirements.txt (line 1)) (5.1.1)
+Collecting widgetsnbextension~=4.0.12 (from ipywidgets->-r requirements.txt (line 1))
+  Using cached widgetsnbextension-4.0.13-py3-none-any.whl.metadata (1.6 kB)
+Collecting jupyterlab-widgets~=3.0.12 (from ipywidgets->-r requirements.txt (line 1))
+  Using cached jupyterlab_widgets-3.0.13-py3-none-any.whl.metadata (4.1 kB)
+Collecting notebook (from jupyter->-r requirements.txt (line 2))
+  Downloading notebook-6.5.7-py3-none-any.whl.metadata (2.5 kB)
+Collecting jupyter-console (from jupyter->-r requirements.txt (line 2))
+  Using cached jupyter_console-6.6.3-py3-none-any.whl.metadata (5.8 kB)
+Collecting nbconvert (from jupyter->-r requirements.txt (line 2))
+  Downloading nbconvert-7.6.0-py3-none-any.whl.metadata (7.9 kB)
+Collecting ipykernel (from jupyter->-r requirements.txt (line 2))
+  Downloading ipykernel-6.16.2-py3-none-any.whl.metadata (5.6 kB)
+Collecting jupyterlab (from jupyter->-r requirements.txt (line 2))
+  Downloading jupyterlab-3.6.8-py3-none-any.whl.metadata (12 kB)
+Collecting python-dateutil>=2.7.3 (from pandas->-r requirements.txt (line 4))
+  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Requirement already satisfied: pytz>=2017.3 in /opt/conda/lib/python3.7/site-packages (from pandas->-r requirements.txt (line 4)) (2022.1)
+Collecting cycler>=0.10 (from matplotlib->-r requirements.txt (line 5))
+  Downloading cycler-0.11.0-py3-none-any.whl.metadata (785 bytes)
+Collecting fonttools>=4.22.0 (from matplotlib->-r requirements.txt (line 5))
+  Downloading fonttools-4.38.0-py3-none-any.whl.metadata (138 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 138.5/138.5 kB 13.4 MB/s eta 0:00:00
+Collecting kiwisolver>=1.0.1 (from matplotlib->-r requirements.txt (line 5))
+  Downloading kiwisolver-1.4.5-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.whl.metadata (6.4 kB)
+Collecting packaging>=20.0 (from matplotlib->-r requirements.txt (line 5))
+  Downloading packaging-24.0-py3-none-any.whl.metadata (3.2 kB)
+Requirement already satisfied: pillow>=6.2.0 in /opt/conda/lib/python3.7/site-packages (from matplotlib->-r requirements.txt (line 5)) (9.0.1)
+Collecting pyparsing>=2.2.1 (from matplotlib->-r requirements.txt (line 5))
+  Using cached pyparsing-3.1.4-py3-none-any.whl.metadata (5.1 kB)
+Requirement already satisfied: typing_extensions in /opt/conda/lib/python3.7/site-packages (from torch->-r requirements.txt (line 6)) (4.3.0)
+Collecting pyarrow>=8.0.0 (from datasets->-r requirements.txt (line 7))
+  Downloading pyarrow-12.0.1-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.0 kB)
+Collecting dill<0.3.7,>=0.3.0 (from datasets->-r requirements.txt (line 7))
+  Downloading dill-0.3.6-py3-none-any.whl.metadata (9.8 kB)
+Requirement already satisfied: requests>=2.19.0 in /opt/conda/lib/python3.7/site-packages (from datasets->-r requirements.txt (line 7)) (2.27.1)
+Requirement already satisfied: tqdm>=4.62.1 in /opt/conda/lib/python3.7/site-packages (from datasets->-r requirements.txt (line 7)) (4.63.0)
+Collecting xxhash (from datasets->-r requirements.txt (line 7))
+  Downloading xxhash-3.5.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (12 kB)
+Collecting multiprocess (from datasets->-r requirements.txt (line 7))
+  Downloading multiprocess-0.70.15-py37-none-any.whl.metadata (7.2 kB)
+Collecting fsspec>=2021.11.1 (from fsspec[http]>=2021.11.1->datasets->-r requirements.txt (line 7))
+  Downloading fsspec-2023.1.0-py3-none-any.whl.metadata (5.5 kB)
+Collecting aiohttp (from datasets->-r requirements.txt (line 7))
+  Downloading aiohttp-3.8.6-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.7 kB)
+Collecting huggingface-hub<1.0.0,>=0.11.0 (from datasets->-r requirements.txt (line 7))
+  Downloading huggingface_hub-0.16.4-py3-none-any.whl.metadata (12 kB)
+Requirement already satisfied: pyyaml>=5.1 in /opt/conda/lib/python3.7/site-packages (from datasets->-r requirements.txt (line 7)) (6.0)
+Collecting importlib-metadata (from datasets->-r requirements.txt (line 7))
+  Downloading importlib_metadata-6.7.0-py3-none-any.whl.metadata (4.9 kB)
+Requirement already satisfied: filelock in /opt/conda/lib/python3.7/site-packages (from transformers->-r requirements.txt (line 8)) (3.6.0)
+Collecting regex!=2019.12.17 (from transformers->-r requirements.txt (line 8))
+  Downloading regex-2024.4.16-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (40 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.9/40.9 kB 4.1 MB/s eta 0:00:00
+Collecting tokenizers!=0.11.3,<0.14,>=0.11.1 (from transformers->-r requirements.txt (line 8))
+  Downloading tokenizers-0.13.3-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.7 kB)
+Collecting safetensors>=0.3.1 (from transformers->-r requirements.txt (line 8))
+  Downloading safetensors-0.5.3.tar.gz (67 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.2/67.2 kB 5.8 MB/s eta 0:00:00
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'error'

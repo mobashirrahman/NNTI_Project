@@ -1,0 +1,393 @@
+=== Starting Hyperparameter Sweep Job with wandb agent ===
+Hostname: neuronet_team159-25287.0-uller.hpc.uni-saarland.de
+Date: Mon Mar 10 16:33:42 UTC 2025
+User: 1620001094
+Unknown
+Process ID: 7
+Allocated GPUs (nvidia-smi):
+Mon Mar 10 16:33:42 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.127.08             Driver Version: 550.127.08     CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla P100-PCIE-16GB           Off |   00000000:06:00.0 Off |                    0 |
+| N/A   29C    P0             26W /  250W |       3MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Memory info (free -h):
+               total        used        free      shared  buff/cache   available
+Mem:           503Gi       8.9Gi       199Gi        33Mi       295Gi       491Gi
+Swap:          8.0Gi       3.0Mi       8.0Gi
+Installed Python version:
+/opt/conda/bin/python3
+Python 3.10.13
+Installed pip version:
+/opt/conda/bin/pip3
+pip 25.0.1 from /home/neuronet_team159/.local/lib/python3.10/site-packages/pip (python 3.10)
+Installing Python dependencies from requirements.txt...
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: pip in /home/neuronet_team159/.local/lib/python3.10/site-packages (25.0.1)
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: ipywidgets in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 1)) (8.1.5)
+Requirement already satisfied: jupyter in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 2)) (1.1.1)
+Requirement already satisfied: numpy in /opt/conda/lib/python3.10/site-packages (from -r requirements.txt (line 3)) (1.26.3)
+Requirement already satisfied: pandas in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 4)) (2.2.3)
+Requirement already satisfied: matplotlib in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 5)) (3.10.1)
+Requirement already satisfied: torch in /opt/conda/lib/python3.10/site-packages (from -r requirements.txt (line 6)) (2.2.1)
+Requirement already satisfied: datasets in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 7)) (3.3.2)
+Requirement already satisfied: transformers in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 8)) (4.49.0)
+Requirement already satisfied: scikit-learn in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 9)) (1.6.1)
+Requirement already satisfied: wandb>=0.12.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from -r requirements.txt (line 10)) (0.19.7)
+Requirement already satisfied: comm>=0.1.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (0.2.2)
+Requirement already satisfied: ipython>=6.1.0 in /opt/conda/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (8.20.0)
+Requirement already satisfied: traitlets>=4.3.1 in /opt/conda/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (5.7.1)
+Requirement already satisfied: widgetsnbextension~=4.0.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (4.0.13)
+Requirement already satisfied: jupyterlab-widgets~=3.0.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipywidgets->-r requirements.txt (line 1)) (3.0.13)
+Requirement already satisfied: notebook in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (7.3.2)
+Requirement already satisfied: jupyter-console in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (6.6.3)
+Requirement already satisfied: nbconvert in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (7.16.6)
+Requirement already satisfied: ipykernel in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (6.29.5)
+Requirement already satisfied: jupyterlab in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter->-r requirements.txt (line 2)) (4.3.5)
+Requirement already satisfied: python-dateutil>=2.8.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 4)) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in /opt/conda/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 4)) (2023.3.post1)
+Requirement already satisfied: tzdata>=2022.7 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 4)) (2025.1)
+Requirement already satisfied: contourpy>=1.0.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (1.3.1)
+Requirement already satisfied: cycler>=0.10 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (4.56.0)
+Requirement already satisfied: kiwisolver>=1.3.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (1.4.8)
+Requirement already satisfied: packaging>=20.0 in /opt/conda/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (23.1)
+Requirement already satisfied: pillow>=8 in /opt/conda/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (10.2.0)
+Requirement already satisfied: pyparsing>=2.3.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from matplotlib->-r requirements.txt (line 5)) (3.2.1)
+Requirement already satisfied: filelock in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (3.13.1)
+Requirement already satisfied: typing-extensions>=4.8.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (4.12.2)
+Requirement already satisfied: sympy in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (1.12)
+Requirement already satisfied: networkx in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (3.1)
+Requirement already satisfied: jinja2 in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (3.1.3)
+Requirement already satisfied: fsspec in /opt/conda/lib/python3.10/site-packages (from torch->-r requirements.txt (line 6)) (2024.2.0)
+Requirement already satisfied: pyarrow>=15.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (19.0.1)
+Requirement already satisfied: dill<0.3.9,>=0.3.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (0.3.8)
+Requirement already satisfied: requests>=2.32.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (2.32.3)
+Requirement already satisfied: tqdm>=4.66.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (4.67.1)
+Requirement already satisfied: xxhash in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (3.5.0)
+Requirement already satisfied: multiprocess<0.70.17 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (0.70.16)
+Requirement already satisfied: aiohttp in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (3.11.13)
+Requirement already satisfied: huggingface-hub>=0.24.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (0.29.1)
+Requirement already satisfied: pyyaml>=5.1 in /opt/conda/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 7)) (6.0.1)
+Requirement already satisfied: regex!=2019.12.17 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from transformers->-r requirements.txt (line 8)) (2024.11.6)
+Requirement already satisfied: tokenizers<0.22,>=0.21 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from transformers->-r requirements.txt (line 8)) (0.21.0)
+Requirement already satisfied: safetensors>=0.4.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from transformers->-r requirements.txt (line 8)) (0.5.3)
+Requirement already satisfied: scipy>=1.6.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from scikit-learn->-r requirements.txt (line 9)) (1.15.2)
+Requirement already satisfied: joblib>=1.2.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from scikit-learn->-r requirements.txt (line 9)) (1.4.2)
+Requirement already satisfied: threadpoolctl>=3.1.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from scikit-learn->-r requirements.txt (line 9)) (3.5.0)
+Requirement already satisfied: click!=8.0.0,>=7.1 in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (8.1.7)
+Requirement already satisfied: docker-pycreds>=0.4.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (0.4.0)
+Requirement already satisfied: gitpython!=3.1.29,>=1.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (3.1.44)
+Requirement already satisfied: platformdirs in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (3.10.0)
+Requirement already satisfied: protobuf!=4.21.0,!=5.28.0,<6,>=3.19.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (5.29.3)
+Requirement already satisfied: psutil>=5.0.0 in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (5.9.0)
+Requirement already satisfied: pydantic<3,>=2.6 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (2.10.6)
+Requirement already satisfied: sentry-sdk>=2.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (2.22.0)
+Requirement already satisfied: setproctitle in /home/neuronet_team159/.local/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (1.3.5)
+Requirement already satisfied: setuptools in /opt/conda/lib/python3.10/site-packages (from wandb>=0.12.0->-r requirements.txt (line 10)) (68.2.2)
+Requirement already satisfied: six>=1.4.0 in /opt/conda/lib/python3.10/site-packages (from docker-pycreds>=0.4.0->wandb>=0.12.0->-r requirements.txt (line 10)) (1.16.0)
+Requirement already satisfied: aiohappyeyeballs>=2.3.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (2.4.8)
+Requirement already satisfied: aiosignal>=1.1.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (1.3.2)
+Requirement already satisfied: async-timeout<6.0,>=4.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (5.0.1)
+Requirement already satisfied: attrs>=17.3.0 in /opt/conda/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (23.1.0)
+Requirement already satisfied: frozenlist>=1.1.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (1.5.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (6.1.0)
+Requirement already satisfied: propcache>=0.2.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (0.3.0)
+Requirement already satisfied: yarl<2.0,>=1.17.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from aiohttp->datasets->-r requirements.txt (line 7)) (1.18.3)
+Requirement already satisfied: gitdb<5,>=4.0.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from gitpython!=3.1.29,>=1.0.0->wandb>=0.12.0->-r requirements.txt (line 10)) (4.0.12)
+Requirement already satisfied: decorator in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (5.1.1)
+Requirement already satisfied: jedi>=0.16 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.18.1)
+Requirement already satisfied: matplotlib-inline in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.1.6)
+Requirement already satisfied: prompt-toolkit<3.1.0,>=3.0.41 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (3.0.43)
+Requirement already satisfied: pygments>=2.4.0 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (2.15.1)
+Requirement already satisfied: stack-data in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.2.0)
+Requirement already satisfied: exceptiongroup in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (1.2.0)
+Requirement already satisfied: pexpect>4.3 in /opt/conda/lib/python3.10/site-packages (from ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (4.8.0)
+Requirement already satisfied: annotated-types>=0.6.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pydantic<3,>=2.6->wandb>=0.12.0->-r requirements.txt (line 10)) (0.7.0)
+Requirement already satisfied: pydantic-core==2.27.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from pydantic<3,>=2.6->wandb>=0.12.0->-r requirements.txt (line 10)) (2.27.2)
+Requirement already satisfied: charset-normalizer<4,>=2 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (2.0.4)
+Requirement already satisfied: idna<4,>=2.5 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (3.4)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (2.1.0)
+Requirement already satisfied: certifi>=2017.4.17 in /opt/conda/lib/python3.10/site-packages (from requests>=2.32.2->datasets->-r requirements.txt (line 7)) (2024.2.2)
+Requirement already satisfied: debugpy>=1.6.5 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (1.8.12)
+Requirement already satisfied: jupyter-client>=6.1.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (8.6.3)
+Requirement already satisfied: jupyter-core!=5.0.*,>=4.12 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (5.7.2)
+Requirement already satisfied: nest-asyncio in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (1.6.0)
+Requirement already satisfied: pyzmq>=24 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (26.2.1)
+Requirement already satisfied: tornado>=6.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from ipykernel->jupyter->-r requirements.txt (line 2)) (6.4.2)
+Requirement already satisfied: MarkupSafe>=2.0 in /opt/conda/lib/python3.10/site-packages (from jinja2->torch->-r requirements.txt (line 6)) (2.1.3)
+Requirement already satisfied: async-lru>=1.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.0.4)
+Requirement already satisfied: httpx>=0.25.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (0.28.1)
+Requirement already satisfied: jupyter-lsp>=2.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.2.5)
+Requirement already satisfied: jupyter-server<3,>=2.4.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.15.0)
+Requirement already satisfied: jupyterlab-server<3,>=2.27.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.27.3)
+Requirement already satisfied: notebook-shim>=0.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (0.2.4)
+Requirement already satisfied: tomli>=1.2.2 in /opt/conda/lib/python3.10/site-packages (from jupyterlab->jupyter->-r requirements.txt (line 2)) (2.0.1)
+Requirement already satisfied: beautifulsoup4 in /opt/conda/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (4.12.2)
+Requirement already satisfied: bleach!=5.0.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from bleach[css]!=5.0.0->nbconvert->jupyter->-r requirements.txt (line 2)) (6.2.0)
+Requirement already satisfied: defusedxml in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (0.7.1)
+Requirement already satisfied: jupyterlab-pygments in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (0.3.0)
+Requirement already satisfied: mistune<4,>=2.0.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (3.1.2)
+Requirement already satisfied: nbclient>=0.5.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (0.10.2)
+Requirement already satisfied: nbformat>=5.7 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (5.10.4)
+Requirement already satisfied: pandocfilters>=1.4.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbconvert->jupyter->-r requirements.txt (line 2)) (1.5.1)
+Requirement already satisfied: mpmath>=0.19 in /opt/conda/lib/python3.10/site-packages (from sympy->torch->-r requirements.txt (line 6)) (1.3.0)
+Requirement already satisfied: webencodings in /home/neuronet_team159/.local/lib/python3.10/site-packages (from bleach!=5.0.0->bleach[css]!=5.0.0->nbconvert->jupyter->-r requirements.txt (line 2)) (0.5.1)
+Requirement already satisfied: tinycss2<1.5,>=1.1.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from bleach[css]!=5.0.0->nbconvert->jupyter->-r requirements.txt (line 2)) (1.4.0)
+Requirement already satisfied: smmap<6,>=3.0.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.29,>=1.0.0->wandb>=0.12.0->-r requirements.txt (line 10)) (5.0.2)
+Requirement already satisfied: anyio in /home/neuronet_team159/.local/lib/python3.10/site-packages (from httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (4.8.0)
+Requirement already satisfied: httpcore==1.* in /home/neuronet_team159/.local/lib/python3.10/site-packages (from httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.0.7)
+Requirement already satisfied: h11<0.15,>=0.13 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from httpcore==1.*->httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.14.0)
+Requirement already satisfied: parso<0.9.0,>=0.8.0 in /opt/conda/lib/python3.10/site-packages (from jedi>=0.16->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.8.3)
+Requirement already satisfied: argon2-cffi>=21.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (23.1.0)
+Requirement already satisfied: jupyter-events>=0.11.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.12.0)
+Requirement already satisfied: jupyter-server-terminals>=0.4.4 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.5.3)
+Requirement already satisfied: overrides>=5.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (7.7.0)
+Requirement already satisfied: prometheus-client>=0.9 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.21.1)
+Requirement already satisfied: send2trash>=1.8.2 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.8.3)
+Requirement already satisfied: terminado>=0.8.3 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.18.1)
+Requirement already satisfied: websocket-client>=1.7 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.8.0)
+Requirement already satisfied: babel>=2.10 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.17.0)
+Requirement already satisfied: json5>=0.9.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.10.0)
+Requirement already satisfied: jsonschema>=4.18.0 in /opt/conda/lib/python3.10/site-packages (from jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (4.19.2)
+Requirement already satisfied: fastjsonschema>=2.15 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from nbformat>=5.7->nbconvert->jupyter->-r requirements.txt (line 2)) (2.21.1)
+Requirement already satisfied: ptyprocess>=0.5 in /opt/conda/lib/python3.10/site-packages (from pexpect>4.3->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.7.0)
+Requirement already satisfied: wcwidth in /opt/conda/lib/python3.10/site-packages (from prompt-toolkit<3.1.0,>=3.0.41->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.2.5)
+Requirement already satisfied: soupsieve>1.2 in /opt/conda/lib/python3.10/site-packages (from beautifulsoup4->nbconvert->jupyter->-r requirements.txt (line 2)) (2.5)
+Requirement already satisfied: executing in /opt/conda/lib/python3.10/site-packages (from stack-data->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.8.3)
+Requirement already satisfied: asttokens in /opt/conda/lib/python3.10/site-packages (from stack-data->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (2.0.5)
+Requirement already satisfied: pure-eval in /opt/conda/lib/python3.10/site-packages (from stack-data->ipython>=6.1.0->ipywidgets->-r requirements.txt (line 1)) (0.2.2)
+Requirement already satisfied: sniffio>=1.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from anyio->httpx>=0.25.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.3.1)
+Requirement already satisfied: argon2-cffi-bindings in /home/neuronet_team159/.local/lib/python3.10/site-packages (from argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (21.2.0)
+Requirement already satisfied: jsonschema-specifications>=2023.03.6 in /opt/conda/lib/python3.10/site-packages (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (2023.7.1)
+Requirement already satisfied: referencing>=0.28.4 in /opt/conda/lib/python3.10/site-packages (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.30.2)
+Requirement already satisfied: rpds-py>=0.7.1 in /opt/conda/lib/python3.10/site-packages (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.10.6)
+Requirement already satisfied: python-json-logger>=2.0.4 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (3.2.1)
+Requirement already satisfied: rfc3339-validator in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.1.4)
+Requirement already satisfied: rfc3986-validator>=0.1.1 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (0.1.1)
+Requirement already satisfied: fqdn in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.5.1)
+Requirement already satisfied: isoduration in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (20.11.0)
+Requirement already satisfied: jsonpointer>1.13 in /opt/conda/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.1)
+Requirement already satisfied: uri-template in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.3.0)
+Requirement already satisfied: webcolors>=1.11 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (24.11.1)
+Requirement already satisfied: cffi>=1.0.1 in /opt/conda/lib/python3.10/site-packages (from argon2-cffi-bindings->argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.16.0)
+Requirement already satisfied: pycparser in /opt/conda/lib/python3.10/site-packages (from cffi>=1.0.1->argon2-cffi-bindings->argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.21)
+Requirement already satisfied: arrow>=0.15.0 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from isoduration->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (1.3.0)
+Requirement already satisfied: types-python-dateutil>=2.8.10 in /home/neuronet_team159/.local/lib/python3.10/site-packages (from arrow>=0.15.0->isoduration->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab->jupyter->-r requirements.txt (line 2)) (2.9.0.20241206)
+Installed package versions:
+aiohappyeyeballs==2.4.8
+aiohttp==3.11.13
+aiosignal==1.3.2
+annotated-types==0.7.0
+anyio==4.8.0
+archspec @ file:///croot/archspec_1697725767277/work
+argon2-cffi==23.1.0
+argon2-cffi-bindings==21.2.0
+arrow==1.3.0
+asttokens @ file:///opt/conda/conda-bld/asttokens_1646925590279/work
+astunparse==1.6.3
+async-lru==2.0.4
+async-timeout==5.0.1
+attrs @ file:///croot/attrs_1695717823297/work
+babel==2.17.0
+beautifulsoup4 @ file:///croot/beautifulsoup4-split_1681493039619/work
+bleach==6.2.0
+boltons @ file:///croot/boltons_1677628692245/work
+Brotli @ file:///tmp/abs_ecyw11_7ze/croots/recipe/brotli-split_1659616059936/work
+certifi @ file:///croot/certifi_1707229174982/work/certifi
+cffi @ file:///croot/cffi_1700254295673/work
+chardet @ file:///home/builder/ci_310/chardet_1640804867535/work
+charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
+click @ file:///croot/click_1698129812380/work
+comm==0.2.2
+conda @ file:///croot/conda_1696257509808/work
+conda-build @ file:///croot/conda-build_1708025865815/work
+conda-content-trust @ file:///croot/conda-content-trust_1693490622020/work
+conda-libmamba-solver @ file:///croot/conda-libmamba-solver_1691418897561/work/src
+conda-package-handling @ file:///croot/conda-package-handling_1690999929514/work
+conda_index @ file:///croot/conda-index_1706633791028/work
+conda_package_streaming @ file:///croot/conda-package-streaming_1690987966409/work
+contourpy==1.3.1
+cryptography @ file:///croot/cryptography_1707523700518/work
+cycler==0.12.1
+datasets==3.3.2
+debugpy==1.8.12
+decorator @ file:///opt/conda/conda-bld/decorator_1643638310831/work
+defusedxml==0.7.1
+dill==0.3.8
+distro @ file:///croot/distro_1701455004953/work
+dnspython==2.6.1
+docker-pycreds==0.4.0
+exceptiongroup @ file:///croot/exceptiongroup_1706031385326/work
+executing @ file:///opt/conda/conda-bld/executing_1646925071911/work
+expecttest==0.2.1
+fastjsonschema==2.21.1
+filelock @ file:///croot/filelock_1700591183607/work
+fonttools==4.56.0
+fqdn==1.5.1
+frozenlist==1.5.0
+fsspec==2024.2.0
+gitdb==4.0.12
+GitPython==3.1.44
+gmpy2 @ file:///tmp/build/80754af9/gmpy2_1645455533097/work
+h11==0.14.0
+httpcore==1.0.7
+httpx==0.28.1
+huggingface-hub==0.29.1
+hypothesis==6.98.10
+idna @ file:///croot/idna_1666125576474/work
+ipykernel==6.29.5
+ipython @ file:///croot/ipython_1704833016303/work
+ipywidgets==8.1.5
+isoduration==20.11.0
+jedi @ file:///tmp/build/80754af9/jedi_1644315229345/work
+Jinja2 @ file:///croot/jinja2_1706733616596/work
+joblib==1.4.2
+json5==0.10.0
+jsonpatch @ file:///tmp/build/80754af9/jsonpatch_1615747632069/work
+jsonpointer==2.1
+jsonschema @ file:///croot/jsonschema_1699041609003/work
+jsonschema-specifications @ file:///croot/jsonschema-specifications_1699032386549/work
+jupyter==1.1.1
+jupyter-console==6.6.3
+jupyter-events==0.12.0
+jupyter-lsp==2.2.5
+jupyter_client==8.6.3
+jupyter_core==5.7.2
+jupyter_server==2.15.0
+jupyter_server_terminals==0.5.3
+jupyterlab==4.3.5
+jupyterlab_pygments==0.3.0
+jupyterlab_server==2.27.3
+jupyterlab_widgets==3.0.13
+kiwisolver==1.4.8
+libarchive-c @ file:///tmp/build/80754af9/python-libarchive-c_1617780486945/work
+libmambapy @ file:///croot/mamba-split_1698782620632/work/libmambapy
+MarkupSafe @ file:///croot/markupsafe_1704205993651/work
+matplotlib==3.10.1
+matplotlib-inline @ file:///opt/conda/conda-bld/matplotlib-inline_1662014470464/work
+menuinst @ file:///croot/menuinst_1706732933928/work
+mistune==3.1.2
+mkl-fft @ file:///croot/mkl_fft_1695058164594/work
+mkl-random @ file:///croot/mkl_random_1695059800811/work
+mkl-service==2.4.0
+more-itertools @ file:///croot/more-itertools_1700662129964/work
+mpmath @ file:///croot/mpmath_1690848262763/work
+multidict==6.1.0
+multiprocess==0.70.16
+nbclient==0.10.2
+nbconvert==7.16.6
+nbformat==5.10.4
+nest-asyncio==1.6.0
+networkx @ file:///croot/networkx_1690561992265/work
+notebook==7.3.2
+notebook_shim==0.2.4
+numpy @ file:///croot/numpy_and_numpy_base_1704311704800/work/dist/numpy-1.26.3-cp310-cp310-linux_x86_64.whl#sha256=a281f24b826e51f1c25bdd24960ab44b4bc294c65d81560441ba7fffd8ddd2a7
+optree==0.10.0
+overrides==7.7.0
+packaging @ file:///croot/packaging_1693575174725/work
+pandas==2.2.3
+pandocfilters==1.5.1
+parso @ file:///opt/conda/conda-bld/parso_1641458642106/work
+pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
+pillow @ file:///croot/pillow_1707233021655/work
+pkginfo @ file:///croot/pkginfo_1679431160147/work
+platformdirs @ file:///croot/platformdirs_1692205439124/work
+pluggy @ file:///tmp/build/80754af9/pluggy_1648024709248/work
+prometheus_client==0.21.1
+prompt-toolkit @ file:///croot/prompt-toolkit_1704404351921/work
+propcache==0.3.0
+protobuf==5.29.3
+psutil @ file:///opt/conda/conda-bld/psutil_1656431268089/work
+ptyprocess @ file:///tmp/build/80754af9/ptyprocess_1609355006118/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
+pure-eval @ file:///opt/conda/conda-bld/pure_eval_1646925070566/work
+pyarrow==19.0.1
+pycosat @ file:///croot/pycosat_1696536503704/work
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pydantic==2.10.6
+pydantic_core==2.27.2
+Pygments @ file:///croot/pygments_1684279966437/work
+pyOpenSSL @ file:///croot/pyopenssl_1708380408460/work
+pyparsing==3.2.1
+PySocks @ file:///home/builder/ci_310/pysocks_1640793678128/work
+python-dateutil==2.9.0.post0
+python-etcd==0.4.5
+python-json-logger==3.2.1
+pytz @ file:///croot/pytz_1695131579487/work
+PyYAML @ file:///croot/pyyaml_1698096049011/work
+pyzmq==26.2.1
+referencing @ file:///croot/referencing_1699012038513/work
+regex==2024.11.6
+requests==2.32.3
+rfc3339-validator==0.1.4
+rfc3986-validator==0.1.1
+rpds-py @ file:///croot/rpds-py_1698945930462/work
+ruamel.yaml @ file:///croot/ruamel.yaml_1666304550667/work
+ruamel.yaml.clib @ file:///croot/ruamel.yaml.clib_1666302247304/work
+safetensors==0.5.3
+scikit-learn==1.6.1
+scipy==1.15.2
+Send2Trash==1.8.3
+sentry-sdk==2.22.0
+setproctitle==1.3.5
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+smmap==5.0.2
+sniffio==1.3.1
+sortedcontainers==2.4.0
+soupsieve @ file:///croot/soupsieve_1696347547217/work
+stack-data @ file:///opt/conda/conda-bld/stack_data_1646927590127/work
+sympy @ file:///croot/sympy_1701397643339/work
+terminado==0.18.1
+threadpoolctl==3.5.0
+tinycss2==1.4.0
+tokenizers==0.21.0
+tomli @ file:///opt/conda/conda-bld/tomli_1657175507142/work
+toolz @ file:///croot/toolz_1667464077321/work
+torch==2.2.1
+torchaudio==2.2.1
+torchelastic==0.2.2
+torchvision==0.17.1
+tornado==6.4.2
+tqdm==4.67.1
+traitlets @ file:///croot/traitlets_1671143879854/work
+transformers==4.49.0
+triton==2.2.0
+truststore @ file:///croot/truststore_1695244293384/work
+types-dataclasses==0.6.6
+types-python-dateutil==2.9.0.20241206
+typing_extensions==4.12.2
+tzdata==2025.1
+uri-template==1.3.0
+urllib3 @ file:///croot/urllib3_1707770551213/work
+wandb==0.19.7
+wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work
+webcolors==24.11.1
+webencodings==0.5.1
+websocket-client==1.8.0
+widgetsnbextension==4.0.13
+xxhash==3.5.0
+yarl==1.18.3
+zstandard @ file:///croot/zstandard_1677013143055/work
+WandB environment variables set:
+  WANDB_API_KEY: dce2ca13c46a133ee8830759315cc6e8cbad8a05
+  WANDB_ENTITY: mobashirrahman-saarland-university
+  WANDB_PROJECT: Task3
+  WANDB_SWEEP: FALSE
+Starting wandb agent with sweep id: z7avvqti
+=== Hyperparameter Sweep Finished at Mon Mar 10 16:33:49 UTC 2025 ===
+Logs saved in: sweep_logs
